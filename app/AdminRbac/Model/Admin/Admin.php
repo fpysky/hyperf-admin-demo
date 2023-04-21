@@ -79,6 +79,11 @@ class Admin extends Base implements Authenticatable
         return $this->type == self::TYPE_SUPER;
     }
 
+    public function isDisabled(): bool
+    {
+        return $this->status === self::STATUS_DISABLED;
+    }
+
     public function updateLastLoginInfo(string $lastLoginIp): void
     {
         $this->last_login_ip = $lastLoginIp;

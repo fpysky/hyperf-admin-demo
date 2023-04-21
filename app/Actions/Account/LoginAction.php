@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Actions\Account;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\CodeMsg\TokenCode;
 use App\AdminRbac\Model\Admin\Admin;
 use App\AdminRbac\Request\LoginRequest;
-use App\Exception\UnauthorizedException;
+use App\Exception\UnprocessableEntityException;
 use App\Utils\Help;
 use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Di\Annotation\Inject;
@@ -80,24 +79,18 @@ class LoginAction extends AbstractAction
                 ->where('mobile', $mobile)
                 ->firstOrFail();
         } catch (ModelNotFoundException) {
-            throw new UnauthorizedException('账户不存在');
+            throw new UnprocessableEntityException('账户不存在');
         }
 
         $encryptPassword = $this->help
             ->encrypPassword($mobile, $password, $admin->getUnixCreatedAt());
 
         if ($encryptPassword !== $admin->password) {
-            throw new UnauthorizedException(
-                '账号或密码错误',
-                TokenCode::FO_ZE_O_ZE_ZE_O
-            );
+            throw new UnprocessableEntityException('账号或密码错误');
         }
 
-        if ($admin->status === Admin::STATUS_DISABLED) {
-            throw new UnauthorizedException(
-                '用户已被禁用',
-                TokenCode::FO_ZE_O_ZE_ZE_TH
-            );
+        if ($admin->isDisabled()) {
+            throw new UnprocessableEntityException('用户已被禁用');
         }
 
         $accessToken = $this->auth->guard('sso')->login($admin);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\AdminRbac\CodeMsg\CommonCode;
 use App\AdminRbac\Model\Admin\AdminRole;
 use App\AdminRbac\Model\Rule\Rule;
 use App\Exception\GeneralException;
@@ -39,11 +38,7 @@ class RuleMiddleware implements MiddlewareInterface
         $res = $this->accessRule($currentRoute, $adminRule);
 
         if (! $res) {
-            throw new GeneralException(
-                CommonCode::FO_ZE_TH_ZE_ZE_O,
-                CommonCode::$errMsg[CommonCode::FO_ZE_TH_ZE_ZE_O],
-                CommonCode::FOUR_HUNDRED_THREE
-            );
+            throw new GeneralException(403001, '无操作权限', 403);
         }
 
         return $handler->handle($request);
