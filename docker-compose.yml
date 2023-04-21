@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  business-api:
+    container_name: ${APP_NAME}
+    image: 172.29.151.244:80/jykeji-dev-php/hyperf-php8.1-apk3.15:v1.0
+    ports:
+      - "${HTTP_PORT}:20222"
+    stdin_open: true
+    tty: true
+    privileged: true
+    network_mode: "host"
+    volumes:
+      - "./:${DOCKER_PROJECT_PATH}"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        chmod +x ${DOCKER_PROJECT_PATH}/sh.d/*
+        "${DOCKER_PROJECT_PATH}/sh.d/start-server.sh" ${APP_ENV}
+

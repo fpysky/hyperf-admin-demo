@@ -1,0 +1,12 @@
+{
+  "name": "admin-api",
+  "version": "1.0.0",
+  "description": "admin-api",
+  "title": "本地生活 - 平台管理后台接口",
+  "url" : "http://172.29.151.140/admin-api",
+  "sampleUrl" : "http://172.29.151.140/admin-api",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}
