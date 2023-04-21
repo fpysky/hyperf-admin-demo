@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\Enums\RoleEnums;
 use App\AdminRbac\Model\Role\Role;
 use App\AdminRbac\Model\Role\RoleRule;
 use App\AdminRbac\Request\RoleStoreRequest;
@@ -13,7 +12,6 @@ use App\AdminRbac\Request\RoleUpdateRequest;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -26,11 +24,6 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class RoleController extends AbstractAction
 {
-    /**
-     * 角色列表
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:12.
-     */
     #[GetMapping(path: '/system/backend/backendAdminRole')]
     public function index(): ResponseInterface
     {
@@ -40,25 +33,18 @@ class RoleController extends AbstractAction
                 'created_at as createTime',
                 'order as sort', 'status',
             ])
-            ->orderBy('order')
-            ->orderBy('id', 'desc')
             ->with([
                 'roleRule' => function ($query) {
                     $query->with('rule');
                 }])
+            ->orderBy('order')
+            ->orderBy('id', 'desc')
             ->get()
             ->toArray();
 
         return $this->success(['roles' => $roles]);
     }
 
-    /**
-     * 角色添加
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:12.
-     * @param RoleStoreRequest $request
-     * @return ResponseInterface
-     */
     #[PostMapping(path: '/system/backend/backendAdminRole')]
     public function store(RoleStoreRequest $request): ResponseInterface
     {
@@ -80,13 +66,6 @@ class RoleController extends AbstractAction
         return $this->message('角色添加成功');
     }
 
-    /**
-     * 角色编辑
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:12.
-     * @param RoleUpdateRequest $request
-     * @return ResponseInterface
-     */
     #[PutMapping(path: '/system/backend/backendAdminRole')]
     public function update(RoleUpdateRequest $request): ResponseInterface
     {
@@ -111,13 +90,6 @@ class RoleController extends AbstractAction
         return $this->message('角色编辑成功');
     }
 
-    /**
-     * 为角色分配权限.
-     * @return ResponseInterface
-     * @throws \Exception
-     * @author fengpengyuan 2023/4/4
-     * @modifier fengpengyuan 2023/4/4
-     */
     #[PutMapping(path: '/system/backend/backendAdminRole/roleRule')]
     public function upRule(): ResponseInterface
     {
@@ -140,38 +112,25 @@ class RoleController extends AbstractAction
         return $this->message('权限分配成功');
     }
 
-    /**
-     * 角色启用禁用
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:13.
-     */
     #[PutMapping(path: '/system/backend/backendAdminRole/status')]
     public function upStatus(): ResponseInterface
     {
-        $ids = $this->request->input('ids');
-        $status = $this->request->input('status');
-
-        if ($status == RoleEnums::USE) {
-            $status = RoleEnums::USE;
-            $msg = '角色启用成功';
-        } else {
-            $status = RoleEnums::DISABLE;
-            $msg = '角色禁用成功';
-        }
+        $ids = (array) $this->request->input('ids');
+        $status = (int) $this->request->input('status');
 
         Role::query()
             ->whereIn('id', $ids)
             ->update(['status' => $status]);
 
+        if ($status == Role::STATUS_ENABLE) {
+            $msg = '角色启用成功';
+        } else {
+            $msg = '角色禁用成功';
+        }
+
         return $this->message($msg);
     }
 
-    /**
-     * 角色删除
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:13.
-     * @throws \Exception
-     */
     #[DeleteMapping(path: '/system/backend/backendAdminRole/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
@@ -196,22 +155,10 @@ class RoleController extends AbstractAction
         return $this->success($list);
     }
 
-    /**
-     * 角色详情.
-     * @param int $id
-     * @return ResponseInterface
-     * @author fengpengyuan 2023/4/3
-     * @modifier fengpengyuan 2023/4/3
-     */
     #[GetMapping(path: '/system/backend/backendAdminRole/{id:\d+}')]
     public function detail(int $id): ResponseInterface
     {
-        try {
-            $role = Role::query()
-                ->findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new UnprocessableEntityException('角色不存在');
-        }
+        $role = Role::query()->findOrFail($id);
 
         $data = [
             'id' => $role->id,

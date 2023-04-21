@@ -10,11 +10,6 @@ use Hyperf\Resource\Json\JsonResource;
 
 class AdminResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array
-     */
     public function toArray(): array
     {
         /** @var Admin $this */
@@ -38,16 +33,13 @@ class AdminResource extends JsonResource
 
     private function deptInfo(?Dept $dept): array
     {
-        if($dept instanceof Dept){
+        if ($dept instanceof Dept) {
             return [
                 'id' => $dept->id,
                 'name' => $dept->name,
             ];
-        }else{
-            return [
-                'id' => 0,
-                'name' => '',
-            ];
         }
+
+        return ['id' => 0, 'name' => ''];
     }
 }

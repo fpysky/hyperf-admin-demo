@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\CodeMsg\RuleCode;
-use App\AdminRbac\Enums\RuleEnums;
 use App\AdminRbac\Model\Rule\Rule;
 use App\AdminRbac\Request\RuleStoreRequest;
 use App\AdminRbac\Request\RuleUpdateRequest;
 use App\AdminRbac\Resource\RuleResource;
-use App\Exception\RecordNotFoundException;
 use App\Extend\CacheRule;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -32,11 +28,6 @@ class RuleController extends AbstractAction
     #[Inject]
     protected CacheRule $cacheRule;
 
-    /**
-     * 权限列表
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:15.
-     */
     #[GetMapping(path: '/system/backend/backendAdminRule')]
     public function index(): ResponseInterface
     {
@@ -54,13 +45,6 @@ class RuleController extends AbstractAction
         return $this->success(RuleResource::collection($list));
     }
 
-    /**
-     * 权限添加.
-     * @param RuleStoreRequest $request
-     * @return ResponseInterface
-     * @author fengpengyuan 2023/4/4
-     * @modifier fengpengyuan 2023/4/4
-     */
     #[PostMapping(path: '/system/backend/backendAdminRule')]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
@@ -80,23 +64,12 @@ class RuleController extends AbstractAction
         return $this->message('权限添加成功');
     }
 
-    /**
-     * 权限编辑.
-     * @param RuleUpdateRequest $request
-     * @return ResponseInterface
-     * @author fengpengyuan 2023/4/4
-     * @modifier fengpengyuan 2023/4/4
-     */
     #[PutMapping(path: '/system/backend/backendAdminRule')]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = (int) $request->input('id');
 
-        try {
-            $rule = Rule::query()->findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new RecordNotFoundException('权限不存在', RuleCode::SIX_THREE_ZERO);
-        }
+        $rule = Rule::query()->findOrFail($id);
 
         $rule->parent_id = (int) $request->input('parentId');
         $rule->status = (int) $request->input('status');
@@ -113,12 +86,6 @@ class RuleController extends AbstractAction
         return $this->message('权限编辑成功');
     }
 
-    /**
-     * 权限排序
-     * Created By
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:16.
-     */
     #[PutMapping(path: '/system/backend/backendAdminRule/batchSortRule')]
     public function upOrders(): ResponseInterface
     {
@@ -133,41 +100,25 @@ class RuleController extends AbstractAction
         return $this->message('权限排序成功');
     }
 
-    /**
-     * 权限停用启用.
-     * @return ResponseInterface
-     * @author fengpengyuan 2023/4/4
-     * @modifier fengpengyuan 2023/4/4
-     */
     #[PutMapping(path: '/system/backend/backendAdminRule/status')]
     public function upStatus(): ResponseInterface
     {
-        $ids = $this->request->input('ids');
-        $status = $this->request->input('status');
-
-        if ($status == RuleEnums::USE) {
-            $status = RuleEnums::USE;
-            $msg = '权限启用成功';
-        } else {
-            $status = RuleEnums::DISABLE;
-            $msg = '权限禁用成功';
-        }
+        $ids = (array) $this->request->input('ids');
+        $status = (int) $this->request->input('status');
 
         Rule::query()
             ->whereIn('id', $ids)
             ->update(['status' => $status]);
 
+        if ($status == Rule::STATUS_ENABLE) {
+            $msg = '权限启用成功';
+        } else {
+            $msg = '权限禁用成功';
+        }
+
         return $this->message($msg);
     }
 
-    /**
-     * 权限删除.
-     * @param string $ids
-     * @return ResponseInterface
-     * @throws \Exception
-     * @author fengpengyuan 2023/4/4
-     * @modifier fengpengyuan 2023/4/4
-     */
     #[DeleteMapping(path: '/system/backend/backendAdminRule/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {

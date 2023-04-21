@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\CodeMsg\DeptCode;
-use App\AdminRbac\Enums\DeptEnums;
 use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Request\DeptStoreRequest;
 use App\AdminRbac\Request\DeptUpdateRequest;
-use App\Exception\RecordNotFoundException;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -27,11 +23,6 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class DeptController extends AbstractAction
 {
-    /**
-     * 部门列表
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:12.
-     */
     #[GetMapping(path: '/system/backend/backendAdminDept')]
     public function index(): ResponseInterface
     {
@@ -45,16 +36,10 @@ class DeptController extends AbstractAction
         return $this->success($list);
     }
 
-    /**
-     * 部门信息详情
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:16.
-     */
     #[GetMapping(path: '/system/backend/backendAdminDept/{id:\d+}')]
     public function edit(int $id): ResponseInterface
     {
-        $dept = Dept::query()
-            ->findOrFail($id);
+        $dept = Dept::query()->findOrFail($id);
 
         $data = [
             'id' => $dept->id,
@@ -71,13 +56,6 @@ class DeptController extends AbstractAction
         return $this->success($data);
     }
 
-    /**
-     * 部门添加
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:12.
-     * @param DeptStoreRequest $request
-     * @return ResponseInterface
-     */
     #[PostMapping(path: '/system/backend/backendAdminDept')]
     public function store(DeptStoreRequest $request): ResponseInterface
     {
@@ -103,13 +81,6 @@ class DeptController extends AbstractAction
         return $this->message('部门添加成功');
     }
 
-    /**
-     * 部门编辑
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:12.
-     * @param DeptUpdateRequest $request
-     * @return ResponseInterface
-     */
     #[PutMapping(path: '/system/backend/backendAdminDept')]
     public function update(DeptUpdateRequest $request): ResponseInterface
     {
@@ -120,11 +91,7 @@ class DeptController extends AbstractAction
             throw new UnprocessableEntityException('部门已存在');
         }
 
-        try {
-            $dept = Dept::query()->findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new RecordNotFoundException('部门不存在', DeptCode::SIX_FOUR_ZERO);
-        }
+        $dept = Dept::query()->findOrFail($id);
 
         $data = [
             'parent_id' => (int) $request->input('parentId'),
@@ -142,38 +109,25 @@ class DeptController extends AbstractAction
         return $this->message('部门编辑成功');
     }
 
-    /**
-     * 部门启用禁用
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:13.
-     */
     #[PutMapping(path: '/system/backend/backendAdminDept/status')]
     public function upStatus(): ResponseInterface
     {
-        $ids = $this->request->input('ids');
-        $status = $this->request->input('status');
-
-        if ($status == DeptEnums::USE) {
-            $status = DeptEnums::USE;
-            $msg = '部门启用成功';
-        } else {
-            $status = DeptEnums::DISABLE;
-            $msg = '部门禁用成功';
-        }
+        $ids = (array) $this->request->input('ids');
+        $status = (int) $this->request->input('status');
 
         Dept::query()
             ->whereIn('id', $ids)
             ->update(['status' => $status]);
 
+        if ($status == Dept::STATUS_ENABLE) {
+            $msg = '部门启用成功';
+        } else {
+            $msg = '部门禁用成功';
+        }
+
         return $this->message($msg);
     }
 
-    /**
-     * 部门删除
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:13.
-     * @throws \Exception
-     */
     #[DeleteMapping(path: '/system/backend/backendAdminDept/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
@@ -189,17 +143,10 @@ class DeptController extends AbstractAction
         return $this->message('部门删除成功');
     }
 
-    /**
-     * 下拉组件所有部门.
-     * @author weixiaohui
-     * @email  xh_wei@juling.vip
-     * @date   2021/12/30
-     * @return ResponseInterface
-     */
     #[GetMapping(path: '/system/backend/backendAdmin/deptTreeCombobox')]
     public function all(): ResponseInterface
     {
-        $depts = Dept::query()
+        $deptArr = Dept::query()
             ->select(['id', 'name'])
             ->where('parent_id', 0)
             ->where('status', 1)
@@ -208,7 +155,7 @@ class DeptController extends AbstractAction
             ->get()
             ->toArray();
 
-        foreach ($depts as &$dept) {
+        foreach ($deptArr as &$dept) {
             $dept['children'] = Dept::query()
                 ->select(['id', 'name'])
                 ->where('parent_id', $dept['id'])
@@ -219,7 +166,7 @@ class DeptController extends AbstractAction
                 ->toArray();
         }
 
-        return $this->success($depts);
+        return $this->success($deptArr);
     }
 
     #[GetMapping(path: '/system/backend/backendAdminDept/deptCombobox')]

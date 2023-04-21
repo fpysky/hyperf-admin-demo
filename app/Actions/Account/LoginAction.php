@@ -6,7 +6,6 @@ namespace App\Actions\Account;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\CodeMsg\TokenCode;
-use App\AdminRbac\Enums\AdminEnums;
 use App\AdminRbac\Model\Admin\Admin;
 use App\AdminRbac\Request\LoginRequest;
 use App\Exception\UnauthorizedException;
@@ -24,6 +23,8 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Qbhy\HyperfAuth\AuthManager;
+
+use function Hyperf\Coroutine\go;
 
 #[HyperfServer('http')]
 #[Controller]
@@ -92,7 +93,7 @@ class LoginAction extends AbstractAction
             );
         }
 
-        if ($admin->status === AdminEnums::DISABLE) {
+        if ($admin->status === Admin::STATUS_DISABLED) {
             throw new UnauthorizedException(
                 '用户已被禁用',
                 TokenCode::FO_ZE_O_ZE_ZE_TH
@@ -101,7 +102,7 @@ class LoginAction extends AbstractAction
 
         $accessToken = $this->auth->guard('sso')->login($admin);
 
-        go(function ()use($admin,$ip){
+        go(function () use ($admin, $ip) {
             $admin->updateLastLoginInfo($ip);
         });
 

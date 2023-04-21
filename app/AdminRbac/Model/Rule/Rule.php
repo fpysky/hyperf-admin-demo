@@ -19,6 +19,24 @@ class Rule extends Base
     use SoftDeletes;
     use RuleRelationship;
 
+    /** 状态：启用 */
+    const STATUS_ENABLE = 1;
+
+    /** 状态：禁用 */
+    const STATUS_DISABLED = 2;
+
+    /** 类型：目录 */
+    public const TYPE_DIRECTORY = 1;
+
+    /** 类型：菜单 */
+    public const TYPE_MENU = 2;
+
+    /** 类型：按钮 */
+    public const TYPE_BUTTON = 3;
+
+    /** 类型：接口 */
+    public const TYPE_API = 4;
+
     public function getRuleRoles(): array
     {
         if (! $this->roleRule->isEmpty()) {

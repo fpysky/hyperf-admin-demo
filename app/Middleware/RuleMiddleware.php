@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\AdminRbac\CodeMsg\CommonCode;
-use App\AdminRbac\Enums\RuleEnums;
 use App\AdminRbac\Model\Admin\AdminRole;
+use App\AdminRbac\Model\Rule\Rule;
 use App\Exception\GeneralException;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -58,7 +58,7 @@ class RuleMiddleware implements MiddlewareInterface
             ->crossJoin('role_rule as rr', 'r.id', '=', 'rr.role_id')
             ->crossJoin('rule as ru', 'rr.rule_id', '=', 'ru.id')
             ->where('ar.admin_id', $adminId)
-            ->where('ru.type', '!=', RuleEnums::DIRECTORY_TYPE)
+            ->where('ru.type', '!=', Rule::TYPE_DIRECTORY)
             ->get()
             ->toArray();
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\AdminRbac\Model\Admin;
 
-use App\AdminRbac\Enums\AdminEnums;
 use App\AdminRbac\Model\Admin\Traits\AdminRelationship;
 use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Model\Origin\Admin as Base;
@@ -21,6 +20,18 @@ class Admin extends Base implements Authenticatable
     use AdminRelationship;
     use SoftDeletes;
 
+    /** 类型：超级管理员 */
+    public const TYPE_SUPER = 1;
+
+    /** 类型：普通管理员 */
+    public const TYPE_NORMAL = 2;
+
+    /** 状态：启用 */
+    const STATUS_ENABLE = 1;
+
+    /** 状态：禁用 */
+    const STATUS_DISABLED = 2;
+
     public function getId(): int
     {
         return $this->id;
@@ -34,7 +45,7 @@ class Admin extends Base implements Authenticatable
     public static function hasSuperAdmin(array $ids): bool
     {
         return self::query()
-            ->where('type', AdminEnums::superAdmin)
+            ->where('type', Admin::TYPE_SUPER)
             ->whereIn('id', $ids)
             ->exists();
     }
@@ -65,7 +76,7 @@ class Admin extends Base implements Authenticatable
 
     public function isSuper(): bool
     {
-        return $this->type == AdminEnums::superAdmin;
+        return $this->type == self::TYPE_SUPER;
     }
 
     public function updateLastLoginInfo(string $lastLoginIp): void

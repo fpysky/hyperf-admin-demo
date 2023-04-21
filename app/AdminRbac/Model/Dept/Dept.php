@@ -13,6 +13,12 @@ class Dept extends Base
     use SoftDeletes;
     use DeptRelationship;
 
+    /** 状态：启用 */
+    public const STATUS_ENABLE = 1;
+
+    /** 状态：禁用 */
+    public const STATUS_DISABLED = 2;
+
     public static function exitsByName(string $name, int $exceptId = null): bool
     {
         $builder = self::query()->where('name', $name);

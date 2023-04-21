@@ -23,7 +23,7 @@ class UpStatusRequest extends FormRequest
     {
         return [
             'ids' => 'required|array',
-            'status' => 'required',
+            'status' => 'required|in:1,2',
         ];
     }
 
@@ -33,6 +33,7 @@ class UpStatusRequest extends FormRequest
             'ids.required' => 'ids不能为空',
             'ids.array' => 'ids必须是数组',
             'status.required' => 'status不能为空',
+            'status.in' => 'status必须是1或2',
         ];
     }
 }

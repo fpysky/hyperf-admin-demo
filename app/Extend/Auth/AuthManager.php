@@ -14,13 +14,6 @@ class AuthManager extends Base
     #[Inject]
     protected DefaultRedis $redis;
 
-    /**
-     * 通过管理员id强制退出登陆.
-     * @param int $adminId
-     * @throws \RedisException
-     * @author fengpengyuan 2023/4/14
-     * @modifier fengpengyuan 2023/4/14
-     */
     public function logoutByAdminId(int $adminId)
     {
         $tokenKey = config('auth.guards.sso.redis_key');

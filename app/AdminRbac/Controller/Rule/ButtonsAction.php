@@ -5,27 +5,20 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller\Rule;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\Enums\RuleEnums;
 use App\AdminRbac\Model\Rule\Rule;
 use App\Middleware\AuthMiddleware;
+use Hyperf\Coroutine\Parallel;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
-use Hyperf\Utils\Parallel;
 use Psr\Http\Message\ResponseInterface;
 
 #[Controller]
 #[Middlewares([AuthMiddleware::class])]
 class ButtonsAction extends AbstractAction
 {
-    /**
-     * 按钮权限列表（依照父级组合）.
-     * @return ResponseInterface
-     * @author fengpengyuan 2023/3/28
-     * @modifier fengpengyuan 2023/3/28
-     */
     #[GetMapping(path: '/system/backend/backendAdminRule/buttons')]
     public function handle(): ResponseInterface
     {
@@ -36,7 +29,7 @@ class ButtonsAction extends AbstractAction
 
         $parallel->add(function () use (&$buttons) {
             $buttons = Rule::query()
-                ->where('type', RuleEnums::BUTTON_TYPE)
+                ->where('type', Rule::TYPE_BUTTON)
                 ->with([
                     'roleRule' => function (HasMany $hasMany) {
                         $hasMany->with('role')->get();
@@ -46,7 +39,7 @@ class ButtonsAction extends AbstractAction
 
         $parallel->add(function () use (&$parentRules) {
             $parentIds = Rule::query()
-                ->where('type', RuleEnums::BUTTON_TYPE)
+                ->where('type', Rule::TYPE_BUTTON)
                 ->pluck('parent_id')
                 ->unique()
                 ->toArray();

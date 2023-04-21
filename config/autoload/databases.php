@@ -8,11 +8,11 @@ return [
     'default' => [
         'driver' => env('DB_DRIVER', 'mysql'),
         'write' => [
-            'host' => explode(',', env('DB_MASTER_HOST')),
+            'host' => explode(',', (string) env('DB_MASTER_HOST')),
             'port' => env('DB_MASTER_PORT', 13306),
         ],
         'read' => [
-            'host' => explode(',', env('DB_SLAVE_HOST')),
+            'host' => explode(',', (string) env('DB_SLAVE_HOST')),
             'port' => env('DB_SLAVE_PORT', 13306),
         ],
         'sticky' => true,

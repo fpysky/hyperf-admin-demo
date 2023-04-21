@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\Enums\AdminEnums;
 use App\AdminRbac\Model\Admin\Admin;
 use App\AdminRbac\Model\Admin\AdminRole;
 use App\AdminRbac\Request\AdminStoreRequest;
@@ -29,6 +28,7 @@ use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PatchMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
+use Hyperf\Stringable\Str;
 use Hyperf\Swagger\Annotation\HyperfServer;
 use Hyperf\Swagger\Annotation\JsonContent;
 use Hyperf\Swagger\Annotation\Patch;
@@ -36,6 +36,8 @@ use Hyperf\Swagger\Annotation\Property;
 use Hyperf\Swagger\Annotation\RequestBody;
 use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
+
+use function Hyperf\Coroutine\go;
 
 #[HyperfServer('http')]
 #[Controller(prefix: 'admin')]
@@ -48,23 +50,17 @@ class AdminController extends AbstractAction
     #[Inject]
     protected AuthManager $auth;
 
-    /**
-     * 管理员列表.
-     * @return ResponseInterface
-     * @author fengpengyuan 2023/3/28
-     * @modifier fengpengyuan 2023/3/28
-     */
     #[GetMapping(path: '/system/backend/backendAdmin/page')]
     public function index(): ResponseInterface
     {
         $pageSize = (int) $this->request->input('pageSize', 15);
-        $keyword = $this->request->input('name');
+        $keyword = (string) $this->request->input('name');
 
         $builder = Admin::query()
             ->with(['dept'])
             ->orderBy('id', 'desc');
 
-        if (! empty($keyword)) {
+        if (Str::length($keyword) !== 0) {
             $builder->where(function (Builder $builder) use ($keyword) {
                 $builder->where('name', 'like', "%{$keyword}%")
                     ->orWhere('mobile', 'like', "%{$keyword}%")
@@ -80,20 +76,13 @@ class AdminController extends AbstractAction
         ]);
     }
 
-    /**
-     * 管理员添加
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:07.
-     * @param AdminStoreRequest $request
-     * @return ResponseInterface
-     * @throws \Exception
-     */
     #[PostMapping(path: '/system/backend/backendAdmin')]
     public function store(AdminStoreRequest $request): ResponseInterface
     {
         $name = (string) $request->input('name');
         $mobile = (string) $request->input('mobile');
         $password = (string) $request->input('password');
+        $roleIds = (array) $request->input('roleIds');
 
         if (Admin::existByName($name)) {
             throw new UnprocessableEntityException('姓名已存在');
@@ -103,8 +92,6 @@ class AdminController extends AbstractAction
             throw new UnprocessableEntityException('手机号已存在，换个手机试试');
         }
 
-        $roleIds = $request->input('roleIds');
-
         $storePassword = $this->help
             ->encrypPassword($mobile, $password, time());
 
@@ -112,8 +99,8 @@ class AdminController extends AbstractAction
             'name' => $name,
             'password' => $storePassword,
             'status' => $request->input('status'),
-            'type' => 2,
-            'mobile' => $request->input('mobile'),
+            'type' => Admin::TYPE_NORMAL,
+            'mobile' => $mobile,
             'email' => $request->input('email'),
             'dept_id' => $request->input('deptId'),
             'post_id' => $request->input('postId'),
@@ -126,14 +113,6 @@ class AdminController extends AbstractAction
         return $this->message('管理员添加成功');
     }
 
-    /**
-     * 管理员编辑
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:07.
-     * @param AdminUpdateRequest $request
-     * @return ResponseInterface
-     * @throws \Exception
-     */
     #[PutMapping(path: '/system/backend/backendAdmin')]
     public function update(AdminUpdateRequest $request): ResponseInterface
     {
@@ -143,11 +122,7 @@ class AdminController extends AbstractAction
         $password = (string) $request->input('password');
         $roleIds = (array) $request->input('roleIds');
 
-        try {
-            $admin = Admin::query()->findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new UnprocessableEntityException('管理员不存在');
-        }
+        $admin = Admin::query()->findOrFail($id);
 
         if (Admin::existByName($name, $admin->id)) {
             throw new UnprocessableEntityException('姓名已存在');
@@ -177,27 +152,11 @@ class AdminController extends AbstractAction
         return $this->message('管理员编辑成功');
     }
 
-    /**
-     * 管理员改变状态
-     * @param UpStatusRequest $request
-     * @return ResponseInterface
-     * @throws \RedisException
-     * @author fengpengyuan 2023/3/28
-     * @modifier fengpengyuan 2023/3/28
-     */
     #[PutMapping(path: '/system/backend/backendAdmin/status')]
     public function upStatus(UpStatusRequest $request): ResponseInterface
     {
-        $ids = $request->input('ids');
-        $status = $request->input('status');
-
-        if ($status == AdminEnums::USE) {
-            $status = AdminEnums::USE;
-            $msg = '管理员启用成功';
-        } else {
-            $status = AdminEnums::DISABLE;
-            $msg = '管理员禁用成功';
-        }
+        $ids = (array) $request->input('ids');
+        $status = (int) $request->input('status');
 
         if (Admin::hasSuperAdmin($ids)) {
             throw new UnprocessableEntityException('不能禁用超级管理员');
@@ -208,13 +167,19 @@ class AdminController extends AbstractAction
             ->update(['status' => $status]);
 
         // 禁用时，强制退出
-        if ($status == 2) {
+        if ($status == Admin::STATUS_DISABLED) {
             foreach ($ids as $adminId) {
                 $this->auth->logoutByAdminId((int) $adminId);
             }
         }
 
-        return $this->success(['status' => $status], $msg);
+        if ($status === Admin::STATUS_ENABLE) {
+            $msg = '管理员启用成功';
+        } else {
+            $msg = '管理员禁用成功';
+        }
+
+        return $this->success($msg);
     }
 
     #[PatchMapping(path: '/system/backend/backendAdmin/resetPassword')]
@@ -255,24 +220,12 @@ class AdminController extends AbstractAction
         return $this->message('管理员密码重置成功');
     }
 
-    /**
-     * 管理员删除
-     * User: ZhouGongCe
-     * Time: 2021/8/13 16:08.
-     * @param string $ids
-     * @return ResponseInterface
-     * @throws \Exception
-     */
     #[DeleteMapping(path: '/system/backend/backendAdmin/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
         $ids = explode(',', $ids) ?? [];
-        $existsSuperAdmin = Admin::query()
-            ->whereIn('id', $ids)
-            ->where('type', AdminEnums::superAdmin)
-            ->exists();
 
-        if ($existsSuperAdmin) {
+        if (Admin::hasSuperAdmin($ids)) {
             throw new UnprocessableEntityException('不能删除超级管理员');
         }
 
@@ -286,13 +239,9 @@ class AdminController extends AbstractAction
     #[GetMapping(path: '/system/backend/backendAdmin/{id:\d+}')]
     public function detail(int $id): ResponseInterface
     {
-        try {
-            $admin = Admin::query()
-                ->with(['adminRole'])
-                ->findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new UnprocessableEntityException('管理员不存在');
-        }
+        $admin = Admin::query()
+            ->with(['adminRole'])
+            ->findOrFail($id);
 
         $roleIds = [];
         if ($admin->adminRole instanceof Collection && $admin->adminRole->count()) {
@@ -320,14 +269,6 @@ class AdminController extends AbstractAction
         return $this->success($data);
     }
 
-    /**
-     * 设置管理员权限.
-     * @param int $adminId
-     * @param array $roleIds
-     * @throws \Exception
-     * @author fengpengyuan 2023/3/28
-     * @modifier fengpengyuan 2023/3/28
-     */
     private function refreshRole(int $adminId, array $roleIds)
     {
         go(function () use ($adminId, $roleIds) {

@@ -3,7 +3,7 @@ CREATE TABLE `demo_admin` (
     `name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户姓名',
     `password` varchar(64) NOT NULL DEFAULT '' COMMENT '密码',
     `status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '状态：1启用 2 停用',
-    `type` tinyint unsigned NOT NULL DEFAULT '2' COMMENT '类型：1超级管理员（拥有权限权限） 2 其他',
+    `type` tinyint unsigned NOT NULL DEFAULT '2' COMMENT '类型：1超级管理员（拥有所有权限） 2 其他',
     `mobile` char(11) NOT NULL DEFAULT '' COMMENT '手机号码',
     `email` varchar(100) NOT NULL DEFAULT '' COMMENT '邮箱号码',
     `last_login_ip` varchar(100) NOT NULL DEFAULT '0' COMMENT '最近登录ip',
