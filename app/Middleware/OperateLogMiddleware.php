@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use App\Constants\StatusCode;
 use App\Extend\CacheRule;
 use App\Extend\Log\Log;
 use App\Model\AdminOperationLog;
@@ -13,6 +14,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+
+use function Hyperf\Coroutine\go;
 
 class OperateLogMiddleware implements MiddlewareInterface
 {
@@ -95,7 +98,7 @@ class OperateLogMiddleware implements MiddlewareInterface
 
     private function convertOperateStatus(int $statusCode): int
     {
-        return $statusCode === 200 ? 1 : 0;
+        return $statusCode === StatusCode::Ok->value ? 1 : 0;
     }
 
     private function convertOperateType(string $method): int

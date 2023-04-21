@@ -10,6 +10,8 @@ use App\Extend\Redis\DefaultRedis;
 use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Di\Annotation\Inject;
 
+use function Hyperf\Coroutine\go;
+
 class CacheRule
 {
     #[Inject]
@@ -89,10 +91,10 @@ class CacheRule
                 if ($rule->parentRule->parentRule instanceof Rule) {
                     $parentParentRuleName = $rule->parentRule->parentRule->name;
                     $parentRuleName = $rule->parentRule->name;
-                    $module = "$parentParentRuleName>$parentRuleName>$rule->name";
+                    $module = "{$parentParentRuleName}>{$parentRuleName}>{$rule->name}";
                 } else {
                     $parentRuleName = $rule->parentRule->name;
-                    $module = "$parentRuleName>$rule->name";
+                    $module = "{$parentRuleName}>{$rule->name}";
                 }
             } else {
                 $module = $rule->name;

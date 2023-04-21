@@ -6,7 +6,7 @@ use App\AdminRbac\Model\Admin\Admin;
 use App\Constants\ErrorCode;
 use App\Exception\GeneralException;
 use App\Extend\Log\Log;
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Qbhy\HyperfAuth\AuthManager;

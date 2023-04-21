@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Extend\StandardOutput;
 
 use App\Constants\StatusCode;
+use Hyperf\Collection\Collection;
 use Hyperf\Contract\Arrayable;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
-use Hyperf\Utils\Collection;
 use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 trait StandardResponse
