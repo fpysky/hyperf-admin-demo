@@ -119,6 +119,9 @@ class RuleController extends AbstractAction
         return $this->message($msg);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[DeleteMapping(path: '/system/backend/backendAdminRule/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {

@@ -19,7 +19,7 @@ class Role extends Base
     /** 状态：禁用 */
     const STATUS_DISABLED = 2;
 
-    public static function exitsByName(string $name, int $exceptId = null): bool
+    public static function nameIsExisted(string $name, int $exceptId = null): bool
     {
         $builder = self::query()->where('name', $name);
 
@@ -28,5 +28,22 @@ class Role extends Base
         }
 
         return $builder->exists();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function setRules(array $ruleIds)
+    {
+        RoleRule::query()
+            ->where('role_id', $this->id)
+            ->delete();
+
+        foreach ($ruleIds as $ruleId){
+            RoleRule::query()->create([
+                'role_id' => $this->id,
+                'rule_id' => $ruleId,
+            ]);
+        }
     }
 }

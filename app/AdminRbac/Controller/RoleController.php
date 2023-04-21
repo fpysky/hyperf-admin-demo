@@ -6,7 +6,6 @@ namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Role\Role;
-use App\AdminRbac\Model\Role\RoleRule;
 use App\AdminRbac\Request\RoleStoreRequest;
 use App\AdminRbac\Request\RoleUpdateRequest;
 use App\Exception\UnprocessableEntityException;
@@ -50,7 +49,7 @@ class RoleController extends AbstractAction
     {
         $name = (string) $request->input('name');
 
-        if (Role::exitsByName($name)) {
+        if (Role::nameIsExisted($name)) {
             throw new UnprocessableEntityException('角色已存在');
         }
 
@@ -72,7 +71,7 @@ class RoleController extends AbstractAction
         $name = (string) $request->input('name');
         $id = (int) $request->input('id');
 
-        if (Role::exitsByName($name, $id)) {
+        if (Role::nameIsExisted($name, $id)) {
             throw new UnprocessableEntityException('角色已存在');
         }
 
@@ -90,24 +89,18 @@ class RoleController extends AbstractAction
         return $this->message('角色编辑成功');
     }
 
+    /**
+     * @throws \Exception
+     */
     #[PutMapping(path: '/system/backend/backendAdminRole/roleRule')]
     public function upRule(): ResponseInterface
     {
         $ruleIds = $this->request->input('ruleIds');
         $roleId = $this->request->input('roleId');
 
-        RoleRule::query()
-            ->where('role_id', $roleId)
-            ->delete();
+        $role = Role::query()->findOrFail($roleId);
 
-        $saveData = [];
-        foreach ($ruleIds as $k => $v) {
-            $saveData[$k]['role_id'] = $roleId;
-            $saveData[$k]['rule_id'] = $v;
-        }
-
-        RoleRule::query()
-            ->insert($saveData);
+        $role->setRules($ruleIds);
 
         return $this->message('权限分配成功');
     }
@@ -131,6 +124,9 @@ class RoleController extends AbstractAction
         return $this->message($msg);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[DeleteMapping(path: '/system/backend/backendAdminRole/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {

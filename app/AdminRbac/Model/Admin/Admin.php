@@ -9,6 +9,7 @@ use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Model\Origin\Admin as Base;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\SoftDeletes;
+use JetBrains\PhpStorm\ArrayShape;
 use Qbhy\HyperfAuth\Authenticatable;
 
 /**
@@ -42,15 +43,15 @@ class Admin extends Base implements Authenticatable
         return self::query()->findOrFail((int) $key);
     }
 
-    public static function hasSuperAdmin(array $ids): bool
+    public static function hasSuperAdmin(array $adminIds): bool
     {
         return self::query()
             ->where('type', Admin::TYPE_SUPER)
-            ->whereIn('id', $ids)
+            ->whereIn('id', $adminIds)
             ->exists();
     }
 
-    public static function existByName(string $name, int $exceptId = 0): bool
+    public static function nameIsExisted(string $name, int $exceptId = 0): bool
     {
         $builder = self::query()
             ->where('name', $name);
@@ -62,7 +63,7 @@ class Admin extends Base implements Authenticatable
         return $builder->exists();
     }
 
-    public static function existByMobile(string $mobile, int $exceptId = 0): bool
+    public static function mobileIsExisted(string $mobile, int $exceptId = 0): bool
     {
         $builder = Admin::query()
             ->where('mobile', $mobile);
@@ -89,5 +90,20 @@ class Admin extends Base implements Authenticatable
         $this->last_login_ip = $lastLoginIp;
         $this->last_login_time = time();
         $this->save();
+    }
+
+    public function setRole(array $roleIds)
+    {
+        AdminRole::query()
+            ->where('admin_id', $this->id)
+            ->delete();
+
+        foreach ($roleIds as $roleId) {
+            AdminRole::query()
+                ->create([
+                    'admin_id' => $this->id,
+                    'role_id' => $roleId,
+                ]);
+        }
     }
 }

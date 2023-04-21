@@ -20,10 +20,10 @@ class Rule extends Base
     use RuleRelationship;
 
     /** 状态：启用 */
-    const STATUS_ENABLE = 1;
+    public const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    const STATUS_DISABLED = 2;
+    public const STATUS_DISABLED = 2;
 
     /** 类型：目录 */
     public const TYPE_DIRECTORY = 1;

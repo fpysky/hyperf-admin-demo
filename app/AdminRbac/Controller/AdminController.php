@@ -37,8 +37,6 @@ use Hyperf\Swagger\Annotation\RequestBody;
 use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
-use function Hyperf\Coroutine\go;
-
 #[HyperfServer('http')]
 #[Controller(prefix: 'admin')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
@@ -84,11 +82,11 @@ class AdminController extends AbstractAction
         $password = (string) $request->input('password');
         $roleIds = (array) $request->input('roleIds');
 
-        if (Admin::existByName($name)) {
+        if (Admin::nameIsExisted($name)) {
             throw new UnprocessableEntityException('姓名已存在');
         }
 
-        if (Admin::existByMobile($mobile)) {
+        if (Admin::mobileIsExisted($mobile)) {
             throw new UnprocessableEntityException('手机号已存在，换个手机试试');
         }
 
@@ -106,9 +104,9 @@ class AdminController extends AbstractAction
             'post_id' => $request->input('postId'),
         ];
 
-        $admin = Admin::query()->create($data);
-
-        $this->refreshRole($admin->id, $roleIds);
+        Admin::query()
+            ->create($data)
+            ->setRole($roleIds);
 
         return $this->message('管理员添加成功');
     }
@@ -124,7 +122,7 @@ class AdminController extends AbstractAction
 
         $admin = Admin::query()->findOrFail($id);
 
-        if (Admin::existByName($name, $admin->id)) {
+        if (Admin::nameIsExisted($name, $admin->id)) {
             throw new UnprocessableEntityException('姓名已存在');
         }
 
@@ -147,7 +145,7 @@ class AdminController extends AbstractAction
 
         $admin->update($data);
 
-        $this->refreshRole($admin->id, $roleIds);
+        $admin->setRole($roleIds);
 
         return $this->message('管理员编辑成功');
     }
@@ -220,6 +218,9 @@ class AdminController extends AbstractAction
         return $this->message('管理员密码重置成功');
     }
 
+    /**
+     * @throws \Exception
+     */
     #[DeleteMapping(path: '/system/backend/backendAdmin/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
@@ -267,21 +268,5 @@ class AdminController extends AbstractAction
         ];
 
         return $this->success($data);
-    }
-
-    private function refreshRole(int $adminId, array $roleIds)
-    {
-        go(function () use ($adminId, $roleIds) {
-            AdminRole::query()
-                ->where('admin_id', $adminId)
-                ->delete();
-            foreach ($roleIds as $v) {
-                AdminRole::query()
-                    ->create([
-                        'admin_id' => $adminId,
-                        'role_id' => $v,
-                    ]);
-            }
-        });
     }
 }
