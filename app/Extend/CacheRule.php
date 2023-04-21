@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Extend;
 
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Rule\Rule;
 use App\Extend\Log\Log;
 use App\Extend\Redis\DefaultRedis;
 use Hyperf\Database\Model\Relations\BelongsTo;

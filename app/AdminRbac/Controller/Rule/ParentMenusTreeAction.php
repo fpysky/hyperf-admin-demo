@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller\Rule;
 
 use App\Actions\AbstractAction;
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Rule\Rule;
 use App\Middleware\AuthMiddleware;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\HttpServer\Annotation\Controller;

@@ -6,7 +6,7 @@ namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Enums\PostEnums;
-use App\AdminRbac\Model\Post;
+use App\AdminRbac\Model\Post\Post;
 use App\AdminRbac\Request\PostStoreRequest;
 use App\AdminRbac\Request\PostUpdateRequest;
 use App\Exception\UnprocessableEntityException;

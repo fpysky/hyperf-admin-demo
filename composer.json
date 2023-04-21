@@ -39,8 +39,7 @@
         "hyperf/testing": "~3.0.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mockery/mockery": "^1.0",
-        "phpstan/phpstan": "^1.0",
-        "swoole/ide-helper": "^5.0"
+        "phpstan/phpstan": "^1.0"
     },
     "suggest": {
         "ext-openssl": "Required to use HTTPS.",
@@ -83,7 +82,7 @@
           "Composer\\Config::disableProcessTimeout",
           "php ./bin/hyperf.php start"
         ],
-        "gen:model":"php ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments",
+        "gen:adminRbac-model":"php ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/AdminRbac/Model/Origin",
         "gen:swagger":"php ./bin/hyperf.php gen:swagger"
     }
 }

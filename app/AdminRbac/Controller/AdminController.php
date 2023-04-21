@@ -7,7 +7,7 @@ namespace App\AdminRbac\Controller;
 use App\Actions\AbstractAction;
 use App\AdminRbac\Enums\AdminEnums;
 use App\AdminRbac\Model\Admin\Admin;
-use App\AdminRbac\Model\AdminRole;
+use App\AdminRbac\Model\Admin\AdminRole;
 use App\AdminRbac\Request\AdminStoreRequest;
 use App\AdminRbac\Request\AdminUpdateRequest;
 use App\AdminRbac\Request\ResetPasswordRequest;

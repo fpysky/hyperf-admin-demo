@@ -6,7 +6,7 @@ namespace App\AdminRbac\Controller\Rule;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Enums\RuleEnums;
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Rule\Rule;
 use App\Middleware\AuthMiddleware;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\HasMany;

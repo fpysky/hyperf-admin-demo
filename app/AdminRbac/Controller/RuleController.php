@@ -7,8 +7,7 @@ namespace App\AdminRbac\Controller;
 use App\Actions\AbstractAction;
 use App\AdminRbac\CodeMsg\RuleCode;
 use App\AdminRbac\Enums\RuleEnums;
-use App\AdminRbac\Model\RoleRule;
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Rule\Rule;
 use App\AdminRbac\Request\RuleStoreRequest;
 use App\AdminRbac\Request\RuleUpdateRequest;
 use App\AdminRbac\Resource\RuleResource;
@@ -16,9 +15,7 @@ use App\Exception\RecordNotFoundException;
 use App\Extend\CacheRule;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\ModelNotFoundException;
-use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -26,7 +23,6 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
-use Hyperf\Utils\Parallel;
 use Psr\Http\Message\ResponseInterface;
 
 #[Controller(prefix: 'rule')]

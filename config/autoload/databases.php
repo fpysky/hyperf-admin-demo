@@ -44,6 +44,7 @@ return [
                 'path' => 'app/Model',
                 'force_casts' => true,
                 'inheritance' => 'Model',
+                'uses' => 'App\Model\Model',
             ],
         ],
     ],

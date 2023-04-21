@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\AdminRbac\Resource;
 
 use App\AdminRbac\Model\Admin\Admin;
-use App\AdminRbac\Model\Dept;
+use App\AdminRbac\Model\Dept\Dept;
 use Hyperf\Resource\Json\JsonResource;
 
 class AdminResource extends JsonResource

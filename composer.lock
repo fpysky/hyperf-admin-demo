@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cbfd527faa989ac094ba27020ce2e4e",
+    "content-hash": "7ccdde53752969f0f0ecdef0e8ad5cb6",
     "packages": [
         {
             "name": "96qbhy/hyperf-auth",
@@ -8023,38 +8023,6 @@
                 }
             ],
             "time": "2020-09-28T06:39:44+00:00"
-        },
-        {
-            "name": "swoole/ide-helper",
-            "version": "5.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "16cfee44a6ec92254228c39bcab2fb8ae74cc2ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/16cfee44a6ec92254228c39bcab2fb8ae74cc2ea",
-                "reference": "16cfee44a6ec92254228c39bcab2fb8ae74cc2ea",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Team Swoole",
-                    "email": "team@swoole.com"
-                }
-            ],
-            "description": "IDE help files for Swoole.",
-            "support": {
-                "issues": "https://github.com/swoole/ide-helper/issues",
-                "source": "https://github.com/swoole/ide-helper/tree/5.0.2"
-            },
-            "time": "2023-03-20T06:05:55+00:00"
         },
         {
             "name": "symfony/event-dispatcher",

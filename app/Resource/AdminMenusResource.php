@@ -2,7 +2,7 @@
 
 namespace App\Resource;
 
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Rule\Rule;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Resource\Json\JsonResource;
 

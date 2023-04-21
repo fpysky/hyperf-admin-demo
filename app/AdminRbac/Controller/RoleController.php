@@ -6,8 +6,8 @@ namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Enums\RoleEnums;
-use App\AdminRbac\Model\Role;
-use App\AdminRbac\Model\RoleRule;
+use App\AdminRbac\Model\Role\Role;
+use App\AdminRbac\Model\Role\RoleRule;
 use App\AdminRbac\Request\RoleStoreRequest;
 use App\AdminRbac\Request\RoleUpdateRequest;
 use App\Exception\UnprocessableEntityException;

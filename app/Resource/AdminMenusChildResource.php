@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resource;
 
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Rule\Rule;
 use Hyperf\Resource\Json\JsonResource;
 
 class AdminMenusChildResource extends JsonResource

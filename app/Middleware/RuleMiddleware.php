@@ -6,7 +6,7 @@ namespace App\Middleware;
 
 use App\AdminRbac\CodeMsg\CommonCode;
 use App\AdminRbac\Enums\RuleEnums;
-use App\AdminRbac\Model\AdminRole;
+use App\AdminRbac\Model\Admin\AdminRole;
 use App\Exception\GeneralException;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Psr\Http\Message\ResponseInterface;

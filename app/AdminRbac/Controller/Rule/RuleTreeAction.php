@@ -6,8 +6,8 @@ namespace App\AdminRbac\Controller\Rule;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Enums\RuleEnums;
-use App\AdminRbac\Model\RoleRule;
-use App\AdminRbac\Model\Rule;
+use App\AdminRbac\Model\Role\RoleRule;
+use App\AdminRbac\Model\Rule\Rule;
 use App\Middleware\AuthMiddleware;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;

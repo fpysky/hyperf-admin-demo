@@ -7,7 +7,7 @@ namespace App\AdminRbac\Controller;
 use App\Actions\AbstractAction;
 use App\AdminRbac\CodeMsg\DeptCode;
 use App\AdminRbac\Enums\DeptEnums;
-use App\AdminRbac\Model\Dept;
+use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Request\DeptStoreRequest;
 use App\AdminRbac\Request\DeptUpdateRequest;
 use App\Exception\RecordNotFoundException;

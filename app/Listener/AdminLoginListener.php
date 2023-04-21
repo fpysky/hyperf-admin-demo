@@ -2,7 +2,7 @@
 namespace App\Listener;
 
 use App\AdminRbac\Model\Admin\Admin;
-use App\AdminRbac\Model\AdminLoginLog;
+use App\AdminRbac\Model\Admin\AdminLoginLog;
 use App\Event\AdminLogin;
 use App\Utils\Help;
 use Hyperf\Di\Annotation\Inject;
