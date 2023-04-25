@@ -7,9 +7,11 @@ namespace App\AdminRbac\Model\Admin;
 use App\AdminRbac\Model\Admin\Traits\AdminRelationship;
 use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Model\Origin\Admin as Base;
+use App\AdminRbac\Model\Role\RoleRule;
+use App\AdminRbac\Model\Rule\Rule;
 use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
-use JetBrains\PhpStorm\ArrayShape;
 use Qbhy\HyperfAuth\Authenticatable;
 
 /**
@@ -28,10 +30,10 @@ class Admin extends Base implements Authenticatable
     public const TYPE_NORMAL = 2;
 
     /** 状态：启用 */
-    const STATUS_ENABLE = 1;
+    public const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    const STATUS_DISABLED = 2;
+    public const STATUS_DISABLED = 2;
 
     public function getId(): int
     {
@@ -43,6 +45,9 @@ class Admin extends Base implements Authenticatable
         return self::query()->findOrFail((int) $key);
     }
 
+    /**
+     * @param array<int> $adminIds
+     */
     public static function hasSuperAdmin(array $adminIds): bool
     {
         return self::query()
@@ -92,18 +97,77 @@ class Admin extends Base implements Authenticatable
         $this->save();
     }
 
+    /**
+     * @param array<int> $roleIds
+     * @throws \Exception
+     */
     public function setRole(array $roleIds)
+    {
+        $this->clearRole();
+
+        $insertData = array_map(function ($roleId) {
+            return [
+                'admin_id' => $this->id,
+                'role_id' => $roleId,
+            ];
+        }, $roleIds);
+
+        AdminRole::query()->insert($insertData);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function clearRole()
     {
         AdminRole::query()
             ->where('admin_id', $this->id)
             ->delete();
+    }
 
-        foreach ($roleIds as $roleId) {
-            AdminRole::query()
-                ->create([
-                    'admin_id' => $this->id,
-                    'role_id' => $roleId,
-                ]);
+    public function hasRole(): bool
+    {
+        return $this->adminRole instanceof Collection && $this->adminRole->count();
+    }
+
+    public function roleIds(): array
+    {
+        if (! $this->hasRole()) {
+            return [];
         }
+
+        return $this->adminRole
+            ->map(function (AdminRole $adminRole) use (&$roleIds) {
+                return $adminRole->role_id;
+            })
+            ->toArray();
+    }
+
+    public function ruleIds(): array
+    {
+        return RoleRule::query()
+            ->whereIn('role_id', $this->roleIds())
+            ->pluck('rule_id')
+            ->toArray();
+    }
+
+    public function menus(): Collection|array|\Hyperf\Collection\Collection
+    {
+        $adminRuleIds = $this->ruleIds();
+
+        return Rule::query()
+            ->with([
+                'children' => function (HasMany $query) use ($adminRuleIds) {
+                    $query->whereIn('id', $adminRuleIds)
+                        ->where('type', Rule::TYPE_MENU)
+                        ->orderBy('order');
+                },
+            ])
+            ->where('parent_id', 0)
+            ->where('status', self::STATUS_ENABLE)
+            ->whereIn('id', $adminRuleIds)
+            ->where('type', Rule::TYPE_DIRECTORY)
+            ->orderBy('order')
+            ->get();
     }
 }

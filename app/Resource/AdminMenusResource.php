@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Resource;
 
 use App\AdminRbac\Model\Rule\Rule;
-use Hyperf\Database\Model\Collection;
 use Hyperf\Resource\Json\JsonResource;
 
 class AdminMenusResource extends JsonResource
@@ -30,7 +31,7 @@ class AdminMenusResource extends JsonResource
             'createTime' => $this->getFormattedCreatedAt(),
             'updateTime' => $this->getFormattedUpdatedAt(),
             'deleteTime' => $this->getFormattedDeletedAt(),
-            'children' => $this->children instanceof Collection?AdminMenusChildResource::collection($this->children):[],
+            'children' => AdminMenusChildResource::collection($this->children),
         ];
     }
 }

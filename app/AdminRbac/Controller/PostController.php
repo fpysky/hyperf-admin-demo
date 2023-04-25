@@ -28,7 +28,7 @@ class PostController extends AbstractAction
     {
         $pageSize = (int) $this->request->input('pageSize', 15);
 
-        $paginate = Post::query()
+        $paginator = Post::query()
             ->select([
                 'id', 'name', 'status', 'order as sort',
                 'mark as remark', 'created_at as createTime',
@@ -36,7 +36,7 @@ class PostController extends AbstractAction
             ->orderBy('order')
             ->paginate($pageSize);
 
-        return $this->success($paginate);
+        return $this->success($paginator);
     }
 
     #[PostMapping(path: '/system/backend/backendAdminPost')]
@@ -44,7 +44,7 @@ class PostController extends AbstractAction
     {
         $name = (string) $request->input('name');
 
-        if (Post::exitsByName($name)) {
+        if (Post::existName($name)) {
             throw new UnprocessableEntityException('岗位已存在');
         }
 
@@ -66,7 +66,7 @@ class PostController extends AbstractAction
         $name = (string) $request->input('name');
         $id = (int) $request->input('id');
 
-        if (Post::exitsByName($name, $id)) {
+        if (Post::existName($name, $id)) {
             throw new UnprocessableEntityException('岗位已存在');
         }
 
@@ -84,6 +84,9 @@ class PostController extends AbstractAction
         return $this->message('岗位编辑成功');
     }
 
+    /**
+     * @throws \Exception
+     */
     #[DeleteMapping(path: '/system/backend/backendAdminPost/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
@@ -117,7 +120,7 @@ class PostController extends AbstractAction
     }
 
     #[GetMapping(path: '/system/backend/backendAdminPost/postCombobox')]
-    public function all(): ResponseInterface
+    public function postCombobox(): ResponseInterface
     {
         $list = Post::query()
             ->select(['id', 'name as label'])
@@ -126,7 +129,7 @@ class PostController extends AbstractAction
             ->orderBy('id', 'desc')
             ->get();
 
-        return $this->success($list ? $list->toArray() : []);
+        return $this->success($list);
     }
 
     #[GetMapping(path: '/system/backend/backendAdminPost/{id:\d+}')]

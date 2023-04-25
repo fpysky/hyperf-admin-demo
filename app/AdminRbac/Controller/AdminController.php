@@ -6,7 +6,6 @@ namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Admin\Admin;
-use App\AdminRbac\Model\Admin\AdminRole;
 use App\AdminRbac\Request\AdminStoreRequest;
 use App\AdminRbac\Request\AdminUpdateRequest;
 use App\AdminRbac\Request\ResetPasswordRequest;
@@ -18,7 +17,6 @@ use App\Middleware\RuleMiddleware;
 use App\Request\Admin\UpStatusRequest;
 use App\Utils\Help;
 use Hyperf\Database\Model\Builder;
-use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -74,6 +72,9 @@ class AdminController extends AbstractAction
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[PostMapping(path: '/system/backend/backendAdmin')]
     public function store(AdminStoreRequest $request): ResponseInterface
     {
@@ -111,6 +112,9 @@ class AdminController extends AbstractAction
         return $this->message('管理员添加成功');
     }
 
+    /**
+     * @throws \Exception
+     */
     #[PutMapping(path: '/system/backend/backendAdmin')]
     public function update(AdminUpdateRequest $request): ResponseInterface
     {
@@ -144,7 +148,6 @@ class AdminController extends AbstractAction
         ];
 
         $admin->update($data);
-
         $admin->setRole($roleIds);
 
         return $this->message('管理员编辑成功');
@@ -244,13 +247,6 @@ class AdminController extends AbstractAction
             ->with(['adminRole'])
             ->findOrFail($id);
 
-        $roleIds = [];
-        if ($admin->adminRole instanceof Collection && $admin->adminRole->count()) {
-            $admin->adminRole->each(function (AdminRole $adminRole) use (&$roleIds) {
-                $roleIds[] = $adminRole->role_id;
-            });
-        }
-
         $data = [
             'id' => $admin->id,
             'deptId' => $admin->dept_id,
@@ -262,7 +258,7 @@ class AdminController extends AbstractAction
             'mobile' => $admin->mobile,
             'name' => $admin->name,
             'postId' => $admin->post_id,
-            'roleIds' => $roleIds,
+            'roleIds' => $admin->roleIds(),
             'status' => $admin->status,
             'type' => $admin->type,
         ];

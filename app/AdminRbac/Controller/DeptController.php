@@ -8,9 +8,11 @@ use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Request\DeptStoreRequest;
 use App\AdminRbac\Request\DeptUpdateRequest;
+use App\AdminRbac\Resource\Dept\DeptSelectData;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
+use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -61,7 +63,7 @@ class DeptController extends AbstractAction
     {
         $name = (string) $request->input('name');
 
-        if (Dept::exitsByName($name)) {
+        if (Dept::existName($name)) {
             throw new UnprocessableEntityException('部门已存在');
         }
 
@@ -87,7 +89,7 @@ class DeptController extends AbstractAction
         $name = (string) $request->input('name');
         $id = (int) $request->input('id');
 
-        if (Dept::exitsByName($name, $id)) {
+        if (Dept::existName($name, $id)) {
             throw new UnprocessableEntityException('部门已存在');
         }
 
@@ -128,6 +130,9 @@ class DeptController extends AbstractAction
         return $this->message($msg);
     }
 
+    /**
+     * @throws \Exception
+     */
     #[DeleteMapping(path: '/system/backend/backendAdminDept/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
@@ -144,29 +149,24 @@ class DeptController extends AbstractAction
     }
 
     #[GetMapping(path: '/system/backend/backendAdmin/deptTreeCombobox')]
-    public function all(): ResponseInterface
+    public function deptSelectData(): ResponseInterface
     {
-        $deptArr = Dept::query()
+        $list = Dept::query()
+            ->with([
+                'enabledChildren' => function (HasMany $query) {
+                    $query->select(['id', 'name', 'parent_id'])
+                        ->orderBy('order')
+                        ->orderByDesc('id');
+                },
+            ])
             ->select(['id', 'name'])
             ->where('parent_id', 0)
-            ->where('status', 1)
+            ->where('status', Dept::STATUS_ENABLE)
             ->orderBy('order')
-            ->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+            ->orderByDesc('id')
+            ->get();
 
-        foreach ($deptArr as &$dept) {
-            $dept['children'] = Dept::query()
-                ->select(['id', 'name'])
-                ->where('parent_id', $dept['id'])
-                ->where('status', 1)
-                ->orderBy('order')
-                ->orderBy('id', 'desc')
-                ->get()
-                ->toArray();
-        }
-
-        return $this->success($deptArr);
+        return $this->success(DeptSelectData::collection($list));
     }
 
     #[GetMapping(path: '/system/backend/backendAdminDept/deptCombobox')]
@@ -174,6 +174,7 @@ class DeptController extends AbstractAction
     {
         $list = Dept::query()
             ->select(['id', 'name as label'])
+            ->where('status', Dept::STATUS_ENABLE)
             ->get();
 
         return $this->success($list);

@@ -6,8 +6,13 @@ namespace App\AdminRbac\Model\Dept;
 
 use App\AdminRbac\Model\Dept\Traits\DeptRelationship;
 use App\AdminRbac\Model\Origin\Dept as Base;
+use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\SoftDeletes;
 
+/**
+ * @property Collection $children
+ * @property Collection $enabledChildren
+ */
 class Dept extends Base
 {
     use SoftDeletes;
@@ -19,7 +24,7 @@ class Dept extends Base
     /** 状态：禁用 */
     public const STATUS_DISABLED = 2;
 
-    public static function exitsByName(string $name, int $exceptId = null): bool
+    public static function existName(string $name, int $exceptId = null): bool
     {
         $builder = self::query()->where('name', $name);
 

@@ -17,7 +17,7 @@ class Post extends Base
     /** 状态：禁用 */
     const STATUS_DISABLED = 2;
 
-    public static function exitsByName(string $name, int $exceptId = null): bool
+    public static function existName(string $name, int $exceptId = null): bool
     {
         $builder = self::query()->where('name', $name);
 

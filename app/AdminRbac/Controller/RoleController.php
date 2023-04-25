@@ -35,9 +35,10 @@ class RoleController extends AbstractAction
             ->with([
                 'roleRule' => function ($query) {
                     $query->with('rule');
-                }])
+                },
+            ])
             ->orderBy('order')
-            ->orderBy('id', 'desc')
+            ->orderByDesc('id')
             ->get()
             ->toArray();
 
@@ -49,7 +50,7 @@ class RoleController extends AbstractAction
     {
         $name = (string) $request->input('name');
 
-        if (Role::nameIsExisted($name)) {
+        if (Role::nameExist($name)) {
             throw new UnprocessableEntityException('角色已存在');
         }
 
@@ -71,7 +72,7 @@ class RoleController extends AbstractAction
         $name = (string) $request->input('name');
         $id = (int) $request->input('id');
 
-        if (Role::nameIsExisted($name, $id)) {
+        if (Role::nameExist($name, $id)) {
             throw new UnprocessableEntityException('角色已存在');
         }
 
@@ -95,12 +96,12 @@ class RoleController extends AbstractAction
     #[PutMapping(path: '/system/backend/backendAdminRole/roleRule')]
     public function upRule(): ResponseInterface
     {
-        $ruleIds = $this->request->input('ruleIds');
-        $roleId = $this->request->input('roleId');
+        $ruleIds = (array) $this->request->input('ruleIds');
+        $roleId = (int) $this->request->input('roleId');
 
-        $role = Role::query()->findOrFail($roleId);
-
-        $role->setRules($ruleIds);
+        Role::query()
+            ->findOrFail($roleId)
+            ->setRule($ruleIds);
 
         return $this->message('权限分配成功');
     }

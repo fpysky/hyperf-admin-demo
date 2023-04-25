@@ -7,6 +7,7 @@ namespace App\AdminRbac\Model\Rule;
 use App\AdminRbac\Model\Origin\Rule as Base;
 use App\AdminRbac\Model\Rule\Traits\RuleRelationship;
 use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
@@ -60,5 +61,20 @@ class Rule extends Base
         }
 
         return $builder->exists();
+    }
+
+    public static function getSuperAdminMenus(): Collection|array|\Hyperf\Collection\Collection
+    {
+        return self::query()
+            ->with([
+                'children' => function (HasMany $query) {
+                    $query->where('type', Rule::TYPE_MENU)
+                        ->orderBy('order');
+                },
+            ])
+            ->where('parent_id', 0)
+            ->where('type', self::TYPE_DIRECTORY)
+            ->orderBy('order')
+            ->get();
     }
 }
