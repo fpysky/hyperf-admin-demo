@@ -10,14 +10,18 @@ use App\AdminRbac\Request\AdminStoreRequest;
 use App\AdminRbac\Request\AdminUpdateRequest;
 use App\AdminRbac\Request\ResetPasswordRequest;
 use App\AdminRbac\Resource\AdminResource;
+use App\Constants\ErrorCode;
+use App\Exception\GeneralException;
 use App\Exception\UnprocessableEntityException;
 use App\Extend\Auth\AuthManager;
+use App\Extend\Log\Log;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use App\Request\Admin\UpStatusRequest;
 use App\Utils\Help;
 use Hyperf\Database\Model\Builder;
 use Hyperf\Database\Model\ModelNotFoundException;
+use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -83,11 +87,11 @@ class AdminController extends AbstractAction
         $password = (string) $request->input('password');
         $roleIds = (array) $request->input('roleIds');
 
-        if (Admin::nameIsExisted($name)) {
+        if (Admin::existName($name)) {
             throw new UnprocessableEntityException('姓名已存在');
         }
 
-        if (Admin::mobileIsExisted($mobile)) {
+        if (Admin::existMobile($mobile)) {
             throw new UnprocessableEntityException('手机号已存在，换个手机试试');
         }
 
@@ -105,9 +109,17 @@ class AdminController extends AbstractAction
             'post_id' => $request->input('postId'),
         ];
 
-        Admin::query()
-            ->create($data)
-            ->setRole($roleIds);
+        try {
+            Db::beginTransaction();
+            $admin = Admin::query()->create($data);
+            $admin->setRole($roleIds);
+            Db::commit();
+        }catch (\Throwable $throwable){
+            Db::rollBack();
+            $msg = "管理员添加失败:{$throwable->getMessage()}";
+            Log::get()->error($msg);
+            throw new GeneralException(ErrorCode::SERVER_ERROR,$msg);
+        }
 
         return $this->message('管理员添加成功');
     }
@@ -126,7 +138,7 @@ class AdminController extends AbstractAction
 
         $admin = Admin::query()->findOrFail($id);
 
-        if (Admin::nameIsExisted($name, $admin->id)) {
+        if (Admin::existName($name, $admin->id)) {
             throw new UnprocessableEntityException('姓名已存在');
         }
 
@@ -147,8 +159,18 @@ class AdminController extends AbstractAction
             'post_id' => $request->input('postId'),
         ];
 
-        $admin->update($data);
-        $admin->setRole($roleIds);
+        try {
+            Db::beginTransaction();
+
+            $admin->update($data);
+            $admin->setRole($roleIds);
+
+            Db::commit();
+        }catch (\Throwable $throwable){
+            Db::rollBack();
+            throw new GeneralException(ErrorCode::SERVER_ERROR,"管理员编辑成功:{$throwable->getMessage()}");
+        }
+
 
         return $this->message('管理员编辑成功');
     }

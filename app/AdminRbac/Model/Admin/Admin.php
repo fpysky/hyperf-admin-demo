@@ -56,7 +56,7 @@ class Admin extends Base implements Authenticatable
             ->exists();
     }
 
-    public static function nameIsExisted(string $name, int $exceptId = 0): bool
+    public static function existName(string $name, int $exceptId = 0): bool
     {
         $builder = self::query()
             ->where('name', $name);
@@ -68,7 +68,7 @@ class Admin extends Base implements Authenticatable
         return $builder->exists();
     }
 
-    public static function mobileIsExisted(string $mobile, int $exceptId = 0): bool
+    public static function existMobile(string $mobile, int $exceptId = 0): bool
     {
         $builder = Admin::query()
             ->where('mobile', $mobile);
