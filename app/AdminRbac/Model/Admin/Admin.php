@@ -151,7 +151,7 @@ class Admin extends Base implements Authenticatable
             ->toArray();
     }
 
-    public function menus(): Collection|array|\Hyperf\Collection\Collection
+    public function menus(): Collection
     {
         $adminRuleIds = $this->ruleIds();
 

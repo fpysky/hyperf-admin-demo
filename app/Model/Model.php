@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\Exception\GeneralException;
+use App\Exception\RecordNotFoundException;
 use Carbon\Carbon;
-use Hyperf\Database\Model\Builder;
 use Hyperf\DbConnection\Model\Model as BaseModel;
 use Hyperf\ModelCache\Cacheable;
 use Hyperf\ModelCache\CacheableInterface;
@@ -109,43 +108,14 @@ abstract class Model extends BaseModel implements CacheableInterface
         return 0;
     }
 
-    /**
-     * @param array $simpleQueries
-     * @param string[] $selects
-     * @return Builder
-     * @note 构造查询构造器
-     * @author fengpengyuan 2021/10/30
-     * @email py_feng@juling.vip
-     * @modifier fengpengyuan 2021/10/30
-     */
-    public function getBuilderBySimpleQueries(array $simpleQueries,$selects = ['*']): Builder
+    public static function findFromCacheOrFail($id)
     {
-        $builder = self::query()
-            ->select($selects);
-        if (! empty($simpleQueries)) {
-            foreach ($simpleQueries as $index => $simpleQuery){
-                if(isset($simpleQuery[1]) && ($simpleQuery[1] === 'in' || $simpleQuery[1] === 'notIn')){
-                    if(is_string($simpleQuery[2])){
-                        $ids = explode(',',$simpleQuery[2]);
-                    }else if(is_array($simpleQuery[2])){
-                        $ids = $simpleQuery[2];
-                    }else{
-                        throw new GeneralException('查询参数错误');
-                    }
+        $model = static::findFromCache($id);
 
-                    if($simpleQuery[1] === 'in'){
-                        $builder->whereIn($simpleQuery[0],$ids);
-                    }else if($simpleQuery[1] === 'notIn'){
-                        $builder->whereNotIn($simpleQuery[0],$ids);
-                    }else{
-                        throw new GeneralException('查询参数错误');
-                    }
-
-                    unset($simpleQueries[$index]);
-                }
-            }
-            $builder->where($simpleQueries);
+        if (is_null($model)) {
+            throw new RecordNotFoundException();
         }
-        return $builder;
+
+        return $model;
     }
 }

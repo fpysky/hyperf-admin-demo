@@ -14,4 +14,12 @@ class Log
     {
         return ApplicationContext::getContainer()->get(LoggerFactory::class)->get($name);
     }
+
+    public static function errLogFromException(string $msg,\Throwable $exception): void
+    {
+        static::get()
+            ->error("$msg:{$exception->getMessage()}",[
+                'trace' => $exception->getTraceAsString(),
+            ]);
+    }
 }

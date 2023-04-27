@@ -6,20 +6,16 @@ namespace App\AdminRbac\Controller;
 
 use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Admin\Admin;
-use App\AdminRbac\Request\AdminStoreRequest;
 use App\AdminRbac\Request\AdminUpdateRequest;
 use App\AdminRbac\Request\ResetPasswordRequest;
-use App\AdminRbac\Resource\AdminResource;
 use App\Constants\ErrorCode;
 use App\Exception\GeneralException;
 use App\Exception\UnprocessableEntityException;
 use App\Extend\Auth\AuthManager;
-use App\Extend\Log\Log;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use App\Request\Admin\UpStatusRequest;
 use App\Utils\Help;
-use Hyperf\Database\Model\Builder;
 use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
@@ -28,9 +24,7 @@ use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PatchMapping;
-use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
-use Hyperf\Stringable\Str;
 use Hyperf\Swagger\Annotation\HyperfServer;
 use Hyperf\Swagger\Annotation\JsonContent;
 use Hyperf\Swagger\Annotation\Patch;
@@ -49,131 +43,6 @@ class AdminController extends AbstractAction
 
     #[Inject]
     protected AuthManager $auth;
-
-    #[GetMapping(path: '/system/backend/backendAdmin/page')]
-    public function index(): ResponseInterface
-    {
-        $pageSize = (int) $this->request->input('pageSize', 15);
-        $keyword = (string) $this->request->input('name');
-
-        $builder = Admin::query()
-            ->with(['dept'])
-            ->orderBy('id', 'desc');
-
-        if (Str::length($keyword) !== 0) {
-            $builder->where(function (Builder $builder) use ($keyword) {
-                $builder->where('name', 'like', "%{$keyword}%")
-                    ->orWhere('mobile', 'like', "%{$keyword}%")
-                    ->orWhere('email', 'like', "%{$keyword}%");
-            });
-        }
-
-        $paginator = $builder->paginate($pageSize);
-
-        return $this->success([
-            'list' => AdminResource::collection($paginator->items()),
-            'total' => $paginator->total(),
-        ]);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    #[PostMapping(path: '/system/backend/backendAdmin')]
-    public function store(AdminStoreRequest $request): ResponseInterface
-    {
-        $name = (string) $request->input('name');
-        $mobile = (string) $request->input('mobile');
-        $password = (string) $request->input('password');
-        $roleIds = (array) $request->input('roleIds');
-
-        if (Admin::existName($name)) {
-            throw new UnprocessableEntityException('姓名已存在');
-        }
-
-        if (Admin::existMobile($mobile)) {
-            throw new UnprocessableEntityException('手机号已存在，换个手机试试');
-        }
-
-        $storePassword = $this->help
-            ->encrypPassword($mobile, $password, time());
-
-        $data = [
-            'name' => $name,
-            'password' => $storePassword,
-            'status' => $request->input('status'),
-            'type' => Admin::TYPE_NORMAL,
-            'mobile' => $mobile,
-            'email' => $request->input('email'),
-            'dept_id' => $request->input('deptId'),
-            'post_id' => $request->input('postId'),
-        ];
-
-        try {
-            Db::beginTransaction();
-            $admin = Admin::query()->create($data);
-            $admin->setRole($roleIds);
-            Db::commit();
-        }catch (\Throwable $throwable){
-            Db::rollBack();
-            $msg = "管理员添加失败:{$throwable->getMessage()}";
-            Log::get()->error($msg);
-            throw new GeneralException(ErrorCode::SERVER_ERROR,$msg);
-        }
-
-        return $this->message('管理员添加成功');
-    }
-
-    /**
-     * @throws \Exception
-     */
-    #[PutMapping(path: '/system/backend/backendAdmin')]
-    public function update(AdminUpdateRequest $request): ResponseInterface
-    {
-        $id = (int) $request->input('id');
-        $name = (string) $request->input('name');
-        $mobile = (string) $request->input('mobile');
-        $password = (string) $request->input('password');
-        $roleIds = (array) $request->input('roleIds');
-
-        $admin = Admin::query()->findOrFail($id);
-
-        if (Admin::existName($name, $admin->id)) {
-            throw new UnprocessableEntityException('姓名已存在');
-        }
-
-        if ($admin->isSuper()) {
-            throw new UnprocessableEntityException('超级管理员不能编辑');
-        }
-
-        $storePassword = $this->help
-            ->encrypPassword($mobile, $password, time());
-
-        $data = [
-            'name' => $name,
-            'password' => $storePassword,
-            'status' => $request->input('status'),
-            'mobile' => $mobile,
-            'email' => $request->input('email'),
-            'dept_id' => $request->input('deptId'),
-            'post_id' => $request->input('postId'),
-        ];
-
-        try {
-            Db::beginTransaction();
-
-            $admin->update($data);
-            $admin->setRole($roleIds);
-
-            Db::commit();
-        }catch (\Throwable $throwable){
-            Db::rollBack();
-            throw new GeneralException(ErrorCode::SERVER_ERROR,"管理员编辑成功:{$throwable->getMessage()}");
-        }
-
-
-        return $this->message('管理员编辑成功');
-    }
 
     #[PutMapping(path: '/system/backend/backendAdmin/status')]
     public function upStatus(UpStatusRequest $request): ResponseInterface

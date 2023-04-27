@@ -63,7 +63,7 @@ class Rule extends Base
         return $builder->exists();
     }
 
-    public static function getSuperAdminMenus(): Collection|array|\Hyperf\Collection\Collection
+    public static function getSuperAdminMenus(): Collection
     {
         return self::query()
             ->with([
