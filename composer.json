@@ -85,5 +85,14 @@
         ],
         "gen:adminRbac-model":"php ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/AdminRbac/Model/Origin",
         "gen:swagger":"php ./bin/hyperf.php gen:swagger"
+    },
+    "repositories": {
+        "proxy": {
+            "type": "composer",
+            "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy",
+            "only": [
+                "hyperf/*"
+            ]
+        }
     }
 }
