@@ -15,8 +15,6 @@ if (! function_exists('isProd')) {
     /**
      * 判断是否是生产环境.
      * @return bool
-     * @author fengpengyuan 2022/8/11
-     * @modifier fengpengyuan 2022/8/11
      */
     function isProd(): bool
     {
@@ -28,8 +26,6 @@ if (! function_exists('jsonPrettyPrint')) {
     /**
      * 优雅的json打印.
      * @param string|array $contents
-     * @author fengpengyuan 2023/3/27
-     * @modifier fengpengyuan 2023/3/27
      */
     function jsonPrettyPrint(string|array $contents): void
     {
@@ -44,8 +40,6 @@ if (! function_exists('admin')) {
     /**
      * 获取后台登陆用户
      * @return Admin
-     * @author fengpengyuan 2023/4/10
-     * @modifier fengpengyuan 2023/4/10
      */
     function admin(): Admin
     {
@@ -65,11 +59,16 @@ if (! function_exists('adminId')) {
     /**
      * 获取后台登陆用户id
      * @return int
-     * @author fengpengyuan 2023/4/10
-     * @modifier fengpengyuan 2023/4/10
      */
     function adminId(): int
     {
         return admin()->getId();
+    }
+}
+
+if (! function_exists('encryptPassword')) {
+    function encryptPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 }

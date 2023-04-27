@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
 class ExportAction extends AbstractAction
 {
     #[GetMapping(path: '/system/operateLog/export')]
-    #[Get(path: '/system/operateLog/export', summary: '操作日志列表导出', tags: ['后台管理/系统权限管理/操作日志'])]
+    #[Get(path: '/system/operateLog/export', summary: '操作日志列表导出', tags: ['后台管理/系统管理/操作日志'])]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[QueryParameter(name: 'module', description: '系统模块', schema: new Schema(type: 'string'), example: '系统模块')]
     #[QueryParameter(name: 'operateType', description: '操作类型 1.新增 2.删除 3.修改 4.查询', schema: new Schema(type: 'integer'), example: 1)]

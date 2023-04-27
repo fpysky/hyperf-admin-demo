@@ -7,8 +7,7 @@ namespace App\AdminRbac\Controller\Admin;
 use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Admin\Admin;
 use App\AdminRbac\Request\AdminStoreRequest;
-use App\Constants\ErrorCode;
-use App\Exception\GeneralException;
+use App\Exception\SystemErrException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use Hyperf\DbConnection\Db;
@@ -44,7 +43,7 @@ class CreateAction extends AbstractAction
             $admin = new Admin();
 
             $admin->name = $name;
-            $admin->password = Admin::encryptPassword($password);
+            $admin->password = encryptPassword($password);
             $admin->status = $status;
             $admin->type = Admin::TYPE_NORMAL;
             $admin->mobile = $mobile;
@@ -58,7 +57,7 @@ class CreateAction extends AbstractAction
             Db::commit();
         } catch (\Throwable $throwable) {
             Db::rollBack();
-            throw new GeneralException(ErrorCode::SERVER_ERROR, "管理员添加失败:{$throwable->getMessage()}");
+            throw new SystemErrException("管理员添加失败:{$throwable->getMessage()}");
         }
 
         return $this->message('管理员添加成功');

@@ -10,6 +10,6 @@ return [
     'url' => '/swagger',
     'auto_generate' => true,
     'scan' => [
-        'paths' => ['app/Actions'],
+        'paths' => ['app/Actions','app/AdminRbac/Controller'],
     ],
 ];

@@ -50,7 +50,7 @@ class UpdateAction extends AbstractAction
             Db::beginTransaction();
 
             $admin->name = $name;
-            $admin->password = Admin::encryptPassword($password);
+            $admin->password = encryptPassword($password);
             $admin->status = $status;
             $admin->mobile = $mobile;
             $admin->email = $email;

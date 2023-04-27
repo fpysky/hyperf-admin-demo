@@ -27,7 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 class ResetPasswordAction extends AbstractAction
 {
     #[PatchMapping(path: 'resetPassword')]
-    #[Patch(path: '/admin/resetPassword', summary: '重置管理员密码', tags: ['后台管理/系统权限管理'])]
+    #[Patch(path: '/admin/resetPassword', summary: '重置管理员密码', tags: ['后台管理/系统管理/管理员'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password'],
         properties: [
@@ -54,7 +54,7 @@ class ResetPasswordAction extends AbstractAction
             throw new UnprocessableEntityException('超级管理员禁止重置密码');
         }
 
-        $admin->password = Admin::encryptPassword($password);
+        $admin->password = encryptPassword($password);
         $admin->save();
 
         return $this->message('管理员密码重置成功');

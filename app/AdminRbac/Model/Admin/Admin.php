@@ -186,9 +186,4 @@ class Admin extends Base implements Authenticatable
 
         return $model;
     }
-
-    public static function encryptPassword(string $password): string
-    {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
 }

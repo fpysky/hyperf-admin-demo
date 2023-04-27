@@ -24,7 +24,7 @@ class InitializeTable extends Migration
         $admin = new Admin();
 
         $admin->name = 'admin';
-        $admin->password = Admin::encryptPassword('admin123');
+        $admin->password = encryptPassword('admin123');
         $admin->status = Admin::STATUS_ENABLE;
         $admin->type = Admin::TYPE_SUPER;
         $admin->mobile = '18888888888';
