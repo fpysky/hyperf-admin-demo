@@ -3,6 +3,6 @@ git pull
 
 git add .
 
-git commit -m "optimized1 $1"
+git commit -m "optimized $1"
 
 git push
