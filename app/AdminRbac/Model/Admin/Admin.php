@@ -9,6 +9,7 @@ use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Model\Origin\Admin as Base;
 use App\AdminRbac\Model\Role\RoleRule;
 use App\AdminRbac\Model\Rule\Rule;
+use App\Exception\RecordNotFoundException;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
@@ -130,6 +131,10 @@ class Admin extends Base implements Authenticatable
         return $this->adminRole instanceof Collection && $this->adminRole->count();
     }
 
+    /**
+     * @todo need to with adminRole
+     * @return array
+     */
     public function roleIds(): array
     {
         if (! $this->hasRole()) {
@@ -169,5 +174,21 @@ class Admin extends Base implements Authenticatable
             ->where('type', Rule::TYPE_DIRECTORY)
             ->orderBy('order')
             ->get();
+    }
+
+    public static function findFromCacheOrFail(int $id): self
+    {
+        $model = static::findFromCache($id);
+
+        if (is_null($model)) {
+            throw new RecordNotFoundException('管理员不存在');
+        }
+
+        return $model;
+    }
+
+    public static function encryptPassword(string $password): string
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 }

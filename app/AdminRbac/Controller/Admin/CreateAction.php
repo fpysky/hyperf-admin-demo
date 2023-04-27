@@ -37,7 +37,6 @@ class CreateAction extends AbstractAction
         $email = $request->input('email');
         $deptId = $request->input('deptId');
         $postId = $request->input('postId');
-        $storePassword = password_hash($password, PASSWORD_DEFAULT);
 
         try {
             Db::beginTransaction();
@@ -45,7 +44,7 @@ class CreateAction extends AbstractAction
             $admin = new Admin();
 
             $admin->name = $name;
-            $admin->password = $storePassword;
+            $admin->password = Admin::encryptPassword($password);
             $admin->status = $status;
             $admin->type = Admin::TYPE_NORMAL;
             $admin->mobile = $mobile;

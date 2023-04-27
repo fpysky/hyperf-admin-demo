@@ -107,15 +107,4 @@ abstract class Model extends BaseModel implements CacheableInterface
 
         return 0;
     }
-
-    public static function findFromCacheOrFail($id)
-    {
-        $model = static::findFromCache($id);
-
-        if (is_null($model)) {
-            throw new RecordNotFoundException();
-        }
-
-        return $model;
-    }
 }

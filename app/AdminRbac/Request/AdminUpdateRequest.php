@@ -21,18 +21,18 @@ class AdminUpdateRequest extends AdminStoreRequest
     {
         $rules = parent::rules();
 
-        return array_merge($rules, [
-            'id' => 'required|integer',
-        ]);
+        $rules['id'] = 'required|integer';
+
+        return $rules;
     }
 
     public function messages(): array
     {
         $messages = parent::messages();
 
-        return array_merge($messages, [
-            'id.required' => 'ID不存在',
-            'id.integer' => 'ID格式错误',
-        ]);
+        $messages['id.required'] = 'ID不存在';
+        $messages['id.integer'] = 'ID格式错误';
+
+        return $messages;
     }
 }

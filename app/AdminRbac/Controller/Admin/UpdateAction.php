@@ -10,7 +10,6 @@ use App\AdminRbac\Request\AdminUpdateRequest;
 use App\Constants\ErrorCode;
 use App\Exception\GeneralException;
 use App\Exception\UnprocessableEntityException;
-use App\Extend\Log\Log;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use Hyperf\DbConnection\Db;
@@ -41,7 +40,7 @@ class UpdateAction extends AbstractAction
         $deptId = $request->input('deptId');
         $postId = $request->input('postId');
 
-        $admin = Admin::query()->findOrFail($id);
+        $admin = Admin::findFromCacheOrFail($id);
 
         if ($admin->isSuper()) {
             throw new UnprocessableEntityException('超级管理员不能编辑');
@@ -50,10 +49,8 @@ class UpdateAction extends AbstractAction
         try {
             Db::beginTransaction();
 
-            $storePassword = password_hash($password, PASSWORD_DEFAULT);
-
             $admin->name = $name;
-            $admin->password = $storePassword;
+            $admin->password = Admin::encryptPassword($password);
             $admin->status = $status;
             $admin->mobile = $mobile;
             $admin->email = $email;

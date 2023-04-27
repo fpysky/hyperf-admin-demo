@@ -39,7 +39,8 @@
         "hyperf/testing": "~3.0.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mockery/mockery": "^1.0",
-        "phpstan/phpstan": "^1.0"
+        "phpstan/phpstan": "^1.0",
+        "swoole/ide-helper": "^5.0"
     },
     "suggest": {
         "ext-openssl": "Required to use HTTPS.",

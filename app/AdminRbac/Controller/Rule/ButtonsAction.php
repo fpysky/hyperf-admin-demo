@@ -32,7 +32,7 @@ class ButtonsAction extends AbstractAction
                 ->where('type', Rule::TYPE_BUTTON)
                 ->with([
                     'roleRule' => function (HasMany $hasMany) {
-                        $hasMany->with('role')->get();
+                        $hasMany->with('role');
                     }])
                 ->get();
         });
