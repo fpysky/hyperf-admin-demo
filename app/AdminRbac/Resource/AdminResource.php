@@ -26,8 +26,8 @@ class AdminResource extends JsonResource
             'postId' => $this->post_id,
             'lastLoginTime' => $this->getFormattedDateTime($this->last_login_time),
             'dept' => self::deptInfo($this->dept),
-            'createTime' => $this->getFormattedCreatedAt(),
-            'updateTime' => $this->getFormattedUpdatedAt(),
+            'createdAt' => $this->getFormattedCreatedAt(),
+            'updatedAt' => $this->getFormattedUpdatedAt(),
         ];
     }
 

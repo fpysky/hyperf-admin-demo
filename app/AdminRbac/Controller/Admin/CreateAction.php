@@ -40,7 +40,7 @@ class CreateAction extends AbstractAction
             new Property(property: 'email', description: '电子邮箱', type: 'string', example: ''),
             new Property(property: 'deptId', description: '部门id', type: 'integer', example: 1),
             new Property(property: 'postId', description: '职位id', type: 'integer', example: 1),
-            new Property(property: 'status', description: '状态：1启用 2 停用', type: 'integer', example: 1),
+            new Property(property: 'status', description: '状态：0.禁用 1.启用', type: 'integer', example: 1),
         ]
     ))]
     public function handle(AdminStoreRequest $request): ResponseInterface
