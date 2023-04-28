@@ -17,7 +17,7 @@ class Role extends Base
     const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    const STATUS_DISABLED = 2;
+    const STATUS_DISABLED = 0;
 
     public static function nameExist(string $name, int $exceptId = null): bool
     {

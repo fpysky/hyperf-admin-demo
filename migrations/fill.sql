@@ -1,5 +1,3 @@
-INSERT INTO demo_admin (id, name, password, status, type, mobile, email, last_login_ip, logo, dept_id, post_id) VALUES (1, 'admin', '$2y$10$4iK5RysNfZ5lxJ6eUlfH.uwLX5s40RF3OSd.lDVVavZ4sIN9Ac992', 1, 1, '18888888888', '7777@163.com', 2887617905, '', 3, 8);
-
 INSERT INTO demo_rule (id, parent_id, status, type, `order`, name, icon, `desc`, route, path, created_at, updated_at, deleted_at) VALUES (1, 0, 1, 1, 11, '系统权限管理', 'el-icon-s-operation', '', '', '/power/rule', '2023-04-03 13:20:50', '2023-04-04 15:48:55', null);
 INSERT INTO demo_rule (id, parent_id, status, type, `order`, name, icon, `desc`, route, path, created_at, updated_at, deleted_at) VALUES (2, 1, 1, 2, 1, '账号管理', 'document', '', 'document', '/power/admin', '2023-04-03 13:20:50', '2023-04-04 15:52:48', null);
 INSERT INTO demo_rule (id, parent_id, status, type, `order`, name, icon, `desc`, route, path, created_at, updated_at, deleted_at) VALUES (3, 1, 1, 2, 2, '角色管理', 'el-icon-document', '', '/admin/role/list', '/power/role', '2023-04-03 13:20:50', '2023-04-04 15:52:48', null);

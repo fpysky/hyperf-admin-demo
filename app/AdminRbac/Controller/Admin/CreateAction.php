@@ -15,6 +15,10 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\Swagger\Annotation\HyperfServer;
+use Hyperf\Swagger\Annotation\JsonContent;
+use Hyperf\Swagger\Annotation\Post;
+use Hyperf\Swagger\Annotation\Property;
+use Hyperf\Swagger\Annotation\RequestBody;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
@@ -26,6 +30,19 @@ class CreateAction extends AbstractAction
      * @throws \Exception
      */
     #[PostMapping(path: '')]
+    #[Post(path: '/admin',summary: '添加管理员',tags: ['后台管理/系统管理/管理员'])]
+    #[RequestBody(content: new JsonContent(
+        required: ['id', 'password'],
+        properties: [
+            new Property(property: 'name', description: '用户名', type: 'string', example: ''),
+            new Property(property: 'mobile', description: '手机号', type: 'string', example: ''),
+            new Property(property: 'password', description: '密码', type: 'string', example: 'admin123456'),
+            new Property(property: 'email', description: '电子邮箱', type: 'string', example: ''),
+            new Property(property: 'deptId', description: '部门id', type: 'integer', example: 1),
+            new Property(property: 'postId', description: '职位id', type: 'integer', example: 1),
+            new Property(property: 'status', description: '状态：1启用 2 停用', type: 'integer', example: 1),
+        ]
+    ))]
     public function handle(AdminStoreRequest $request): ResponseInterface
     {
         $name = $request->input('name');

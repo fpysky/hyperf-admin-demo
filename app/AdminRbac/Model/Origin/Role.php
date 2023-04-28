@@ -8,8 +8,8 @@ use App\Model\Model;
 
 /**
  * @property int $id 主键ID
- * @property int $status 状态：1 启用 2 不启用
- * @property int $order 排序
+ * @property int $status 状态：0.禁用 1.启用
+ * @property int $sort 排序
  * @property string $name 角色名称
  * @property string $desc 描述
  * @property \Carbon\Carbon $created_at 创建时间
@@ -26,10 +26,10 @@ class Role extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'status', 'order', 'name', 'desc', 'created_at', 'updated_at', 'deleted_at'];
+    protected array $fillable = ['id', 'status', 'sort', 'name', 'desc', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'status' => 'integer', 'order' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected array $casts = ['id' => 'integer', 'status' => 'integer', 'sort' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 }

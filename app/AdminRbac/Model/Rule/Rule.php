@@ -24,7 +24,7 @@ class Rule extends Base
     public const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    public const STATUS_DISABLED = 2;
+    public const STATUS_DISABLED = 0;
 
     /** 类型：目录 */
     public const TYPE_DIRECTORY = 1;

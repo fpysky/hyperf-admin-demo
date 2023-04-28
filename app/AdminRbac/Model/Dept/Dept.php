@@ -22,7 +22,7 @@ class Dept extends Base
     public const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    public const STATUS_DISABLED = 2;
+    public const STATUS_DISABLED = 0;
 
     public static function existName(string $name, int $exceptId = null): bool
     {

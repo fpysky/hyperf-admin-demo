@@ -34,7 +34,7 @@ class Admin extends Base implements Authenticatable
     public const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    public const STATUS_DISABLED = 2;
+    public const STATUS_DISABLED = 0;
 
     public function getId(): int
     {

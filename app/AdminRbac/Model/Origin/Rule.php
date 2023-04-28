@@ -9,9 +9,9 @@ use App\Model\Model;
 /**
  * @property int $id 
  * @property int $parent_id 父级id
- * @property int $status 状态：1-启用，2-禁用
+ * @property int $status 状态：0.禁用 1.启用
  * @property int $type 类型：1-菜单，2-目录，3-按钮，4-接口
- * @property int $order 排序：按照从小到大排序
+ * @property int $sort 排序：按照从小到大排序
  * @property string $name 菜单名称
  * @property string $icon 图标
  * @property string $desc 描述
@@ -31,10 +31,10 @@ class Rule extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'parent_id', 'status', 'type', 'order', 'name', 'icon', 'desc', 'route', 'path', 'created_at', 'updated_at', 'deleted_at'];
+    protected array $fillable = ['id', 'parent_id', 'status', 'type', 'sort', 'name', 'icon', 'desc', 'route', 'path', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'parent_id' => 'integer', 'status' => 'integer', 'type' => 'integer', 'order' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected array $casts = ['id' => 'integer', 'parent_id' => 'integer', 'status' => 'integer', 'type' => 'integer', 'sort' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 }

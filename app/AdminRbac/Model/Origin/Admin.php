@@ -10,8 +10,8 @@ use App\Model\Model;
  * @property int $id 
  * @property string $name 用户姓名
  * @property string $password 密码
- * @property int $status 状态：1启用 2 停用
- * @property int $type 类型：1超级管理员（拥有权限权限） 2 其他
+ * @property int $status 状态：0.禁用 1.启用
+ * @property int $type 类型：1超级管理员（拥有所有权限） 2 其他
  * @property string $mobile 手机号码
  * @property string $email 邮箱号码
  * @property string $last_login_ip 最近登录ip

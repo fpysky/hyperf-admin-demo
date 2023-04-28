@@ -12,7 +12,7 @@ use App\Model\Model;
  * @property string $province 省份名称
  * @property string $city 城市名称
  * @property int $last_login_time 登录时间
- * @property int $last_login_ip 登录IP
+ * @property string $last_login_ip 最近登录ip
  */
 class AdminLoginLog extends Model
 {
@@ -29,5 +29,5 @@ class AdminLoginLog extends Model
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'admin_id' => 'integer', 'last_login_time' => 'integer', 'last_login_ip' => 'integer'];
+    protected array $casts = ['id' => 'integer', 'admin_id' => 'integer', 'last_login_time' => 'integer'];
 }
