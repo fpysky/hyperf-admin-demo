@@ -29,7 +29,7 @@ class AdminStoreRequest extends FormRequest
             'retPassword' => 'required_if:id,0|same:password',
             'deptId' => 'required|integer',
             'postId' => 'required|integer',
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:0,1',
             'roleIds' => 'required|array',
         ];
     }

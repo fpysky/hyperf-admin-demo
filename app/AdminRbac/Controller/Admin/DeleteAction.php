@@ -30,7 +30,7 @@ class DeleteAction extends AbstractAction
      * @throws \Exception
      */
     #[DeleteMapping(path: 'delete/{ids}')]
-    #[Delete(path: '/admin/delete/{ids}')]
+    #[Delete(path: '/admin/delete/{ids}',summary: '管理员删除',tags: ['后台管理/系统管理/管理员'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],

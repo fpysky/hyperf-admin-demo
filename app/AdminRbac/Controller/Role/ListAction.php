@@ -8,6 +8,7 @@ use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Role\Role;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
+use App\Resource\Role\RoleResource;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
@@ -46,7 +47,7 @@ class ListAction extends AbstractAction
                         description: '',
                         type: 'array',
                         items: new Items(
-                            required: ['id','name','remark','createTime','sort','status'],
+                            required: ['id', 'name', 'remark', 'createTime', 'sort', 'status'],
                             properties: [
                                 new Property(property: 'id', description: '', type: 'integer', example: 1),
                                 new Property(property: 'name', description: '', type: 'string', example: ''),
@@ -64,21 +65,16 @@ class ListAction extends AbstractAction
     ))]
     public function handle(): ResponseInterface
     {
-        $roles = Role::query()
-            ->select([
-                'id', 'name', 'desc',
-                'order', 'status',
-                'created_at as createdAt',
-            ])
-            ->with([
-                'roleRule' => function ($query) {
-                    $query->with('rule');
-                },
-            ])
-            ->orderBy('order')
-            ->orderByDesc('id')
-            ->get();
+        $pageSize = (int) $this->request->input('pageSize', 15);
 
-        return $this->success($roles);
+        $paginator = Role::query()
+            ->orderBy('sort')
+            ->orderByDesc('id')
+            ->paginate($pageSize);
+
+        return $this->success([
+            'total' => $paginator->total(),
+            'list' => RoleResource::collection($paginator),
+        ]);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Request\Admin;
+namespace App\AdminRbac\Request;
 
 use Hyperf\Validation\Request\FormRequest;
 

@@ -82,10 +82,7 @@ class LoginAction extends AbstractAction
             throw new UnprocessableEntityException('账户不存在');
         }
 
-        $encryptPassword = $this->help
-            ->encrypPassword($mobile, $password, $admin->getUnixCreatedAt());
-
-        if ($encryptPassword !== $admin->password) {
+        if (!password_verify($password,$admin->password)) {
             throw new UnprocessableEntityException('账号或密码错误');
         }
 

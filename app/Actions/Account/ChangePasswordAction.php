@@ -10,9 +10,6 @@ use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use App\Request\Account\ChangePasswordRequest;
-use App\Utils\Help;
-use Hyperf\Database\Model\ModelNotFoundException;
-use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PostMapping;
@@ -30,14 +27,11 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class ChangePasswordAction extends AbstractAction
 {
-    #[Inject]
-    protected Help $help;
-
     #[PostMapping(path: '/system/backend/changePassword')]
     #[Post(path: '/system/backend/changePassword', summary: '管理密码修改', tags: ['后台管理/账号'])]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[RequestBody(content: new JsonContent(
-        required: ['id', 'password', 'newPassword','retNewPassword'],
+        required: ['id', 'password', 'newPassword', 'retNewPassword'],
         properties: [
             new Property(property: 'id', description: '管理员id', type: 'integer', example: 1),
             new Property(property: 'password', description: '原密码', type: 'string', example: '4343434'),
@@ -59,25 +53,17 @@ class ChangePasswordAction extends AbstractAction
         $password = (string) $request->input('password');
         $newPassword = (string) $request->input('newPassword');
 
-        try {
-            $admin = Admin::query()->findOrFail($id);
-        } catch (ModelNotFoundException) {
-            throw new UnprocessableEntityException('管理员不存在');
-        }
+        $admin = Admin::findFromCacheOrFail($id);
 
-        $unixCreatedAt = $admin->getUnixCreatedAt();
-        $encryptPassword = $this->help->encrypPassword($admin->mobile, $password, $unixCreatedAt);
-
-        if ($admin->password !== $encryptPassword) {
+        if (! password_verify($password, $admin->password)) {
             throw new UnprocessableEntityException('原密码错误');
         }
 
-        $encryptNewPassword = $this->help->encrypPassword($admin->mobile, $newPassword, $unixCreatedAt);
-        if ($admin->password === $encryptNewPassword) {
+        if (password_verify($newPassword, $admin->password)) {
             throw new UnprocessableEntityException('原密码与修改密码相同');
         }
 
-        $admin->password = $encryptNewPassword;
+        $admin->password = encryptPassword($newPassword);
         $admin->save();
 
         return $this->message('密码修改成功');
