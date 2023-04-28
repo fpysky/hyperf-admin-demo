@@ -47,7 +47,7 @@ class ListAction extends AbstractAction
                         description: '',
                         type: 'array',
                         items: new Items(
-                            required: ['id', 'name', 'remark', 'createTime', 'sort', 'status'],
+                            required: ['id', 'name', 'desc', 'sort', 'status', 'createdAt', 'updatedAt'],
                             properties: [
                                 new Property(property: 'id', description: '', type: 'integer', example: 1),
                                 new Property(property: 'name', description: '', type: 'string', example: ''),
@@ -55,6 +55,7 @@ class ListAction extends AbstractAction
                                 new Property(property: 'sort', description: '', type: 'integer', example: 1),
                                 new Property(property: 'status', description: '', type: 'integer', example: 1),
                                 new Property(property: 'createdAt', description: '', type: 'string', example: '2023-11-11 11:11:11'),
+                                new Property(property: 'updatedAt', description: '', type: 'string', example: '2023-11-11 11:11:11'),
                             ]
                         )
                     ),

@@ -14,9 +14,12 @@ class AdminUpdateRequest extends AdminStoreRequest
     public function rules(): array
     {
         $rules = parent::rules();
+        $id = (int) $this->input('id');
 
         return array_merge($rules, [
             'id' => 'required|integer',
+            'name' => "required|max:10|unique:admin,name,{$id},id",
+            'mobile' => "required|unique:admin,mobile,{$id},id|regex:/^1[3456789]\\d{9}$/",
         ]);
     }
 

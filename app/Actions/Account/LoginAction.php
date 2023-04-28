@@ -8,7 +8,6 @@ use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Admin\Admin;
 use App\AdminRbac\Request\LoginRequest;
 use App\Exception\UnprocessableEntityException;
-use App\Utils\Help;
 use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -29,9 +28,6 @@ use function Hyperf\Coroutine\go;
 #[Controller]
 class LoginAction extends AbstractAction
 {
-    #[Inject]
-    protected Help $help;
-
     #[Inject]
     protected AuthManager $auth;
 
@@ -82,7 +78,7 @@ class LoginAction extends AbstractAction
             throw new UnprocessableEntityException('账户不存在');
         }
 
-        if (!password_verify($password,$admin->password)) {
+        if (! password_verify($password, $admin->password)) {
             throw new UnprocessableEntityException('账号或密码错误');
         }
 
