@@ -19,6 +19,7 @@ use Hyperf\Swagger\Annotation\JsonContent;
 use Hyperf\Swagger\Annotation\Post;
 use Hyperf\Swagger\Annotation\Property;
 use Hyperf\Swagger\Annotation\RequestBody;
+use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
@@ -30,9 +31,9 @@ class CreateAction extends AbstractAction
      * @throws \Exception
      */
     #[PostMapping(path: '')]
-    #[Post(path: '/admin',summary: '添加管理员',tags: ['后台管理/系统管理/管理员'])]
+    #[Post(path: '/admin', summary: '添加管理员', tags: ['后台管理/系统管理/管理员'])]
     #[RequestBody(content: new JsonContent(
-        required: ['id', 'password'],
+        required: ['name', 'mobile', 'password', 'email', 'deptId', 'postId', 'status'],
         properties: [
             new Property(property: 'name', description: '用户名', type: 'string', example: ''),
             new Property(property: 'mobile', description: '手机号', type: 'string', example: ''),
@@ -41,6 +42,14 @@ class CreateAction extends AbstractAction
             new Property(property: 'deptId', description: '部门id', type: 'integer', example: 1),
             new Property(property: 'postId', description: '职位id', type: 'integer', example: 1),
             new Property(property: 'status', description: '状态：0.禁用 1.启用', type: 'integer', example: 1),
+        ]
+    ))]
+    #[Response(response: 200, content: new JsonContent(
+        required: ['code', 'msg', 'data'],
+        properties: [
+            new Property(property: 'code', description: '业务状态码', type: 'integer', example: 200000),
+            new Property(property: 'msg', description: '返回消息', type: 'string', example: '管理员添加成功'),
+            new Property(property: 'data', description: '返回对象', type: 'object'),
         ]
     ))]
     public function handle(AdminStoreRequest $request): ResponseInterface
