@@ -6,6 +6,7 @@ namespace App\AdminRbac\Model\Role;
 
 use App\AdminRbac\Model\Origin\Role as Base;
 use App\AdminRbac\Model\Role\Traits\RoleRelationship;
+use App\Exception\RecordNotFoundException;
 use Hyperf\Database\Model\SoftDeletes;
 
 class Role extends Base
@@ -55,5 +56,16 @@ class Role extends Base
         },$ruleIds);
 
         RoleRule::query()->insert($insertData);
+    }
+
+    public static function findFromCacheOrFail(int $id): self
+    {
+        $model = static::findFromCache($id);
+
+        if (is_null($model)) {
+            throw new RecordNotFoundException('角色不存在');
+        }
+
+        return $model;
     }
 }

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\AdminRbac\Request;
 
-use Hyperf\Validation\Request\FormRequest;
-
-class RoleUpdateRequest extends FormRequest
+class RoleUpdateRequest extends RoleStoreRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,27 +19,22 @@ class RoleUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = parent::rules();
+        $id = (int) $this->input('id');
+
+        return array_merge($rules, [
             'id' => 'required|integer',
-            'name' => 'required|max:10',
-            'desc' => 'max:20',
-            'order' => 'required|integer|between:1,255',
-            'status' => 'required|in:1,2',
-        ];
+            'name' => "required|max:10|unique:role,name,{$id},id",
+        ]);
     }
 
     public function messages(): array
     {
-        return [
+        $messages = parent::messages();
+
+        return array_merge($messages, [
             'id.required' => 'id不能为空',
             'id.integer' => 'id必须为整型',
-            'name.required' => '填写角色名称',
-            'name.max' => '角色名称长度不能超过10个字符',
-            'desc.max' => '描述最多20个字符',
-            'order.required' => '填写排序',
-            'order.integer' => '填写的排序在1-255之间的整数',
-            'order.between' => '填写的排序在1-255之间的整数!',
-            'status.in' => '启用状态错误',
-        ];
+        ]);
     }
 }

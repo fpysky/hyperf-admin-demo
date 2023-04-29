@@ -22,10 +22,10 @@ class RoleStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:10',
+            'name' => 'required|max:10|unique:role,name',
             'desc' => 'max:20',
             'sort' => 'required|integer|between:1,255',
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:0,1',
         ];
     }
 
@@ -34,6 +34,7 @@ class RoleStoreRequest extends FormRequest
         return [
             'name.required' => '填写角色名称',
             'name.max' => '角色名称长度不能超过10个字符',
+            'name.unique' => '角色已存在',
             'desc.max' => '描述最多20个字符',
             'sort.required' => '填写排序',
             'sort.integer' => '填写的排序在1-255之间的整数',
