@@ -21,14 +21,14 @@ use Hyperf\Swagger\Annotation\Schema;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'role')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class DeleteAction extends AbstractAction
 {
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: 'delete/{ids}')]
+    #[DeleteMapping(path: '/role/delete/{ids}')]
     #[Delete(path: '/role/delete/{ids}',summary: '角色删除',tags: ['后台管理/系统管理/角色'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(

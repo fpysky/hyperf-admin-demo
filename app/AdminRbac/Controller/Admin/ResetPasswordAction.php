@@ -22,11 +22,11 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'admin')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class ResetPasswordAction extends AbstractAction
 {
-    #[PatchMapping(path: 'resetPassword')]
+    #[PatchMapping(path: '/admin/resetPassword')]
     #[Patch(path: '/admin/resetPassword', summary: '重置管理员密码', tags: ['后台管理/系统管理/管理员'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password'],

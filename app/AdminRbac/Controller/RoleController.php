@@ -21,22 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class RoleController extends AbstractAction
 {
-    /**
-     * @throws \Exception
-     */
-    #[PutMapping(path: '/system/backend/backendAdminRole/roleRule')]
-    public function upRule(): ResponseInterface
-    {
-        $ruleIds = (array) $this->request->input('ruleIds');
-        $roleId = (int) $this->request->input('roleId');
-
-        Role::query()
-            ->findOrFail($roleId)
-            ->setRule($ruleIds);
-
-        return $this->message('权限分配成功');
-    }
-
     #[PutMapping(path: '/system/backend/backendAdminRole/status')]
     public function upStatus(): ResponseInterface
     {
@@ -54,23 +38,6 @@ class RoleController extends AbstractAction
         }
 
         return $this->message($msg);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    #[DeleteMapping(path: '/system/backend/backendAdminRole/{ids}')]
-    public function destroy(string $ids): ResponseInterface
-    {
-        $ids = explode(',', $ids) ?? [];
-        $ids = array_filter($ids);
-
-        // todo::这里思考一下，角色删除是不是需要查询是否有关联数据
-        Role::query()
-            ->whereIn('id', $ids)
-            ->delete();
-
-        return $this->message('角色删除成功');
     }
 
     #[GetMapping(path: '/system/backend/backendAdminRole/roleCombobox')]

@@ -26,17 +26,17 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'admin')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class UpdateAction extends AbstractAction
 {
     /**
      * @throws \Exception
      */
-    #[PutMapping(path: '')]
+    #[PutMapping(path: '/admin')]
     #[Put(path: '/admin', summary: '修改管理员', tags: ['后台管理/系统管理/管理员'])]
     #[RequestBody(content: new JsonContent(
-        required: ['id', 'name', 'mobile', 'password','rePassword', 'email', 'deptId', 'postId', 'status','roleIds'],
+        required: ['id', 'name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status', 'roleIds'],
         properties: [
             new Property(property: 'id', description: '管理员id', type: 'integer', example: 1),
             new Property(property: 'name', description: '用户名', type: 'string', example: ''),

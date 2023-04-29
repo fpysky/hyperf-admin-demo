@@ -21,11 +21,11 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'role')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class UpdateAction extends AbstractAction
 {
-    #[PutMapping(path: '')]
+    #[PutMapping(path: '/role')]
     #[Put(path: '/role', summary: '修改角色', tags: ['后台管理/系统管理/角色'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'desc', 'status', 'sort'],

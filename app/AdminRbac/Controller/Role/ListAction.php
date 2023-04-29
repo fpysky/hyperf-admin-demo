@@ -23,11 +23,11 @@ use Hyperf\Swagger\Annotation\Schema;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'role')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class ListAction extends AbstractAction
 {
-    #[GetMapping(path: '')]
+    #[GetMapping(path: '/role')]
     #[Get(path: '/role', summary: '角色列表', tags: ['后台管理/系统管理/角色'])]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]

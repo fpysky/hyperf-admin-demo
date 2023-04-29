@@ -24,14 +24,14 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'admin')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class CreateAction extends AbstractAction
 {
     /**
      * @throws \Exception
      */
-    #[PostMapping(path: '')]
+    #[PostMapping(path: '/admin')]
     #[Post(path: '/admin', summary: '添加管理员', tags: ['后台管理/系统管理/管理员'])]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status'],

@@ -22,11 +22,11 @@ use Hyperf\Swagger\Annotation\Schema;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller(prefix: 'admin')]
+#[Controller]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class DetailAction extends AbstractAction
 {
-    #[GetMapping(path: '{id:\d+}')]
+    #[GetMapping(path: '/admin/{id:\d+}')]
     #[Get(path: '/admin/{id}', summary: '管理员详情', tags: ['后台管理/系统管理/管理员'])]
     #[PathParameter(name: 'id', description: '管理员id', required: true, schema: new Schema(type: 'integer'), example: 1)]
     #[Response(response: 200, content: new JsonContent(
