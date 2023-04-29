@@ -6,6 +6,7 @@ namespace App\AdminRbac\Model\Rule;
 
 use App\AdminRbac\Model\Origin\Rule as Base;
 use App\AdminRbac\Model\Rule\Traits\RuleRelationship;
+use App\Exception\RecordNotFoundException;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
@@ -77,5 +78,16 @@ class Rule extends Base
             ->where('type', self::TYPE_DIRECTORY)
             ->orderBy('order')
             ->get();
+    }
+
+    public static function findFromCacheOrFail(int $id): self
+    {
+        $model = static::findFromCache($id);
+
+        if (is_null($model)) {
+            throw new RecordNotFoundException('权限不存在');
+        }
+
+        return $model;
     }
 }
