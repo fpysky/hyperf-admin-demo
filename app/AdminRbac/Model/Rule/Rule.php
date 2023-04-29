@@ -14,6 +14,7 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property Collection $roleRule
  * @property Collection $children
  * @property Rule $parentRule
+ * @property Collection $buttons
  */
 class Rule extends Base
 {

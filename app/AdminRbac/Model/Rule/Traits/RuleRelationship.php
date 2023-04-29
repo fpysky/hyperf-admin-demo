@@ -16,6 +16,12 @@ trait RuleRelationship
         return $this->hasMany(Rule::class, 'parent_id', 'id');
     }
 
+    public function buttons(): HasMany
+    {
+        return $this->hasMany(Rule::class, 'parent_id', 'id')
+            ->where('type',self::TYPE_BUTTON);
+    }
+
     public function roleRule(): HasMany
     {
         return $this->hasMany(RoleRule::class, 'rule_id', 'id');

@@ -7,73 +7,80 @@ namespace App\AdminRbac\Controller\Rule;
 use App\Actions\AbstractAction;
 use App\AdminRbac\Model\Rule\Rule;
 use App\Middleware\AuthMiddleware;
-use Hyperf\Coroutine\Parallel;
-use Hyperf\Database\Model\Collection;
+use App\Resource\Rule\ButtonMenuResource;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
+use Hyperf\Swagger\Annotation\Get;
+use Hyperf\Swagger\Annotation\HyperfServer;
+use Hyperf\Swagger\Annotation\Items;
+use Hyperf\Swagger\Annotation\JsonContent;
+use Hyperf\Swagger\Annotation\Property;
+use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
+#[HyperfServer('http')]
 #[Controller]
 #[Middlewares([AuthMiddleware::class])]
 class ButtonsAction extends AbstractAction
 {
-    #[GetMapping(path: '/system/backend/backendAdminRule/buttons')]
+    #[GetMapping(path: '/rule/buttons')]
+    #[Get(path: '/rule/buttons', summary: '按钮权限列表', tags: ['后台管理/系统管理/权限'])]
+    #[Response(response: 200, content: new JsonContent(
+        required: ['code', 'msg', 'data'],
+        properties: [
+            new Property(property: 'code', description: '业务状态码', type: 'integer', example: 200000),
+            new Property(property: 'msg', description: '返回消息', type: 'string', example: ''),
+            new Property(
+                property: 'data',
+                description: '',
+                type: 'array',
+                items: new Items(
+                    required: ['id', 'path', 'name'],
+                    properties: [
+                        new Property(property: 'id', description: 'id', type: 'integer', example: 1),
+                        new Property(property: 'path', description: '菜单路由path', type: 'string', example: ''),
+                        new Property(property: 'name', description: '名称', type: 'string', example: ''),
+                        new Property(
+                            property: 'buttons',
+                            description: '按钮权限列表',
+                            type: 'array',
+                            items: new Items(
+                                required: ['id', 'name', 'status', 'icon', 'route', 'path', 'roles'],
+                                properties: [
+                                    new Property(property: 'id', description: '', type: 'integer', example: ''),
+                                    new Property(property: 'name', description: '名称', type: 'string', example: ''),
+                                    new Property(property: 'status', description: '状态：0.禁用 1.启用', type: 'integer', example: ''),
+                                    new Property(property: 'icon', description: '图标', type: 'string', example: ''),
+                                    new Property(property: 'route', description: '请求路由', type: 'string', example: ''),
+                                    new Property(property: 'path', description: '菜单路由path', type: 'string', example: ''),
+                                    new Property(property: 'roles', description: '角色列表', type: 'array', items: new Items(type: 'string', example: 'admin')),
+                                ],
+                                type: 'object'
+                            )
+                        ),
+                    ]
+                )
+            ),
+        ]
+    ))]
     public function handle(): ResponseInterface
     {
-        $buttons = Collection::make();
-        $parentRules = Collection::make();
+        $menuButtons = Rule::query()
+            ->select(['id','parent_id','path','name'])
+            ->with([
+                'buttons' => function (HasMany $query) {
+                    $query->with([
+                        'roleRule' => function (HasMany $hasMany) {
+                            $hasMany->with('role');
+                        },
+                    ]);
+                },
+            ])
+            ->where('type', Rule::TYPE_MENU)
+            ->get();
 
-        $parallel = new Parallel(2);
-
-        $parallel->add(function () use (&$buttons) {
-            $buttons = Rule::query()
-                ->where('type', Rule::TYPE_BUTTON)
-                ->with([
-                    'roleRule' => function (HasMany $hasMany) {
-                        $hasMany->with('role');
-                    }])
-                ->get();
-        });
-
-        $parallel->add(function () use (&$parentRules) {
-            $parentIds = Rule::query()
-                ->where('type', Rule::TYPE_BUTTON)
-                ->pluck('parent_id')
-                ->unique()
-                ->toArray();
-            $parentRules = Rule::query()
-                ->where('type', 2)
-                ->whereIn('id', $parentIds)
-                ->get();
-        });
-
-        $parallel->wait();
-
-        $data = $parentRules->map(function ($parentRule) use ($buttons) {
-            $buttons0 = [];
-            $buttons->each(function (Rule $button) use ($parentRule, &$buttons0) {
-                if ($button->parent_id == $parentRule['id']) {
-                    $buttons0[] = [
-                        'id' => $button->id,
-                        'name' => $button->name,
-                        'status' => $button->status,
-                        'icon' => $button->icon,
-                        'route' => $button->route,
-                        'path' => $button->path,
-                        'roles' => $button->getRuleRoles(),
-                    ];
-                }
-            });
-            return [
-                'id' => $parentRule['id'],
-                'path' => $parentRule['path'],
-                'name' => $parentRule['name'],
-                'buttons' => $buttons0,
-            ];
-        });
-
-        return $this->success($data);
+        return $this->success(ButtonMenuResource::collection($menuButtons));
     }
 }
