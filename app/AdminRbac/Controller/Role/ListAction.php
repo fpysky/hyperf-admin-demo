@@ -49,13 +49,13 @@ class ListAction extends AbstractAction
                         items: new Items(
                             required: ['id', 'name', 'desc', 'sort', 'status', 'createdAt', 'updatedAt'],
                             properties: [
-                                new Property(property: 'id', description: '', type: 'integer', example: 1),
-                                new Property(property: 'name', description: '', type: 'string', example: ''),
-                                new Property(property: 'desc', description: '', type: 'string', example: ''),
-                                new Property(property: 'sort', description: '', type: 'integer', example: 1),
-                                new Property(property: 'status', description: '', type: 'integer', example: 1),
-                                new Property(property: 'createdAt', description: '', type: 'string', example: '2023-11-11 11:11:11'),
-                                new Property(property: 'updatedAt', description: '', type: 'string', example: '2023-11-11 11:11:11'),
+                                new Property(property: 'id', description: 'id', type: 'integer', example: 1),
+                                new Property(property: 'name', description: '名称', type: 'string', example: ''),
+                                new Property(property: 'desc', description: '描述', type: 'string', example: ''),
+                                new Property(property: 'sort', description: '排序', type: 'integer', example: 1),
+                                new Property(property: 'status', description: '状态：0.禁用 1.启用', type: 'integer', example: 1),
+                                new Property(property: 'createdAt', description: '创建时间', type: 'string', example: '2023-11-11 11:11:11'),
+                                new Property(property: 'updatedAt', description: '更新时间', type: 'string', example: '2023-11-11 11:11:11'),
                             ]
                         )
                     ),
