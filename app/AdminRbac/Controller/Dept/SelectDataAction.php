@@ -35,7 +35,7 @@ class SelectDataAction extends AbstractAction
             ->select(['id', 'name'])
             ->where('parent_id', 0)
             ->where('status', Dept::STATUS_ENABLE)
-            ->orderBy('order')
+            ->orderBy('sort')
             ->orderByDesc('id')
             ->get();
 
