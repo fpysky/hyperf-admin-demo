@@ -23,13 +23,10 @@ class DeptStoreRequest extends FormRequest
     {
         return [
             'parentId' => 'required|integer',
-            'name' => 'required|max:10',
-            'username' => 'max:10',
-            'mobile' => 'regex:/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/',
-            'email' => 'email',
-            'order' => 'required|integer|between:1,255',
-            'status' => 'required|in:1,2',
-            'mark' => 'max:255',
+            'name' => 'required|max:10|unique:dept,name',
+            'sort' => 'required|integer|between:1,255',
+            'status' => 'required|in:0,1',
+            'remark' => 'max:255',
         ];
     }
 
@@ -40,15 +37,13 @@ class DeptStoreRequest extends FormRequest
             'parentId.integer' => '上级部门选择错误',
             'name.required' => '填写部门名称',
             'name.max' => '部门名称长度不能超过10个字符',
-            'username.max' => '负责人姓名长度不能超过10个字符',
-            'mobile.regex' => '手机号码格式不对',
-            'email.email' => '邮箱号码格式不对',
-            'order.required' => '填写排序',
-            'order.integer' => '填写的排序在1-255之间的整数',
-            'order.between' => '填写的排序在1-255之间的整数!',
+            'name.unique' => '部门已存在',
+            'sort.required' => '填写排序',
+            'sort.integer' => '填写的排序在1-255之间的整数',
+            'sort.between' => '填写的排序在1-255之间的整数!',
             'status.required' => '选择状态',
             'status.in' => '启用状态错误',
-            'mark.max' => '部门备注长度不能超过255个字符',
+            'remark.max' => '部门备注长度不能超过255个字符',
         ];
     }
 }

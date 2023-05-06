@@ -6,6 +6,7 @@ namespace App\AdminRbac\Model\Dept;
 
 use App\AdminRbac\Model\Dept\Traits\DeptRelationship;
 use App\AdminRbac\Model\Origin\Dept as Base;
+use App\Exception\RecordNotFoundException;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\SoftDeletes;
 
@@ -33,5 +34,16 @@ class Dept extends Base
         }
 
         return $builder->exists();
+    }
+
+    public static function findFromCacheOrFail(int $id): self
+    {
+        $model = static::findFromCache($id);
+
+        if (is_null($model)) {
+            throw new RecordNotFoundException('部门不存在');
+        }
+
+        return $model;
     }
 }
