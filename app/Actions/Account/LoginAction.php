@@ -34,8 +34,8 @@ class LoginAction extends AbstractAction
     #[Inject]
     protected EventDispatcherInterface $eventDispatcher;
 
-    #[PostMapping(path: '/login/backend')]
-    #[Post(path: '/login/backend', summary: '登陆', tags: ['后台管理/账号'])]
+    #[PostMapping(path: '/login')]
+    #[Post(path: '/login', summary: '登陆', tags: ['后台管理/账号'])]
     #[RequestBody(content: new JsonContent(
         required: ['username', 'password'],
         properties: [

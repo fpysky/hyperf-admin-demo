@@ -71,12 +71,12 @@ class Rule extends Base
             ->with([
                 'children' => function (HasMany $query) {
                     $query->where('type', Rule::TYPE_MENU)
-                        ->orderBy('order');
+                        ->orderBy('sort');
                 },
             ])
             ->where('parent_id', 0)
             ->where('type', self::TYPE_DIRECTORY)
-            ->orderBy('order')
+            ->orderBy('sort')
             ->get();
     }
 

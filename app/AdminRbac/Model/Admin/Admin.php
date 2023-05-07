@@ -7,6 +7,7 @@ namespace App\AdminRbac\Model\Admin;
 use App\AdminRbac\Model\Admin\Traits\AdminRelationship;
 use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Model\Origin\Admin as Base;
+use App\AdminRbac\Model\Role\Role;
 use App\AdminRbac\Model\Role\RoleRule;
 use App\AdminRbac\Model\Rule\Rule;
 use App\Exception\RecordNotFoundException;
@@ -148,6 +149,22 @@ class Admin extends Base implements Authenticatable
             ->toArray();
     }
 
+    public function getRolesNames(): array
+    {
+        if (! $this->hasRole()) {
+            return [];
+        }
+
+        $roleNames = [];
+        $this->adminRole->each(function (AdminRole $adminRole) use (&$roleNames) {
+            if ($adminRole->role instanceof Role) {
+                $roleNames[] = $adminRole->role->name;
+            }
+        });
+
+        return $roleNames;
+    }
+
     public function ruleIds(): array
     {
         return RoleRule::query()
@@ -165,14 +182,14 @@ class Admin extends Base implements Authenticatable
                 'children' => function (HasMany $query) use ($adminRuleIds) {
                     $query->whereIn('id', $adminRuleIds)
                         ->where('type', Rule::TYPE_MENU)
-                        ->orderBy('order');
+                        ->orderBy('sort');
                 },
             ])
             ->where('parent_id', 0)
             ->where('status', self::STATUS_ENABLE)
             ->whereIn('id', $adminRuleIds)
             ->where('type', Rule::TYPE_DIRECTORY)
-            ->orderBy('order')
+            ->orderBy('sort')
             ->get();
     }
 
