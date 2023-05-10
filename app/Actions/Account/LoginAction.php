@@ -44,7 +44,7 @@ class LoginAction extends AbstractAction
         ]
     ))]
     #[Response(response: 200, content: new JsonContent(
-        required: ['code', 'msg', 'data', 'id'],
+        required: ['code', 'msg', 'data'],
         properties: [
             new Property(property: 'code', description: '业务状态码', type: 'integer', example: 200000),
             new Property(property: 'msg', description: '返回消息', type: 'string', example: ''),

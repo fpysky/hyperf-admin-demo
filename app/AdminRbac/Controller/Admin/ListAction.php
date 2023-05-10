@@ -33,6 +33,7 @@ class ListAction extends AbstractAction
     #[Get(path: '/admin', summary: '管理员列表', tags: ['后台管理/系统管理/管理员'])]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]
+    #[QueryParameter(name: 'keyword', description: '搜索关键词', required: false, schema: new Schema(type: 'string'))]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
         properties: [
@@ -90,7 +91,8 @@ class ListAction extends AbstractAction
     public function index(): ResponseInterface
     {
         $pageSize = (int) $this->request->input('pageSize', 15);
-        $keyword = (string) $this->request->input('name');
+        $keyword = (string) $this->request->input('keyword');
+
 
         $builder = Admin::query()
             ->with(['dept'])
