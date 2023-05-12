@@ -21,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class SelectDataAction extends AbstractAction
 {
-    #[GetMapping(path: '/dept/selectData')]
+    #[GetMapping(path: '/dept/tree')]
     public function handle(): ResponseInterface
     {
         $list = Dept::query()
