@@ -28,7 +28,7 @@ class SelectDataAction extends AbstractAction
             ->with([
                 'enabledChildren' => function (HasMany $query) {
                     $query->select(['id', 'name', 'parent_id'])
-                        ->orderBy('order')
+                        ->orderBy('sort')
                         ->orderByDesc('id');
                 },
             ])
