@@ -9,7 +9,6 @@ CREATE TABLE `demo_admin` (
     `last_login_ip` varchar(100) NOT NULL DEFAULT '' COMMENT '最近登录ip',
     `logo` varchar(255) NOT NULL DEFAULT '' COMMENT '管理员头像',
     `dept_id` smallint unsigned NOT NULL DEFAULT '0' COMMENT '部门id',
-    `post_id` smallint unsigned NOT NULL DEFAULT '0' COMMENT '岗位id',
     `last_login_time` int NOT NULL DEFAULT '0' COMMENT '最后登录时间',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -94,3 +93,10 @@ CREATE TABLE `demo_rule` (
    `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='权限表（菜单表）';
+
+CREATE TABLE `demo_admin_dept` (
+   `admin_id` int unsigned NOT NULL DEFAULT '0' COMMENT '管理员id',
+   `dept_id` int unsigned DEFAULT '0' COMMENT '部门id',
+   UNIQUE KEY `demo_admin_dept_admin_id_dept_id_uindex` (`admin_id`,`dept_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员部门中间表'
+

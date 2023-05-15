@@ -53,8 +53,8 @@ class ListAction extends AbstractAction
                             required: [
                                 'id', 'name', 'status', 'type',
                                 'mobile', 'email', 'lastLoginIp',
-                                'logo', 'deptId', 'postId', 'lastLoginTime',
-                                'dept', 'createdAt', 'updatedAt',
+                                'logo', 'deptIds', 'postId', 'lastLoginTime',
+                                'roleIds', 'createdAt', 'updatedAt',
                             ],
                             properties: [
                                 new Property(property: 'id', description: '管理员id', type: 'integer', example: ''),
@@ -65,19 +65,10 @@ class ListAction extends AbstractAction
                                 new Property(property: 'email', description: '电子邮箱', type: 'string', example: ''),
                                 new Property(property: 'lastLoginIp', description: '最后登陆ip', type: 'string', example: ''),
                                 new Property(property: 'logo', description: '头像logo', type: 'string', example: ''),
-                                new Property(property: 'deptId', description: '部门id', type: 'integer', example: ''),
+                                new Property(property: 'deptIds', description: '部门ids', type: 'integer', example: [1]),
+                                new Property(property: 'roleIds', description: '部门ids', type: 'integer', example: [1]),
                                 new Property(property: 'postId', description: '职位id', type: 'integer', example: ''),
                                 new Property(property: 'lastLoginTime', description: '最后登陆时间', type: 'string', example: ''),
-                                new Property(
-                                    property: 'dept',
-                                    description: '部门信息',
-                                    required: ['id', 'name'],
-                                    properties: [
-                                        new Property(property: 'id', description: '部门id', type: 'string', example: ''),
-                                        new Property(property: 'name', description: '部门名称', type: 'string', example: ''),
-                                    ],
-                                    type: 'object',
-                                ),
                                 new Property(property: 'createdAt', description: '创建时间', type: 'string', example: ''),
                                 new Property(property: 'updatedAt', description: '更新时间', type: 'string', example: ''),
                             ]
@@ -93,9 +84,8 @@ class ListAction extends AbstractAction
         $pageSize = (int) $this->request->input('pageSize', 15);
         $keyword = (string) $this->request->input('keyword');
 
-
         $builder = Admin::query()
-            ->with(['dept'])
+            ->with(['adminDept','adminRole'])
             ->orderByDesc('id');
 
         if (Str::length($keyword) !== 0) {

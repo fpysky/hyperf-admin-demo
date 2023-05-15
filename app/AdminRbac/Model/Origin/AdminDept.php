@@ -7,25 +7,25 @@ namespace App\AdminRbac\Model\Origin;
 use App\Model\Model;
 
 /**
- * @property int $id 
- * @property int $role_id 角色id
- * @property int $admin_id 用户id
+ * @property int $admin_id 管理员id
+ * @property int $dept_id 部门id
  */
-class AdminRole extends Model
+class AdminDept extends Model
 {
     public bool $timestamps = false;
+
     /**
      * The table associated with the model.
      */
-    protected ?string $table = 'admin_role';
+    protected ?string $table = 'admin_dept';
 
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'role_id', 'admin_id'];
+    protected array $fillable = ['admin_id', 'dept_id'];
 
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'role_id' => 'integer', 'admin_id' => 'integer'];
+    protected array $casts = ['admin_id' => 'integer', 'dept_id' => 'integer'];
 }

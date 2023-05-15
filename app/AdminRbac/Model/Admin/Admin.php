@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\AdminRbac\Model\Admin;
 
 use App\AdminRbac\Model\Admin\Traits\AdminRelationship;
-use App\AdminRbac\Model\Dept\Dept;
 use App\AdminRbac\Model\Origin\Admin as Base;
 use App\AdminRbac\Model\Role\Role;
 use App\AdminRbac\Model\Role\RoleRule;
@@ -18,7 +17,7 @@ use Qbhy\HyperfAuth\Authenticatable;
 
 /**
  * @property Collection $adminRole
- * @property Dept $dept
+ * @property Collection $adminDept
  */
 class Admin extends Base implements Authenticatable
 {
@@ -120,6 +119,33 @@ class Admin extends Base implements Authenticatable
     /**
      * @throws \Exception
      */
+    public function setDept(array $deptIds)
+    {
+        $this->clearDept();
+
+        $insertData = array_map(function ($deptId) {
+            return [
+                'admin_id' => $this->id,
+                'dept_id' => $deptId,
+            ];
+        }, $deptIds);
+
+        AdminDept::query()->insert($insertData);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function clearDept()
+    {
+        AdminDept::query()
+            ->where('admin_id', $this->id)
+            ->delete();
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function clearRole()
     {
         AdminRole::query()
@@ -130,6 +156,11 @@ class Admin extends Base implements Authenticatable
     public function hasRole(): bool
     {
         return $this->adminRole instanceof Collection && $this->adminRole->count();
+    }
+
+    public function hasDept(): bool
+    {
+        return $this->adminDept instanceof Collection && $this->adminDept->count();
     }
 
     /**
@@ -143,8 +174,21 @@ class Admin extends Base implements Authenticatable
         }
 
         return $this->adminRole
-            ->map(function (AdminRole $adminRole) use (&$roleIds) {
+            ->map(function (AdminRole $adminRole) {
                 return $adminRole->role_id;
+            })
+            ->toArray();
+    }
+
+    public function deptIds(): array
+    {
+        if (! $this->hasDept()) {
+            return [];
+        }
+
+        return $this->adminDept
+            ->map(function (AdminDept $adminDept) {
+                return $adminDept->dept_id;
             })
             ->toArray();
     }

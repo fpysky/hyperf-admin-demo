@@ -52,7 +52,7 @@ class DetailAction extends AbstractAction
                     new Property(property: 'email', description: '电子邮箱', type: 'string', example: ''),
                     new Property(property: 'lastLoginIp', description: '最后登陆ip', type: 'string', example: ''),
                     new Property(property: 'logo', description: '头像logo', type: 'string', example: ''),
-                    new Property(property: 'deptId', description: '部门id', type: 'integer', example: ''),
+                    new Property(property: 'deptIds', description: '部门ids', type: 'array', example: [1]),
                     new Property(property: 'postId', description: '职位id', type: 'integer', example: ''),
                     new Property(property: 'lastLoginTime', description: '最后登陆时间', type: 'string', example: ''),
                     new Property(
@@ -69,7 +69,7 @@ class DetailAction extends AbstractAction
     public function handle(int $id): ResponseInterface
     {
         $admin = Admin::query()
-            ->with(['adminRole'])
+            ->with(['adminRole','adminDept'])
             ->findOrFail($id);
 
         $data = [
@@ -81,7 +81,7 @@ class DetailAction extends AbstractAction
             'email' => $admin->email,
             'lastLoginIp' => $admin->last_login_ip,
             'logo' => $admin->logo,
-            'deptId' => $admin->dept_id,
+            'deptIds' => $admin->deptIds(),
             'postId' => $admin->post_id,
             'lastLoginTime' => $admin->last_login_time,
             'roleIds' => $admin->roleIds(),

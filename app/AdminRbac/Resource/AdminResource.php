@@ -22,24 +22,12 @@ class AdminResource extends JsonResource
             'email' => $this->email,
             'lastLoginIp' => $this->last_login_ip,
             'logo' => $this->logo,
-            'deptId' => $this->dept_id,
+            'deptIds' => $this->deptIds(),
+            'roleIds' => $this->roleIds(),
             'postId' => $this->post_id,
             'lastLoginTime' => $this->getFormattedDateTime($this->last_login_time),
-            'dept' => self::deptInfo($this->dept),
             'createdAt' => $this->getFormattedCreatedAt(),
             'updatedAt' => $this->getFormattedUpdatedAt(),
         ];
-    }
-
-    private function deptInfo(?Dept $dept): array
-    {
-        if ($dept instanceof Dept) {
-            return [
-                'id' => $dept->id,
-                'name' => $dept->name,
-            ];
-        }
-
-        return ['id' => 0, 'name' => ''];
     }
 }

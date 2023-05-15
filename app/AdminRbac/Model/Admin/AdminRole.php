@@ -13,10 +13,6 @@ use Hyperf\Database\Model\Relations\HasOne;
  */
 class AdminRole extends Base
 {
-    public bool $timestamps = false;
-
-    protected ?string $table = 'admin_role';
-
     public function role(): HasOne
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
