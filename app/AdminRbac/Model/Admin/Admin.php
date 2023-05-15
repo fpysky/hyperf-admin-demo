@@ -102,7 +102,7 @@ class Admin extends Base implements Authenticatable
      * @param array<int> $roleIds
      * @throws \Exception
      */
-    public function setRole(array $roleIds)
+    public function setRole(array $roleIds): static
     {
         $this->clearRole();
 
@@ -114,12 +114,14 @@ class Admin extends Base implements Authenticatable
         }, $roleIds);
 
         AdminRole::query()->insert($insertData);
+
+        return $this;
     }
 
     /**
      * @throws \Exception
      */
-    public function setDept(array $deptIds)
+    public function setDept(array $deptIds): static
     {
         $this->clearDept();
 
@@ -131,6 +133,8 @@ class Admin extends Base implements Authenticatable
         }, $deptIds);
 
         AdminDept::query()->insert($insertData);
+
+        return $this;
     }
 
     /**

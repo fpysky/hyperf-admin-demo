@@ -28,7 +28,7 @@ class RuleController extends AbstractAction
     #[Inject]
     protected CacheRule $cacheRule;
 
-    #[GetMapping(path: '/system/backend/backendAdminRule')]
+    #[GetMapping(path: '/rule')]
     public function index(): ResponseInterface
     {
         $list = Rule::query()
@@ -36,10 +36,10 @@ class RuleController extends AbstractAction
             ->with([
                 'children' => function ($query) {
                     $query->with('children')
-                        ->orderBy('order');
+                        ->orderBy('sort');
                 },
             ])
-            ->orderBy('order')
+            ->orderBy('sort')
             ->get();
 
         return $this->success(RuleResource::collection($list));

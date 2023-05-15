@@ -80,6 +80,7 @@ class CreateAction extends AbstractAction
             $admin->post_id = $postId;
 
             $admin->saveOrFail();
+
             $admin->setRole($roleIds);
             $admin->setDept($deptIds);
 

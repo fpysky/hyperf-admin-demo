@@ -29,8 +29,8 @@ class DeleteAction extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/admin/delete/{ids}')]
-    #[Delete(path: '/admin/delete/{ids}',summary: '管理员删除',tags: ['后台管理/系统管理/管理员'])]
+    #[DeleteMapping(path: '/admin')]
+    #[Delete(path: '/admin', summary: '管理员删除', tags: ['后台管理/系统管理/管理员'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -40,9 +40,9 @@ class DeleteAction extends AbstractAction
             new Property(property: 'data', description: '返回对象', type: 'object'),
         ]
     ))]
-    public function destroy(string $ids): ResponseInterface
+    public function destroy(): ResponseInterface
     {
-        $ids = explode(',', $ids) ?? [];
+        $ids = (array) $this->request->input('ids', []);
 
         if (Admin::hasSuperAdmin($ids)) {
             throw new UnprocessableEntityException('不能删除超级管理员');

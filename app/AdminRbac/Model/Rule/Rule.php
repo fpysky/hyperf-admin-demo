@@ -40,6 +40,13 @@ class Rule extends Base
     /** 类型：接口 */
     public const TYPE_API = 4;
 
+    public const TYPE_ZH = [
+        self::TYPE_DIRECTORY => '目录',
+        self::TYPE_MENU => '菜单',
+        self::TYPE_BUTTON => '按钮',
+        self::TYPE_API => '接口',
+    ];
+
     public function getRuleRoles(): array
     {
         if (! $this->roleRule->isEmpty()) {
@@ -89,5 +96,10 @@ class Rule extends Base
         }
 
         return $model;
+    }
+
+    public function getTypeZh(): string
+    {
+        return self::TYPE_ZH[$this->type] ?? '未知类型';
     }
 }
