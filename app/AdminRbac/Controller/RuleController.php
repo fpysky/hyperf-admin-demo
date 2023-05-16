@@ -66,7 +66,7 @@ class RuleController extends AbstractAction
         return $this->message('权限添加成功');
     }
 
-    #[PutMapping(path: '/system/backend/backendAdminRule')]
+    #[PutMapping(path: '/rule')]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = (int) $request->input('id');
