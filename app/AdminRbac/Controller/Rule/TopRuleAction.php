@@ -14,13 +14,13 @@ use Psr\Http\Message\ResponseInterface;
 
 #[Controller]
 #[Middlewares([AuthMiddleware::class])]
-class TopRuleComboboxAction extends AbstractAction
+class TopRuleAction extends AbstractAction
 {
-    #[GetMapping(path: '/system/backend/backendAdminRule/topRuleCombobox')]
+    #[GetMapping(path: '/rule/topRule')]
     public function handle(): ResponseInterface
     {
         $rules = Rule::query()
-            ->select(['id', 'name as label'])
+            ->select(['id', 'name'])
             ->where('parent_id', 0)
             ->get();
 

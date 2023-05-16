@@ -29,7 +29,7 @@ class RuleStoreRequest extends FormRequest
             'path' => 'required_if:type,2|max:50',
             'route' => 'required_unless:type,1,2|max:100',
             'sort' => 'required|integer|between:1,255',
-            'status' => 'required|in:1,2',
+            'status' => 'required|in:0,1',
         ];
     }
 

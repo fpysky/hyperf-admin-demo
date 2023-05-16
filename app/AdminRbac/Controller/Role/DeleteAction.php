@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\AdminRbac\Controller\Role;
 
 use App\Actions\AbstractAction;
+use App\AdminRbac\Model\Admin\AdminRole;
 use App\AdminRbac\Model\Role\Role;
+use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -28,8 +30,8 @@ class DeleteAction extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/role/delete/{ids}')]
-    #[Delete(path: '/role/delete/{ids}',summary: '角色删除',tags: ['后台管理/系统管理/角色'])]
+    #[DeleteMapping(path: '/role')]
+    #[Delete(path: '/role',summary: '角色删除',tags: ['后台管理/系统管理/角色'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -39,12 +41,18 @@ class DeleteAction extends AbstractAction
             new Property(property: 'data', description: '返回对象', type: 'object'),
         ]
     ))]
-    public function handle(string $ids): ResponseInterface
+    public function handle(): ResponseInterface
     {
-        $ids = explode(',', $ids) ?? [];
-        $ids = array_filter($ids);
+        $ids = (array) $this->request->input('ids', []);
 
-        // todo::这里思考一下，角色删除是不是需要查询是否有关联数据
+        $hasAdminRole = AdminRole::query()
+            ->whereIn('role_id',$ids)
+            ->exists();
+
+        if($hasAdminRole){
+            throw new UnprocessableEntityException('有管理员绑定此角色，请解绑后再操作');
+        }
+
         Role::query()
             ->whereIn('id', $ids)
             ->delete();

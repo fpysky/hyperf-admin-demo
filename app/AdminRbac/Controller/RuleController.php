@@ -17,6 +17,7 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
+use Hyperf\HttpServer\Annotation\PatchMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Psr\Http\Message\ResponseInterface;
@@ -36,6 +37,7 @@ class RuleController extends AbstractAction
             ->with([
                 'children' => function ($query) {
                     $query->with('children')
+                        ->orderByDesc('type')
                         ->orderBy('sort');
                 },
             ])
@@ -45,14 +47,14 @@ class RuleController extends AbstractAction
         return $this->success(RuleResource::collection($list));
     }
 
-    #[PostMapping(path: '/system/backend/backendAdminRule')]
+    #[PostMapping(path: '/rule')]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
         $rule = new Rule();
         $rule->parent_id = (int) $request->input('parentId');
         $rule->status = (int) $request->input('status');
         $rule->type = (int) $request->input('type');
-        $rule->order = (int) $request->input('sort');
+        $rule->sort = (int) $request->input('sort');
         $rule->name = $request->input('name');
         $rule->icon = $request->input('icon');
         $rule->route = $request->input('route');
@@ -74,7 +76,7 @@ class RuleController extends AbstractAction
         $rule->parent_id = (int) $request->input('parentId');
         $rule->status = (int) $request->input('status');
         $rule->type = (int) $request->input('type');
-        $rule->order = (int) $request->input('sort');
+        $rule->sort = (int) $request->input('sort');
         $rule->name = $request->input('name');
         $rule->icon = $request->input('icon');
         $rule->route = $request->input('route');
@@ -100,7 +102,7 @@ class RuleController extends AbstractAction
         return $this->message('权限排序成功');
     }
 
-    #[PutMapping(path: '/system/backend/backendAdminRule/status')]
+    #[PatchMapping(path: '/rule/status')]
     public function upStatus(): ResponseInterface
     {
         $ids = (array) $this->request->input('ids');
@@ -122,11 +124,10 @@ class RuleController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/system/backend/backendAdminRule/{ids}')]
-    public function destroy(string $ids): ResponseInterface
+    #[DeleteMapping(path: '/rule')]
+    public function destroy(): ResponseInterface
     {
-        $ids = explode(',', $ids) ?? [];
-        $ids = array_filter($ids);
+        $ids = (array) $this->request->input('ids', []);
 
         Rule::query()
             ->whereIn('id', $ids)

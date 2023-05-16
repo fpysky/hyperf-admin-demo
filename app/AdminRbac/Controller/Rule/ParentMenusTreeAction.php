@@ -17,17 +17,12 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class])]
 class ParentMenusTreeAction extends AbstractAction
 {
-    #[GetMapping(path: '/system/backend/backendAdminRule/parentMenusTree')]
+    #[GetMapping(path: '/rule/parentMenusTree')]
     public function handle(): ResponseInterface
     {
         $rules = Rule::query()
-            ->with([
-                'children' => function (HasMany $query) {
-                    $query->select(['id', 'name', 'parent_id']);
-                },
-            ])
             ->select(['id', 'name'])
-            ->where('type', 1)
+            ->where('type', Rule::TYPE_MENU)
             ->get();
 
         return $this->success($rules);
