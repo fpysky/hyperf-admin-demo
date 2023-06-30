@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class])]
 class RuleTreeAction extends AbstractAction
 {
-    #[GetMapping(path: '/system/backend/backendAdminRule/ruleTree/{roleId:\d+}')]
+    #[GetMapping(path: '/rule/roleRuleTree/{roleId:\d+}')]
     public function handle(int $roleId): ResponseInterface
     {
         $ruleIds = RoleRule::query()

@@ -864,16 +864,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.6.0",
+            "version": "7.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "733dd89533dd371a0987172727df15f500dab0ef"
+                "reference": "fb7566caccf22d74d1ab270de3551f72a58399f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/733dd89533dd371a0987172727df15f500dab0ef",
-                "reference": "733dd89533dd371a0987172727df15f500dab0ef",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/fb7566caccf22d74d1ab270de3551f72a58399f5",
+                "reference": "fb7566caccf22d74d1ab270de3551f72a58399f5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -884,7 +884,7 @@
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/promises": "^1.5",
+                "guzzlehttp/promises": "^1.5.3 || ^2.0",
                 "guzzlehttp/psr7": "^1.9.1 || ^2.4.5",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
@@ -896,7 +896,8 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.1",
                 "ext-curl": "*",
-                "php-http/client-integration-tests": "^3.0",
+                "php-http/client-integration-tests": "dev-master#2c025848417c1135031fdf9c728ee53d0a7ceaee as 3.0.999",
+                "php-http/message-factory": "^1.1",
                 "phpunit/phpunit": "^8.5.29 || ^9.5.23",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
             },
@@ -975,7 +976,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.6.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.7.0"
             },
             "funding": [
                 {
@@ -991,20 +992,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-14T11:23:39+00:00"
+            "time": "2023-05-21T14:04:53+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "b94b2807d85443f9719887892882d0329d1e2598"
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/b94b2807d85443f9719887892882d0329d1e2598",
-                "reference": "b94b2807d85443f9719887892882d0329d1e2598",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/67ab6e18aaa14d753cc148911d273f6e6cb6721e",
+                "reference": "67ab6e18aaa14d753cc148911d273f6e6cb6721e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1020,11 +1021,6 @@
                 "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "src/functions_include.php"
@@ -1065,7 +1061,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/1.5.2"
+                "source": "https://github.com/guzzle/promises/tree/1.5.3"
             },
             "funding": [
                 {
@@ -1081,7 +1077,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-28T14:55:35+00:00"
+            "time": "2023-05-21T12:31:43+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1211,8 +1207,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/cache/v3.0.18",
-                "reference": "4722671dd5c7515f2c59d5797e763bd3dc0f8fd7",
-                "shasum": "4722671dd5c7515f2c59d5797e763bd3dc0f8fd7"
+                "reference": "279e0347cb06b0ebe1cca8c3870da544f9c5984b",
+                "shasum": "279e0347cb06b0ebe1cca8c3870da544f9c5984b"
             },
             "require": {
                 "hyperf/codec": "~3.0.0",
@@ -1269,8 +1265,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/code-parser/v3.0.18",
-                "reference": "4396da000cb21141f80dbaa5ae0af58caf27bde4",
-                "shasum": "4396da000cb21141f80dbaa5ae0af58caf27bde4"
+                "reference": "cd347a94a26f72ec62651733c2b15d32adafc403",
+                "shasum": "cd347a94a26f72ec62651733c2b15d32adafc403"
             },
             "require": {
                 "hyperf/collection": "~3.0.0",
@@ -1321,8 +1317,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/codec/v3.0.1",
-                "reference": "ced40cd504d9887df83e3be116dba381c1ab2f61",
-                "shasum": "ced40cd504d9887df83e3be116dba381c1ab2f61"
+                "reference": "56c0ddec38ba317a15113cb5572e9288c9171adb",
+                "shasum": "56c0ddec38ba317a15113cb5572e9288c9171adb"
             },
             "require": {
                 "ext-json": "*",
@@ -1365,12 +1361,12 @@
         },
         {
             "name": "hyperf/collection",
-            "version": "v3.0.20",
+            "version": "v3.0.21",
             "dist": {
                 "type": "zip",
-                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/collection/v3.0.20",
-                "reference": "14781b63a3f520d80dae6668067dcd8b46e5a2de",
-                "shasum": "14781b63a3f520d80dae6668067dcd8b46e5a2de"
+                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/collection/v3.0.21",
+                "reference": "373715bf15cf6b229be62b5601a5c16bd9864c8f",
+                "shasum": "373715bf15cf6b229be62b5601a5c16bd9864c8f"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -1419,8 +1415,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/command/v3.0.18",
-                "reference": "aa6b9fa3411b528cfe1217856732aa15eba28d36",
-                "shasum": "aa6b9fa3411b528cfe1217856732aa15eba28d36"
+                "reference": "d153d3e3b26aa16a285ec78a5e3e71a59288ac1f",
+                "shasum": "d153d3e3b26aa16a285ec78a5e3e71a59288ac1f"
             },
             "require": {
                 "hyperf/support": "~3.0.0",
@@ -1465,8 +1461,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/conditionable/v3.0.0",
-                "reference": "0e0405dbccb61010e4b2439a5cc218b9493d745e",
-                "shasum": "0e0405dbccb61010e4b2439a5cc218b9493d745e"
+                "reference": "b06dbeaeff3e73460164be9329e728aa6ad0a2a9",
+                "shasum": "b06dbeaeff3e73460164be9329e728aa6ad0a2a9"
             },
             "require": {
                 "php": ">=7.4"
@@ -1510,8 +1506,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/config/v3.0.20",
-                "reference": "542b71a4ecc9d0a798a5763c6fefe12a1f804315",
-                "shasum": "542b71a4ecc9d0a798a5763c6fefe12a1f804315"
+                "reference": "7838dde1bfaf7b2a8939db057c029138caa3f999",
+                "shasum": "7838dde1bfaf7b2a8939db057c029138caa3f999"
             },
             "require": {
                 "hyperf/collection": "~3.0.0",
@@ -1574,8 +1570,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/constants/v3.0.18",
-                "reference": "8bf5aa2ea000d6860e3d7f46b8cad660f3ffeb43",
-                "shasum": "8bf5aa2ea000d6860e3d7f46b8cad660f3ffeb43"
+                "reference": "4f7c2c4c4d7a3ed9ef04501193f65da1031ee404",
+                "shasum": "4f7c2c4c4d7a3ed9ef04501193f65da1031ee404"
             },
             "require": {
                 "hyperf/di": "~3.0.0",
@@ -1627,8 +1623,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/context/v3.0.18",
-                "reference": "279f1e53732811876f1146c85f06285818c93552",
-                "shasum": "279f1e53732811876f1146c85f06285818c93552"
+                "reference": "0638f67630002a645d2ee279f05be4f6be293f50",
+                "shasum": "0638f67630002a645d2ee279f05be4f6be293f50"
             },
             "require": {
                 "hyperf/engine": "^1.2|^2.0",
@@ -1673,8 +1669,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/contract/v3.0.10",
-                "reference": "f271deee09424288edf9fe7b53380eb245ad59f9",
-                "shasum": "f271deee09424288edf9fe7b53380eb245ad59f9"
+                "reference": "c949a60256b71b8ce2c4cf17982a970f6e0500d4",
+                "shasum": "c949a60256b71b8ce2c4cf17982a970f6e0500d4"
             },
             "require": {
                 "php": ">=8.0"
@@ -1712,8 +1708,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/coordinator/v3.0.18",
-                "reference": "7959d134759211ff5d449095608bfe5ef5fb84f8",
-                "shasum": "7959d134759211ff5d449095608bfe5ef5fb84f8"
+                "reference": "baff70859d3a777ecbcacf70c975d4ccee415e2d",
+                "shasum": "baff70859d3a777ecbcacf70c975d4ccee415e2d"
             },
             "require": {
                 "hyperf/engine": "^1.2|^2.0",
@@ -1758,8 +1754,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/coroutine/v3.0.16",
-                "reference": "e5b2efa5c17516b8f17ac94c4eb65a8ecc965a07",
-                "shasum": "e5b2efa5c17516b8f17ac94c4eb65a8ecc965a07"
+                "reference": "74e6d5ad3bf10bfb9a62a921672a7221b37059d6",
+                "shasum": "74e6d5ad3bf10bfb9a62a921672a7221b37059d6"
             },
             "require": {
                 "hyperf/context": "~3.0.0",
@@ -1805,12 +1801,12 @@
         },
         {
             "name": "hyperf/database",
-            "version": "v3.0.20",
+            "version": "v3.0.21",
             "dist": {
                 "type": "zip",
-                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/database/v3.0.20",
-                "reference": "46b49e533a01c5f7054e561d6560868101b60583",
-                "shasum": "46b49e533a01c5f7054e561d6560868101b60583"
+                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/database/v3.0.21",
+                "reference": "d43d90e65331d7a35d7a347d6adbb62bc475aa91",
+                "shasum": "d43d90e65331d7a35d7a347d6adbb62bc475aa91"
             },
             "require": {
                 "hyperf/code-parser": "~3.0.0",
@@ -1867,8 +1863,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/db-connection/v3.0.18",
-                "reference": "ee4166da327d151c13d5b9ef77706dd650dd5b2d",
-                "shasum": "ee4166da327d151c13d5b9ef77706dd650dd5b2d"
+                "reference": "ad6fe69823a5114f126db4672bfeac7202cbe780",
+                "shasum": "ad6fe69823a5114f126db4672bfeac7202cbe780"
             },
             "require": {
                 "hyperf/database": "~3.0.0",
@@ -1923,8 +1919,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/di/v3.0.18",
-                "reference": "9c0d00862575ad3fc36582b79f4e423387de82f7",
-                "shasum": "9c0d00862575ad3fc36582b79f4e423387de82f7"
+                "reference": "2b436bca986b15ea2c619a259c78c18bb9e76f35",
+                "shasum": "2b436bca986b15ea2c619a259c78c18bb9e76f35"
             },
             "require": {
                 "doctrine/instantiator": "^1.0",
@@ -1985,8 +1981,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/dispatcher/v3.0.16",
-                "reference": "360c804c20b62298e0c2bc1e063be16dbc9a5e5c",
-                "shasum": "360c804c20b62298e0c2bc1e063be16dbc9a5e5c"
+                "reference": "6c1d4943a6ca6f786ce86891d9df867822e6d0e2",
+                "shasum": "6c1d4943a6ca6f786ce86891d9df867822e6d0e2"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2090,8 +2086,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/event/v3.0.0",
-                "reference": "96bdbdde4e8f1a8998d4c63eb4ccfa0e1a91c0f6",
-                "shasum": "96bdbdde4e8f1a8998d4c63eb4ccfa0e1a91c0f6"
+                "reference": "92be7f636ad0e040351c47cdf46bb650de56af4e",
+                "shasum": "92be7f636ad0e040351c47cdf46bb650de56af4e"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2143,8 +2139,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/exception-handler/v3.0.18",
-                "reference": "9df1dec734ec08e15bed0bb108d37147d60da37a",
-                "shasum": "9df1dec734ec08e15bed0bb108d37147d60da37a"
+                "reference": "44e357581bd8781a98a4958cbd68a3994d07c780",
+                "shasum": "44e357581bd8781a98a4958cbd68a3994d07c780"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2196,8 +2192,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/framework/v3.0.18",
-                "reference": "19136dfd80c2e33109cb5a07ddfff7b16c349bdf",
-                "shasum": "19136dfd80c2e33109cb5a07ddfff7b16c349bdf"
+                "reference": "34add1d544771e9d8c40d64c07d1fea497b6b9da",
+                "shasum": "34add1d544771e9d8c40d64c07d1fea497b6b9da"
             },
             "require": {
                 "fig/http-message-util": "^1.1.2",
@@ -2260,8 +2256,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/guzzle/v3.0.18",
-                "reference": "a517d0cdaeb324b1f995e3c960d82fdc21fc51b9",
-                "shasum": "a517d0cdaeb324b1f995e3c960d82fdc21fc51b9"
+                "reference": "acb156755030b43934148962fc695f80e4ca9364",
+                "shasum": "acb156755030b43934148962fc695f80e4ca9364"
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.3|^7.0",
@@ -2309,8 +2305,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/http-message/v3.0.18",
-                "reference": "fe47ba26abc9767660d1c3e69b5a34c1130ce94b",
-                "shasum": "fe47ba26abc9767660d1c3e69b5a34c1130ce94b"
+                "reference": "e82c884c36da2039662e371ca7e65ce56a88439c",
+                "shasum": "e82c884c36da2039662e371ca7e65ce56a88439c"
             },
             "require": {
                 "hyperf/codec": "~3.0.0",
@@ -2356,12 +2352,12 @@
         },
         {
             "name": "hyperf/http-server",
-            "version": "v3.0.20",
+            "version": "v3.0.21",
             "dist": {
                 "type": "zip",
-                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/http-server/v3.0.20",
-                "reference": "628a777dfbc17540c46db456dd049a9cfac17a78",
-                "shasum": "628a777dfbc17540c46db456dd049a9cfac17a78"
+                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/http-server/v3.0.21",
+                "reference": "99bc0349474977a2052d678b97bb28b35679e360",
+                "shasum": "99bc0349474977a2052d678b97bb28b35679e360"
             },
             "require": {
                 "hyperf/codec": "~3.0.0",
@@ -2427,8 +2423,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/logger/v3.0.20",
-                "reference": "08aac8efcfef2f2e77a070d0fbdf3c8625a8e2b5",
-                "shasum": "08aac8efcfef2f2e77a070d0fbdf3c8625a8e2b5"
+                "reference": "7538fd9850221173eecad1ce7298c9dc96268f60",
+                "shasum": "7538fd9850221173eecad1ce7298c9dc96268f60"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2480,8 +2476,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/macroable/v3.0.0",
-                "reference": "98bd63efaea83fffb2804a11ea0f349f6740647f",
-                "shasum": "98bd63efaea83fffb2804a11ea0f349f6740647f"
+                "reference": "dec34b600f49d315e0fab1c5df9af60921bd8948",
+                "shasum": "dec34b600f49d315e0fab1c5df9af60921bd8948"
             },
             "require": {
                 "php": ">=7.4"
@@ -2569,8 +2565,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/model-cache/v3.0.18",
-                "reference": "14863a2b379f0a8a01bdc0e8485aa73f436c56ed",
-                "shasum": "14863a2b379f0a8a01bdc0e8485aa73f436c56ed"
+                "reference": "213ca40fbdb81452e2c2312408630fb229135a48",
+                "shasum": "213ca40fbdb81452e2c2312408630fb229135a48"
             },
             "require": {
                 "hyperf/codec": "~3.0.0",
@@ -2626,8 +2622,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/model-listener/v3.0.18",
-                "reference": "5a7c8566ba52f37c12f2a1074c3383865cc704ab",
-                "shasum": "5a7c8566ba52f37c12f2a1074c3383865cc704ab"
+                "reference": "04aa82319f313cf65271ec15af908bccc7e4e166",
+                "shasum": "04aa82319f313cf65271ec15af908bccc7e4e166"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2732,8 +2728,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/pipeline/v3.0.16",
-                "reference": "fc10bfaa7ee5be70aa9ce69c935e4a83e7820e30",
-                "shasum": "fc10bfaa7ee5be70aa9ce69c935e4a83e7820e30"
+                "reference": "f77f6d34bc9b7cb46ae12febabe08a7086e55bf0",
+                "shasum": "f77f6d34bc9b7cb46ae12febabe08a7086e55bf0"
             },
             "require": {
                 "php": ">=8.0",
@@ -2778,8 +2774,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/pool/v3.0.18",
-                "reference": "25160223171e01a1f440d950d4f46745d121f67d",
-                "shasum": "25160223171e01a1f440d950d4f46745d121f67d"
+                "reference": "661fe6ae08d8c06d697518d4b590cb099625e73d",
+                "shasum": "661fe6ae08d8c06d697518d4b590cb099625e73d"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2830,8 +2826,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/process/v3.0.18",
-                "reference": "008f09c09b72b460219e5a672944b2ed0aa6d9b0",
-                "shasum": "008f09c09b72b460219e5a672944b2ed0aa6d9b0"
+                "reference": "9893fc60acad08f653c5b2ea6819d8a9c3de1276",
+                "shasum": "9893fc60acad08f653c5b2ea6819d8a9c3de1276"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -2883,12 +2879,12 @@
         },
         {
             "name": "hyperf/redis",
-            "version": "v3.0.18",
+            "version": "v3.0.21",
             "dist": {
                 "type": "zip",
-                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/redis/v3.0.18",
-                "reference": "ea8fb85ae53d95458abea2e54ba9f02d2854a8ba",
-                "shasum": "ea8fb85ae53d95458abea2e54ba9f02d2854a8ba"
+                "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/redis/v3.0.21",
+                "reference": "b9eac4e83133aa217a98c5f79518d1a24836e1ec",
+                "shasum": "b9eac4e83133aa217a98c5f79518d1a24836e1ec"
             },
             "require": {
                 "ext-redis": "*",
@@ -2997,8 +2993,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/serializer/v3.0.0",
-                "reference": "17d354db288b3e52b8e40e93b93afbd08ad6cdad",
-                "shasum": "17d354db288b3e52b8e40e93b93afbd08ad6cdad"
+                "reference": "adb721b8080c76c63cf3fca2cade510bc2c68b30",
+                "shasum": "adb721b8080c76c63cf3fca2cade510bc2c68b30"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -3051,8 +3047,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/server/v3.0.20",
-                "reference": "894ee127930702f80dee3fcca4a6a02b5144632a",
-                "shasum": "894ee127930702f80dee3fcca4a6a02b5144632a"
+                "reference": "b24d8736ca4c1fcadb6d7cb066ec9eac76108220",
+                "shasum": "b24d8736ca4c1fcadb6d7cb066ec9eac76108220"
             },
             "require": {
                 "hyperf/contract": "~3.0.0",
@@ -3112,8 +3108,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/stringable/v3.0.18",
-                "reference": "b6835d4b2b0ca66be00643d397f0b89377f48156",
-                "shasum": "b6835d4b2b0ca66be00643d397f0b89377f48156"
+                "reference": "0df890c78f02daf27a1d915162fc1c310696fd0b",
+                "shasum": "0df890c78f02daf27a1d915162fc1c310696fd0b"
             },
             "require": {
                 "hyperf/collection": "~3.0.0",
@@ -3169,8 +3165,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/support/v3.0.1",
-                "reference": "ddae9e7ef596a725cbd4ace83c759e17ea3a4248",
-                "shasum": "ddae9e7ef596a725cbd4ace83c759e17ea3a4248"
+                "reference": "d96bf030d17df2fe585451543dd3ed21f99bddcf",
+                "shasum": "d96bf030d17df2fe585451543dd3ed21f99bddcf"
             },
             "require": {
                 "hyperf/collection": "~3.0.0",
@@ -3275,8 +3271,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/tappable/v3.0.0",
-                "reference": "f8f49769369e6fe14a6897cde4a0905ca30365f2",
-                "shasum": "f8f49769369e6fe14a6897cde4a0905ca30365f2"
+                "reference": "9bf4ebb123a00f1f11b4952a6f3f5557a2602feb",
+                "shasum": "9bf4ebb123a00f1f11b4952a6f3f5557a2602feb"
             },
             "require": {
                 "php": ">=7.4"
@@ -3371,8 +3367,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy/archive/hyperf/utils/v3.0.18",
-                "reference": "9d500720adac58dbe5c257fc3cb9973cd2e9774a",
-                "shasum": "9d500720adac58dbe5c257fc3cb9973cd2e9774a"
+                "reference": "8b0f73fa6fb8e309bcc06115c114f2a8efccdc2e",
+                "shasum": "8b0f73fa6fb8e309bcc06115c114f2a8efccdc2e"
             },
             "require": {
                 "doctrine/inflector": "^2.0",
@@ -3895,16 +3891,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.15.4",
+            "version": "v4.15.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "6bb5176bc4af8bcb7d926f88718db9b96a2d4290"
+                "reference": "11e2663a5bc9db5d714eedb4277ee300403b4a9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/6bb5176bc4af8bcb7d926f88718db9b96a2d4290",
-                "reference": "6bb5176bc4af8bcb7d926f88718db9b96a2d4290",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/11e2663a5bc9db5d714eedb4277ee300403b4a9e",
+                "reference": "11e2663a5bc9db5d714eedb4277ee300403b4a9e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3951,9 +3947,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.4"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.15.5"
             },
-            "time": "2023-03-05T19:49:14+00:00"
+            "time": "2023-05-19T20:20:00+00:00"
         },
         {
             "name": "php-di/phpdoc-reader",
