@@ -102,7 +102,6 @@ class AdminController extends AbstractAction
             $admin->mobile = $mobile;
             $admin->email = $email;
             $admin->post_id = $postId;
-
             $admin->saveOrFail();
 
             $admin->setRole($roleIds);
