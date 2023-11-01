@@ -85,7 +85,7 @@ class ListAction extends AbstractAction
         $keyword = (string) $this->request->input('keyword');
 
         $builder = Admin::query()
-            ->with(['adminDept','adminRole'])
+            ->with(['adminDept', 'adminRole'])
             ->orderByDesc('id');
 
         if (Str::length($keyword) !== 0) {

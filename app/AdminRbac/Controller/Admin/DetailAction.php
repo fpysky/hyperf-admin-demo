@@ -69,7 +69,7 @@ class DetailAction extends AbstractAction
     public function handle(int $id): ResponseInterface
     {
         $admin = Admin::query()
-            ->with(['adminRole','adminDept'])
+            ->with(['adminRole', 'adminDept'])
             ->findOrFail($id);
 
         $data = [

@@ -70,7 +70,6 @@ class CreateAction extends AbstractAction
             Db::beginTransaction();
 
             $admin = new Admin();
-
             $admin->name = $name;
             $admin->password = encryptPassword($password);
             $admin->status = $status;
