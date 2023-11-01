@@ -8,5 +8,4 @@ use App\AdminRbac\Model\Origin\AdminDept as Base;
 
 class AdminDept extends Base
 {
-
 }

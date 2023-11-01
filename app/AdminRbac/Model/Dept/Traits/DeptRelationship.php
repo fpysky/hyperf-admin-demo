@@ -17,6 +17,6 @@ trait DeptRelationship
     public function enabledChildren(): HasMany
     {
         return $this->hasMany(Dept::class, 'parent_id', 'id')
-            ->where('status',self::STATUS_ENABLE);
+            ->where('status', self::STATUS_ENABLE);
     }
 }

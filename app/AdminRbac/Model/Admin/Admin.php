@@ -26,13 +26,10 @@ class Admin extends Base implements Authenticatable
 
     /** 类型：超级管理员 */
     public const TYPE_SUPER = 1;
-
     /** 类型：普通管理员 */
     public const TYPE_NORMAL = 2;
-
     /** 状态：启用 */
     public const STATUS_ENABLE = 1;
-
     /** 状态：禁用 */
     public const STATUS_DISABLED = 0;
 
