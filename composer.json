@@ -12,31 +12,32 @@
     "description": "A coroutine framework that focuses on hyperspeed and flexible, specifically use for build microservices and middlewares.",
     "license": "Apache-2.0",
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.1",
         "ext-redis": "*",
-        "96qbhy/hyperf-auth": "3.0.*",
-        "hyperf/cache": "3.0.*",
-        "hyperf/command": "3.0.*",
-        "hyperf/config": "3.0.*",
-        "hyperf/constants": "3.0.*",
-        "hyperf/db-connection": "3.0.*",
-        "hyperf/framework": "3.0.*",
-        "hyperf/guzzle": "3.0.*",
-        "hyperf/http-server": "3.0.*",
-        "hyperf/logger": "3.0.*",
-        "hyperf/memory": "3.0.*",
-        "hyperf/model-cache": "3.0.*",
-        "hyperf/paginator": "3.0.*",
-        "hyperf/process": "3.0.*",
-        "hyperf/redis": "3.0.*",
-        "hyperf/resource": "3.0.*",
-        "hyperf/swagger": "3.0.*",
-        "hyperf/validation": "3.0.*"
+        "96qbhy/hyperf-auth": "3.1.*",
+        "hyperf/cache": "3.1.*",
+        "hyperf/command": "3.1.*",
+        "hyperf/config": "3.1.*",
+        "hyperf/constants": "3.1.*",
+        "hyperf/db-connection": "3.1.*",
+        "hyperf/framework": "3.1.*",
+        "hyperf/guzzle": "3.1.*",
+        "hyperf/http-server": "3.1.*",
+        "hyperf/logger": "3.1.*",
+        "hyperf/memory": "3.1.*",
+        "hyperf/model-cache": "3.1.*",
+        "hyperf/paginator": "3.1.*",
+        "hyperf/process": "3.1.*",
+        "hyperf/redis": "3.1.*",
+        "hyperf/resource": "3.1.*",
+        "hyperf/swagger": "3.1.*",
+        "hyperf/validation": "3.1.*",
+        "hyperf/helper": "3.1.*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "hyperf/devtool": "~3.0.0",
-        "hyperf/testing": "~3.0.0",
+        "hyperf/devtool": "3.1.*",
+        "hyperf/testing": "3.1.*",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mockery/mockery": "^1.0",
         "phpstan/phpstan": "^1.0",
@@ -83,16 +84,7 @@
           "Composer\\Config::disableProcessTimeout",
           "php ./bin/hyperf.php start"
         ],
-        "gen:adminRbac-model":"php ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/AdminRbac/Model/Origin",
+        "gen:adminRbac-model":"php8.1 ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/AdminRbac/Model/Origin",
         "gen:swagger":"php ./bin/hyperf.php gen:swagger"
-    },
-    "repositories": {
-        "proxy": {
-            "type": "composer",
-            "url": "https://hyperf-cloud-composer.pkg.coding.net/limingxinleo/proxy",
-            "only": [
-                "hyperf/*"
-            ]
-        }
     }
 }
