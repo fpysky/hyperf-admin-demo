@@ -82,7 +82,7 @@
         "analyse": "phpstan analyse --memory-limit 300M -l 0 -c phpstan.neon ./app ./config",
         "start": [
           "Composer\\Config::disableProcessTimeout",
-          "php ./bin/hyperf.php start"
+          "php8.1 ./bin/hyperf.php start"
         ],
         "gen:adminRbac-model":"php8.1 ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/AdminRbac/Model/Origin",
         "gen:swagger":"php ./bin/hyperf.php gen:swagger"

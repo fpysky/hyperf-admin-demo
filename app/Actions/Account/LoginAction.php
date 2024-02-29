@@ -22,8 +22,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Qbhy\HyperfAuth\AuthManager;
 
-use function Hyperf\Coroutine\go;
-
 #[HyperfServer('http')]
 #[Controller]
 class LoginAction extends AbstractAction

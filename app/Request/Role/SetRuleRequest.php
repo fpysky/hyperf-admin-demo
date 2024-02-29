@@ -23,7 +23,7 @@ class SetRuleRequest extends FormRequest
     {
         return [
             'ruleIds' => 'required|array',
-            'roleId' => 'required|integer',
+            'roleId' => 'required|integer:strict',
         ];
     }
 
@@ -33,7 +33,6 @@ class SetRuleRequest extends FormRequest
             'ruleIds.required' => '权限id数组不能为空',
             'ruleIds.array' => '权限id必须是一个数组',
             'roleId.required' => '角色id不能为空',
-            'roleId.integer' => '角色必须是整型',
         ];
     }
 }

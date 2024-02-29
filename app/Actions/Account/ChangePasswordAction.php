@@ -24,7 +24,7 @@ use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
 #[Controller]
-#[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
+#[Middlewares([AuthMiddleware::class,RuleMiddleware::class])]
 class ChangePasswordAction extends AbstractAction
 {
     #[PostMapping(path: '/system/backend/changePassword')]
@@ -49,9 +49,9 @@ class ChangePasswordAction extends AbstractAction
     ))]
     public function handle(ChangePasswordRequest $request): ResponseInterface
     {
-        $id = (int) $request->input('id');
-        $password = (string) $request->input('password');
-        $newPassword = (string) $request->input('newPassword');
+        $id = $request->input('id');
+        $password =  $request->input('password');
+        $newPassword = $request->input('newPassword');
 
         $admin = Admin::findFromCacheOrFail($id);
 

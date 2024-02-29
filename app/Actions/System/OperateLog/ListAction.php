@@ -12,6 +12,7 @@ use App\Resource\AdminOperationLogResource;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
+use Hyperf\Stringable\Str;
 use Hyperf\Swagger\Annotation\Get;
 use Hyperf\Swagger\Annotation\HeaderParameter;
 use Hyperf\Swagger\Annotation\HyperfServer;
@@ -21,7 +22,6 @@ use Hyperf\Swagger\Annotation\Property;
 use Hyperf\Swagger\Annotation\QueryParameter;
 use Hyperf\Swagger\Annotation\Response;
 use Hyperf\Swagger\Annotation\Schema;
-use Hyperf\Utils\Str;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
@@ -76,8 +76,8 @@ class ListAction extends AbstractAction
     public function handle(): ResponseInterface
     {
         $pageSize = (int) $this->request->input('pageSize');
-        $module = (string) $this->request->input('module');
         $operateType = (int) $this->request->input('operateType');
+        $module = (string) $this->request->input('module');
         $operateAdmin = (string) $this->request->input('operateAdmin');
         $operateStatusStr = (string) $this->request->input('operateStatusStr');
         $operateTimeStart = (string) $this->request->input('operateTimeStart');

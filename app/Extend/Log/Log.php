@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 
 class Log
 {
-    public static function get(string $name = 'xxxx',string $group = 'default'): LoggerInterface
+    public static function get(string $name = 'admin',string $group = 'default'): LoggerInterface
     {
         return ApplicationContext::getContainer()->get(LoggerFactory::class)->get($name,$group);
     }
