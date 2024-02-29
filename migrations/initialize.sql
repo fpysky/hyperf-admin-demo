@@ -1,4 +1,4 @@
-CREATE TABLE `demo_admin` (
+CREATE TABLE `ad_admin` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
     `name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户姓名',
     `password` varchar(64) NOT NULL DEFAULT '' COMMENT '密码',
@@ -16,7 +16,7 @@ CREATE TABLE `demo_admin` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员表';
 
-CREATE TABLE `demo_admin_login_log` (
+CREATE TABLE `ad_admin_login_log` (
   `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `admin_id` smallint unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID',
   `province` varchar(10) NOT NULL DEFAULT '' COMMENT '省份名称',
@@ -26,14 +26,14 @@ CREATE TABLE `demo_admin_login_log` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员登录日志表';
 
-CREATE TABLE `demo_admin_role` (
+CREATE TABLE `ad_admin_role` (
  `id` int unsigned NOT NULL AUTO_INCREMENT,
  `role_id` int unsigned NOT NULL DEFAULT '0' COMMENT '角色id',
  `admin_id` int unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员角色表';
 
-CREATE TABLE `demo_dept` (
+CREATE TABLE `ad_dept` (
    `id` smallint unsigned NOT NULL AUTO_INCREMENT,
    `parent_id` int unsigned NOT NULL DEFAULT '0' COMMENT '父级id',
    `status` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0.禁用 1.启用',
@@ -46,7 +46,7 @@ CREATE TABLE `demo_dept` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='部门表';
 
-CREATE TABLE `demo_post` (
+CREATE TABLE `ad_post` (
    `id` smallint unsigned NOT NULL AUTO_INCREMENT,
    `name` varchar(20) NOT NULL DEFAULT '' COMMENT '职位名称',
    `status` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0.禁用 1.启用',
@@ -58,7 +58,7 @@ CREATE TABLE `demo_post` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='职位表';
 
-CREATE TABLE `demo_role` (
+CREATE TABLE `ad_role` (
    `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
    `status` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0.禁用 1.启用',
    `sort` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '排序',
@@ -70,14 +70,14 @@ CREATE TABLE `demo_role` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='角色表';
 
-CREATE TABLE `demo_role_rule` (
+CREATE TABLE `ad_role_rule` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
     `role_id` int unsigned NOT NULL DEFAULT '0' COMMENT '角色id',
     `rule_id` int unsigned NOT NULL DEFAULT '0' COMMENT '权限id',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='角色权限表';
 
-CREATE TABLE `demo_rule` (
+CREATE TABLE `ad_rule` (
    `id` int unsigned NOT NULL AUTO_INCREMENT,
    `parent_id` int unsigned NOT NULL DEFAULT '0' COMMENT '父级id',
    `status` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '状态：0.禁用 1.启用',
@@ -94,9 +94,9 @@ CREATE TABLE `demo_rule` (
    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='权限表（菜单表）';
 
-CREATE TABLE `demo_admin_dept` (
+CREATE TABLE `ad_admin_dept` (
    `admin_id` int unsigned NOT NULL DEFAULT '0' COMMENT '管理员id',
    `dept_id` int unsigned DEFAULT '0' COMMENT '部门id',
-   UNIQUE KEY `demo_admin_dept_admin_id_dept_id_uindex` (`admin_id`,`dept_id`)
+   UNIQUE KEY `ad_admin_dept_admin_id_dept_id_uindex` (`admin_id`,`dept_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员部门中间表'
 

@@ -17,7 +17,7 @@ export function login(data: LoginData): AxiosPromise<LoginResult> {
     grantType: data.grantType || 'password'
   };
   return request({
-    url: '/admin/login',
+    url: '/login',
     headers: {
       isToken: false,
       isEncrypt: true
@@ -50,7 +50,7 @@ export function register(data: any) {
  */
 export function logout() {
   return request({
-    url: '/admin/logout',
+    url: '/logout',
     method: 'post'
   });
 }
