@@ -57,7 +57,7 @@ class AdminController extends AbstractAction
     protected AuthManager $auth;
 
     #[PostMapping(path: '/admin')]
-    #[Post(path: '/admin', summary: '添加管理员', tags: ['后台管理/系统管理/管理员'])]
+    #[Post(path: '/admin', summary: '添加管理员', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status'],
         properties: [
@@ -88,8 +88,6 @@ class AdminController extends AbstractAction
         $roleIds = (array) $request->input('roleIds');
         $status = $request->input('status');
         $email = $request->input('email');
-        $deptIds = (array) $request->input('deptIds');
-        $postId = $request->input('postId');
 
         try {
             Db::beginTransaction();
@@ -101,11 +99,9 @@ class AdminController extends AbstractAction
             $admin->type = Admin::TYPE_NORMAL;
             $admin->mobile = $mobile;
             $admin->email = $email;
-            $admin->post_id = $postId;
             $admin->saveOrFail();
 
             $admin->setRole($roleIds);
-            $admin->setDept($deptIds);
 
             Db::commit();
         } catch (\Throwable $throwable) {
@@ -120,7 +116,7 @@ class AdminController extends AbstractAction
      * @throws \Exception
      */
     #[DeleteMapping(path: '/admin')]
-    #[Delete(path: '/admin', summary: '管理员删除', tags: ['后台管理/系统管理/管理员'])]
+    #[Delete(path: '/admin', summary: '管理员删除', tags: ['系统管理/管理员管理'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -146,7 +142,7 @@ class AdminController extends AbstractAction
     }
 
     #[PutMapping(path: '/admin')]
-    #[Put(path: '/admin', summary: '修改管理员', tags: ['后台管理/系统管理/管理员'])]
+    #[Put(path: '/admin', summary: '修改管理员', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status', 'roleIds'],
         properties: [
@@ -178,8 +174,6 @@ class AdminController extends AbstractAction
         $roleIds = (array) $request->input('roleIds');
         $status = $request->input('status');
         $email = $request->input('email');
-        $deptIds = (array) $request->input('deptIds');
-        $postId = $request->input('postId');
 
         $admin = Admin::findFromCacheOrFail($id);
 
@@ -194,11 +188,9 @@ class AdminController extends AbstractAction
             $admin->status = $status;
             $admin->mobile = $mobile;
             $admin->email = $email;
-            $admin->post_id = $postId;
             $admin->saveOrFail();
 
             $admin->setRole($roleIds);
-            $admin->setDept($deptIds);
 
             Db::commit();
         } catch (\Throwable $throwable) {
@@ -210,7 +202,7 @@ class AdminController extends AbstractAction
     }
 
     #[GetMapping(path: '/admin')]
-    #[Get(path: '/admin', summary: '管理员列表', tags: ['后台管理/系统管理/管理员'])]
+    #[Get(path: '/admin', summary: '管理员列表', tags: ['系统管理/管理员管理'])]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'keyword', description: '搜索关键词', required: false, schema: new Schema(type: 'string'))]
@@ -285,7 +277,7 @@ class AdminController extends AbstractAction
     }
 
     #[GetMapping(path: '/admin/{id:\d+}')]
-    #[Get(path: '/admin/{id}', summary: '管理员详情', tags: ['后台管理/系统管理/管理员'])]
+    #[Get(path: '/admin/{id}', summary: '管理员详情', tags: ['系统管理/管理员管理'])]
     #[PathParameter(name: 'id', description: '管理员id', required: true, schema: new Schema(type: 'integer'), example: 1)]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -339,8 +331,6 @@ class AdminController extends AbstractAction
             'email' => $admin->email,
             'lastLoginIp' => $admin->last_login_ip,
             'logo' => $admin->logo,
-            'deptIds' => $admin->deptIds(),
-            'postId' => $admin->post_id,
             'lastLoginTime' => $admin->last_login_time,
             'roleIds' => $admin->roleIds(),
         ];
@@ -349,7 +339,7 @@ class AdminController extends AbstractAction
     }
 
     #[PatchMapping(path: '/admin/resetPassword')]
-    #[Patch(path: '/admin/resetPassword', summary: '重置管理员密码', tags: ['后台管理/系统管理/管理员'])]
+    #[Patch(path: '/admin/resetPassword', summary: '重置管理员密码', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password'],
         properties: [
@@ -389,7 +379,7 @@ class AdminController extends AbstractAction
      * @throws TokenExpiredException
      */
     #[PatchMapping(path: '/admin/status')]
-    #[Patch(path: '/admin/status', summary: '修改管理员状态', tags: ['后台管理/系统管理/管理员'])]
+    #[Patch(path: '/admin/status', summary: '修改管理员状态', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['ids', 'status'],
         properties: [

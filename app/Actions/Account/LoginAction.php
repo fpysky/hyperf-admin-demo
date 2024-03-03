@@ -92,7 +92,7 @@ class LoginAction extends AbstractAction
 
         return $this->success([
             'id' => $admin->id,
-            'token' => "Bearer {$accessToken}",
+            'token' => $accessToken,
             'name' => $admin->name,
             'logo' => $admin->logo ?: config('myconfig.adminImg'),
         ]);

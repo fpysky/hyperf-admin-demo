@@ -15,7 +15,7 @@ class StdRespTestAction extends AbstractAction
     #[RequestMapping(path: '/stdRespTest', methods: ['GET', 'POST'])]
     public function handle(): ResponseInterface
     {
-        Log::get('order','orderCallback')->info('1111');
+        Log::get('order', 'orderCallback')->info('1111');
         return $this->success($this->request->input('data'));
     }
 }

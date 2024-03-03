@@ -149,7 +149,7 @@ class RuleController extends AbstractAction
     }
 
     #[GetMapping(path: '/rule/buttons')]
-    #[Get(path: '/rule/buttons', summary: '按钮权限列表', tags: ['后台管理/系统管理/权限'])]
+    #[Get(path: '/rule/buttons', summary: '按钮权限列表', tags: ['系统管理/权限管理'])]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
         properties: [

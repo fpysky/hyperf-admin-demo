@@ -10,7 +10,7 @@ use App\Model\Model;
  * @property int $id 
  * @property string $name 职位名称
  * @property int $status 状态：0.禁用 1.启用
- * @property int $sort 排序
+ * @property int $sort 排序：从小到大
  * @property string $remark 备注
  * @property \Carbon\Carbon $created_at 创建时间
  * @property \Carbon\Carbon $updated_at 更新时间

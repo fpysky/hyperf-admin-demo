@@ -34,8 +34,6 @@ class InitializeTable extends Migration
         $admin->type = Admin::TYPE_SUPER;
         $admin->mobile = '18888888888';
         $admin->email = '18888888888@qq.com';
-        $admin->dept_id = 1;
-        $admin->post_id = 1;
 
         $admin->save();
         $admin->setRole([1]);

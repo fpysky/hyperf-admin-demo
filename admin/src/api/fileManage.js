@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export function fileList(data) {
   return request({
-    url: '/admin/fileManage/fileList',
+    url: '/fileManage/fileList',
     method: 'get',
     params:data
   })

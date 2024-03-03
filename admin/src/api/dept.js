@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDeptTree() {
   return request({
-    url: '/admin/dept/tree',
+    url: '/dept/tree',
     method: 'get',
   })
 }

@@ -7,7 +7,7 @@ import request from '@/utils/request'
  */
 export function addUserLogin(data) {
   return request({
-    url: '/admin/login',
+    url: '/login',
     method: 'post',
     data
   })
@@ -20,7 +20,7 @@ export function addUserLogin(data) {
  */
 export function addUserInfo(data) {
   return request({
-    url: '/admin/userInfo',
+    url: '/userInfo',
     method: 'get',
     data
   })
@@ -31,7 +31,7 @@ export function addUserInfo(data) {
  */
 export function logout(){
     return request({
-        url:'/admin/logout',
+        url:'/logout',
         method:'post',
     })
 }

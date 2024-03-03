@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function ruleList() {
     return request({
-        url: '/admin/rule',
+        url: '/rule',
         method: 'get',
     })
 }
 
 export function upRuleStatus(data) {
     return request({
-        url: '/admin/rule/status',
+        url: '/rule/status',
         method: 'patch',
         data
     })
@@ -17,7 +17,7 @@ export function upRuleStatus(data) {
 
 export function createRule(data) {
     return request({
-        url: '/admin/rule',
+        url: '/rule',
         method: 'post',
         data
     })
@@ -25,7 +25,7 @@ export function createRule(data) {
 
 export function editRule(data) {
     return request({
-        url: '/admin/rule',
+        url: '/rule',
         method: 'put',
         data
     })
@@ -33,21 +33,21 @@ export function editRule(data) {
 
 export function topRule() {
     return request({
-        url: '/admin/rule/topRule',
+        url: '/rule/topRule',
         method: 'get',
     })
 }
 
 export function parentMenusTree() {
     return request({
-        url: '/admin/rule/parentMenusTree',
+        url: '/rule/parentMenusTree',
         method: 'get',
     })
 }
 
 export function deleteRule(data) {
     return request({
-        url: '/admin/rule',
+        url: '/rule',
         method: 'delete',
         data
     })
@@ -55,7 +55,7 @@ export function deleteRule(data) {
 
 export function roleRuleTree(roleId) {
     return request({
-        url: '/admin/rule/roleRuleTree/' + roleId,
+        url: '/rule/roleRuleTree/' + roleId,
         method: 'get'
     })
 }

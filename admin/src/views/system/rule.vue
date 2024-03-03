@@ -19,19 +19,21 @@
     <div class="content">
       <el-table :border="true" :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
         row-key="id" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
-        <el-table-column prop="id" label="ID" width="180" />
-        <el-table-column prop="name" label="名称" width="180" />
-        <el-table-column prop="status" label="状态" width="180">
+        <el-table-column prop="name" label="名称" width="200">
+          <template #default="scope">
+            <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
+            <span v-if="scope.row.type === 3"><el-icon><Pointer /></el-icon> {{ scope.row.name }}</span>
+            <span v-if="scope.row.type === 4"><el-icon><Switch /></el-icon> {{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
             <el-switch @change="(val) => handleRoleStatusChage(val, scope.row.id)" v-model="scope.row.status"
               style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
               :inactive-value="0" />
           </template>
         </el-table-column>
-        <el-table-column prop="route" label="后端路由" />
-        <el-table-column prop="path" label="前端路由" width="180" />
-        <el-table-column prop="sort" label="排序" width="180" />
-        <el-table-column prop="type" label="类型" width="180">
+        <el-table-column prop="type" label="类型" width="100" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.type === 1" type="success">{{ scope.row.typeZh }}</el-tag>
             <el-tag v-if="scope.row.type === 2" type="warning">{{ scope.row.typeZh }}</el-tag>
@@ -39,6 +41,9 @@
             <el-tag v-if="scope.row.type === 4" type="danger">{{ scope.row.typeZh }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="route" label="后端路由" />
+        <el-table-column prop="path" label="前端路由" width="180" />
+        <el-table-column prop="sort" label="排序" width="150" align="center"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
             <el-button size="small" @click="openCreateOrUpdate(scope.row.id)">编辑</el-button>

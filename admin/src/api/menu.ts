@@ -5,7 +5,7 @@ import { RouteRecordRaw } from 'vue-router';
 // 获取路由
 export function getRouters(): AxiosPromise<RouteRecordRaw[]> {
   return request({
-    url: '/admin/userRouters',
+    url: '/userRouters',
     method: 'get'
   });
 }
