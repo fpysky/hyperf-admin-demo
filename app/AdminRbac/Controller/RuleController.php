@@ -40,6 +40,7 @@ class RuleController extends AbstractAction
     protected CacheRule $cacheRule;
 
     #[GetMapping(path: '/rule')]
+    #[Get(path: '/rule', summary: '权限列表', tags: ['系统管理/权限管理'])]
     public function index(): ResponseInterface
     {
         $list = Rule::query()
