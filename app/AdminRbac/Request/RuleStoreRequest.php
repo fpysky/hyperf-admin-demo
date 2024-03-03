@@ -28,7 +28,7 @@ class RuleStoreRequest extends FormRequest
             'icon' => 'required_unless:type,3,4',
             'path' => 'required_if:type,2|max:50',
             'route' => 'required_unless:type,1,2|max:100',
-            'sort' => 'required|integer|between:1,255',
+            'sort' => 'required|integer|between:0,255',
             'status' => 'required|in:0,1',
         ];
     }
@@ -47,9 +47,9 @@ class RuleStoreRequest extends FormRequest
             'path.max' => '路由地址50个字符以内',
             'route.required_unless' => '权限类型为非目录和菜单时后端路由不能空',
             'route.max' => '请求地址100个字符以内',
-            'sort.required' => '填写岗位顺序',
-            'sort.integer' => '岗位顺序必须是1-255之间的整数',
-            'sort.between' => '岗位顺序必须是1-255之间的整数',
+            'sort.required' => '填写排序',
+            'sort.integer' => '排序顺序必须是1-255之间的整数',
+            'sort.between' => '排序顺序必须是1-255之间的整数',
             'status.required' => '选择状态',
             'status.in' => '选择状态错误',
         ];

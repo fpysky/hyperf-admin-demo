@@ -20,4 +20,6 @@ return [
     '/get/businessCircle/selectData',
     '/get/jyOpenApi/secure/rsa/publicKey',
     '/get/system/backend/backendCos/domain',
+    '/post/login',
+    '/post/logout',
 ];

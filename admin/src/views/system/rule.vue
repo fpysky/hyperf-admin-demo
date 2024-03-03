@@ -19,7 +19,7 @@
     <div class="content">
       <el-table :border="true" :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
         row-key="id" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
-        <el-table-column prop="name" label="名称" width="200">
+        <el-table-column prop="name" label="名称" width="300">
           <template #default="scope">
             <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
             <span v-if="scope.row.type === 3"><el-icon><Pointer /></el-icon> {{ scope.row.name }}</span>
@@ -46,8 +46,8 @@
         <el-table-column prop="sort" label="排序" width="150" align="center"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button size="small" @click="openCreateOrUpdate(scope.row.id)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button size="small" @click="openCreateOrUpdate(scope.row.id)" :disabled="scope.row.type === 4">编辑</el-button>
+            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])" :disabled="scope.row.type === 4">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -142,35 +142,35 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane :disabled="state.apiTabDisabled" label="接口权限" name="api">
-            <el-form ref="ruleFormRefApi" style="width:80%;margin: 0 auto;" :model="state.ruleForm" :rules="state.rules"
-              label-width="83px">
-              <el-form-item required label="父级:" prop="parentId">
-                <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
-                  <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id" />
-                </el-select>
-              </el-form-item>
-              <el-form-item required label="名称:" prop="name">
-                <el-input v-model="state.ruleForm.name" />
-              </el-form-item>
-              <el-form-item label="后端路由:" prop="route">
-                <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx" />
-              </el-form-item>
-              <el-form-item label="排序:" prop="sort">
-                <el-input v-model="state.ruleForm.sort" />
-              </el-form-item>
-              <el-form-item required label="是否启用:">
-                <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
-                  :active-value="1" :inactive-value="0">
-                </el-switch>
-              </el-form-item>
-              <el-form-item>
-                <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"
-                  @click="ruleSubmit(ruleFormRefApi)">提交
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </el-tab-pane>
+<!--          <el-tab-pane :disabled="state.apiTabDisabled" label="接口权限" name="api">-->
+<!--            <el-form ref="ruleFormRefApi" style="width:80%;margin: 0 auto;" :model="state.ruleForm" :rules="state.rules"-->
+<!--              label-width="83px">-->
+<!--              <el-form-item required label="父级:" prop="parentId">-->
+<!--                <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">-->
+<!--                  <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id" />-->
+<!--                </el-select>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item required label="名称:" prop="name">-->
+<!--                <el-input v-model="state.ruleForm.name" />-->
+<!--              </el-form-item>-->
+<!--              <el-form-item label="后端路由:" prop="route">-->
+<!--                <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx" />-->
+<!--              </el-form-item>-->
+<!--              <el-form-item label="排序:" prop="sort">-->
+<!--                <el-input v-model="state.ruleForm.sort" />-->
+<!--              </el-form-item>-->
+<!--              <el-form-item required label="是否启用:">-->
+<!--                <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"-->
+<!--                  :active-value="1" :inactive-value="0">-->
+<!--                </el-switch>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item>-->
+<!--                <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"-->
+<!--                  @click="ruleSubmit(ruleFormRefApi)">提交-->
+<!--                </el-button>-->
+<!--              </el-form-item>-->
+<!--            </el-form>-->
+<!--          </el-tab-pane>-->
         </el-tabs>
       </el-dialog>
     </div>
@@ -216,7 +216,7 @@ const state = reactive({
   directoryTabDisabled: false,
   menuTabDisabled: false,
   buttonTabDisabled: false,
-  apiTabDisabled: false,
+  apiTabDisabled: true,
   ruleForm: <RuleForm>{
     id: 0,
     parentId: '',

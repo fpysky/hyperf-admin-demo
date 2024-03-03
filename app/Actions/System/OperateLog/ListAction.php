@@ -30,7 +30,7 @@ use Psr\Http\Message\ResponseInterface;
 class ListAction extends AbstractAction
 {
     #[GetMapping(path: '/system/operateLog')]
-    #[Get(path: '/system/operateLog', summary: '操作日志列表', tags: ['后台管理/系统管理/操作日志'])]
+    #[Get(path: '/system/operateLog', summary: '操作日志列表', tags: ['系统管理/操作日志'])]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[QueryParameter(name: 'page', description: '页码', schema: new Schema(type: 'integer'), example: 1)]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', schema: new Schema(type: 'integer'), example: 15)]

@@ -83,7 +83,7 @@ class RoleController extends AbstractAction
      * @throws \Exception
      */
     #[DeleteMapping(path: '/role')]
-    #[Delete(path: '/role', summary: '角色删除', tags: ['系统管理/角色管理/测试下级'])]
+    #[Delete(path: '/role', summary: '角色删除', tags: ['系统管理/角色管理'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
