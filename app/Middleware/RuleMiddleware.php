@@ -38,7 +38,7 @@ class RuleMiddleware implements MiddlewareInterface
         $res = $this->accessRule($currentRoute, $adminRule);
 
         if (! $res) {
-            throw new GeneralException(403001, '无操作权限', 403);
+            throw new GeneralException(403001, '无权限', 403);
         }
 
         return $handler->handle($request);

@@ -5,6 +5,7 @@ namespace App\Resource;
 use App\Model\AdminOperationLog;
 use Hyperf\Resource\Json\JsonResource;
 
+/** @mixin AdminOperationLog */
 class AdminOperationLogResource extends JsonResource
 {
     /**
@@ -14,7 +15,6 @@ class AdminOperationLogResource extends JsonResource
      */
     public function toArray(): array
     {
-        /** @var AdminOperationLog $this */
         return [
             'id' => $this->id,
             'module' => $this->module,

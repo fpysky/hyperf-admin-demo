@@ -49,7 +49,7 @@ class ListAction extends AbstractAction
                 new Property(property: 'total', description: '总条数', type: 'integer', example: 200),
                 new Property(
                     property: 'list',
-                    description: '商圈列表',
+                    description: '日志列表',
                     type: 'array',
                     items: new Items(
                         required: [

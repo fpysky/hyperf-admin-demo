@@ -152,6 +152,15 @@ export const dynamicRoutes: RouteOption[] = [
           title: '权限管理',
           icon: 'tree-table'
         }
+      },
+      {
+        path: 'operateLog',
+        component: () => import('@/views/system/operateLog.vue'),
+        name: 'operateLog',
+        meta: {
+          title: '操作日志',
+          icon: 'peoples'
+        }
       }
     ]
   },

@@ -12,7 +12,6 @@
           <Refresh/>
         </el-icon>
         <span style="vertical-align: middle">刷新</span>
-        刷新
       </el-button>
     </div>
     <div class="content">
@@ -249,7 +248,7 @@ const resetForm = async () => {
   ruleFormRef.value.resetFields()
 }
 
-const initingAdminForm = async (index: number | undefined) => {
+const initAdminForm = async (index: number | undefined) => {
   if (index !== undefined) {
     const data = state.tableData[index]
     state.roleForm = <RoleForm>{
@@ -273,7 +272,7 @@ const initingAdminForm = async (index: number | undefined) => {
 const openCreateOrUpdate = async (index: number | undefined) => {
   state.isEdit = index !== undefined
   state.formDialogVisible = true
-  await initingAdminForm(index)
+  await initAdminForm(index)
   if (index === undefined) await resetForm()
 }
 

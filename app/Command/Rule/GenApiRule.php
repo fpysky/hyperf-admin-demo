@@ -40,21 +40,16 @@ class GenApiRule extends HyperfCommand
         $router = $factory->getRouter('http');
         [$staticRouters] = $router->getData();
 
-        //!!先清空接口路由!!
-        Rule::query()->where('type',Rule::TYPE_API)->delete();
-
         foreach ($staticRouters as $staticRouterKey => $staticRouter) {
             foreach ($staticRouter as $routerKey => $router) {
                 /** @var Handler $router */
                 $route = '/' . strtolower($staticRouterKey) . $routerKey;
-                // todo::去掉通用路由
 
                 $notCheckRBAC = \Hyperf\Config\config('notCheckRBAC');
                 if(in_array($route,$notCheckRBAC)){
                     continue;
                 }
 
-                // 如何猜测一个接口属于哪个模块？
                 if (is_array($router->callback)) {
                     $controllerName = $router->callback[0];
                     $methodName = $router->callback[1];
