@@ -18,14 +18,14 @@ use Psr\Http\Message\ResponseInterface;
 use Qbhy\HyperfAuth\AuthManager;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 class LogoutAction extends AbstractAction
 {
     #[Inject]
     protected AuthManager $auth;
 
-    #[PostMapping(path: '/logout')]
-    #[Post(path: '/logout', summary: '退出登陆', tags: ['后台管理/账号'])]
+    #[PostMapping(path: 'logout')]
+    #[Post(path: 'logout', summary: '退出登陆', tags: ['后台管理/账号'])]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],

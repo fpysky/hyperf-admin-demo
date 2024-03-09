@@ -14,11 +14,11 @@ use Hyperf\Swagger\Annotation\HyperfServer;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class])]
 class UserRoutersAction extends AbstractAction
 {
-    #[GetMapping(path: '/userRouters')]
+    #[GetMapping(path: 'userRouters')]
     public function handle(): ResponseInterface
     {
         $admin = admin();

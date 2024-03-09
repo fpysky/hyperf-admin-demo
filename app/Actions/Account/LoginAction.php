@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 use Qbhy\HyperfAuth\AuthManager;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 class LoginAction extends AbstractAction
 {
     #[Inject]
@@ -32,8 +32,8 @@ class LoginAction extends AbstractAction
     #[Inject]
     protected EventDispatcherInterface $eventDispatcher;
 
-    #[PostMapping(path: '/login')]
-    #[Post(path: '/login', summary: '登陆', tags: ['后台管理/账号'])]
+    #[PostMapping(path: 'login')]
+    #[Post(path: 'login', summary: '登陆', tags: ['后台管理/账号'])]
     #[RequestBody(content: new JsonContent(
         required: ['username', 'password'],
         properties: [

@@ -23,7 +23,7 @@ class ManagerController extends AbstractAction
     #[Inject]
     protected Help $help;
 
-    #[GetMapping(path: '/system/backend/backendAdminRule/menus')]
+    #[GetMapping(path: 'system/backend/backendAdminRule/menus')]
     public function menus(): ResponseInterface
     {
         $admin = admin();

@@ -11,10 +11,10 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Psr\Http\Message\ResponseInterface;
 
-#[Controller]
+#[Controller(prefix: 'api')]
 class OutputAction extends AbstractAction
 {
-    #[GetMapping(path: '/swagger')]
+    #[GetMapping(path: 'swagger')]
     public function handle(): ResponseInterface
     {
         $content = file_get_contents(BASE_PATH . '/swaggerDoc/http.json');

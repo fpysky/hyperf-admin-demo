@@ -11,10 +11,10 @@ use Hyperf\Swagger\Annotation\HyperfServer;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 class PublicKeyAction extends AbstractAction
 {
-    #[GetMapping(path: '/jyOpenApi/secure/rsa/publicKey')]
+    #[GetMapping(path: 'jyOpenApi/secure/rsa/publicKey')]
     public function handle(): ResponseInterface
     {
         return $this->item('-----BEGIN PUBLIC KEY-----

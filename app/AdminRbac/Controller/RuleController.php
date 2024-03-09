@@ -32,15 +32,15 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class RuleController extends AbstractAction
 {
     #[Inject]
     protected CacheRule $cacheRule;
 
-    #[GetMapping(path: '/rule')]
-    #[Get(path: '/rule', summary: '权限列表', tags: ['系统管理/权限管理'])]
+    #[GetMapping(path: 'rule')]
+    #[Get(path: 'rule', summary: '权限列表', tags: ['系统管理/权限管理'])]
     public function index(): ResponseInterface
     {
         $list = Rule::query()
@@ -58,7 +58,7 @@ class RuleController extends AbstractAction
         return $this->success(RuleResource::collection($list));
     }
 
-    #[PostMapping(path: '/rule')]
+    #[PostMapping(path: 'rule')]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
         $rule = new Rule();
@@ -77,7 +77,7 @@ class RuleController extends AbstractAction
         return $this->message('权限添加成功');
     }
 
-    #[PutMapping(path: '/rule')]
+    #[PutMapping(path: 'rule')]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = (int) $request->input('id');
@@ -99,7 +99,7 @@ class RuleController extends AbstractAction
         return $this->message('权限编辑成功');
     }
 
-    #[PutMapping(path: '/system/backend/backendAdminRule/batchSortRule')]
+    #[PutMapping(path: 'system/backend/backendAdminRule/batchSortRule')]
     public function upOrders(): ResponseInterface
     {
         $orders = $this->request->input('orders');
@@ -113,7 +113,7 @@ class RuleController extends AbstractAction
         return $this->message('权限排序成功');
     }
 
-    #[PatchMapping(path: '/rule/status')]
+    #[PatchMapping(path: 'rule/status')]
     public function upStatus(): ResponseInterface
     {
         $ids = (array) $this->request->input('ids');
@@ -135,7 +135,7 @@ class RuleController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/rule')]
+    #[DeleteMapping(path: 'rule')]
     public function destroy(): ResponseInterface
     {
         $ids = (array) $this->request->input('ids', []);
@@ -149,8 +149,8 @@ class RuleController extends AbstractAction
         return $this->message('权限删除成功');
     }
 
-    #[GetMapping(path: '/rule/buttons')]
-    #[Get(path: '/rule/buttons', summary: '按钮权限列表', tags: ['系统管理/权限管理'])]
+    #[GetMapping(path: 'rule/buttons')]
+    #[Get(path: 'rule/buttons', summary: '按钮权限列表', tags: ['系统管理/权限管理'])]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
         properties: [
@@ -208,7 +208,7 @@ class RuleController extends AbstractAction
         return $this->success(ButtonMenuResource::collection($menuButtons));
     }
 
-    #[GetMapping(path: '/rule/{id:\d+}')]
+    #[GetMapping(path: 'rule/{id:\d+}')]
     public function detail(int $id): ResponseInterface
     {
         $rule = Rule::findFromCacheOrFail($id);
@@ -216,7 +216,7 @@ class RuleController extends AbstractAction
         return $this->success(new \App\Resource\Rule\RuleResource($rule));
     }
 
-    #[GetMapping(path: '/rule/parentMenusTree')]
+    #[GetMapping(path: 'rule/parentMenusTree')]
     public function parentMenusTree(): ResponseInterface
     {
         $rules = Rule::query()
@@ -227,7 +227,7 @@ class RuleController extends AbstractAction
         return $this->success($rules);
     }
 
-    #[GetMapping(path: '/rule/roleRuleTree/{roleId:\d+}')]
+    #[GetMapping(path: 'rule/roleRuleTree/{roleId:\d+}')]
     public function roleRuleTree(int $roleId): ResponseInterface
     {
         $ruleIds = RoleRule::query()
@@ -250,7 +250,7 @@ class RuleController extends AbstractAction
         return $this->success($rulesArr);
     }
 
-    #[GetMapping(path: '/rule/topRule')]
+    #[GetMapping(path: 'rule/topRule')]
     public function handle(): ResponseInterface
     {
         $rules = Rule::query()

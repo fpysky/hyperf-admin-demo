@@ -23,12 +23,12 @@ use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class ChangePasswordAction extends AbstractAction
 {
-    #[PostMapping(path: '/system/backend/changePassword')]
-    #[Post(path: '/system/backend/changePassword', summary: '管理密码修改', tags: ['后台管理/账号'])]
+    #[PostMapping(path: 'system/backend/changePassword')]
+    #[Post(path: 'system/backend/changePassword', summary: '管理密码修改', tags: ['后台管理/账号'])]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password', 'newPassword', 'retNewPassword'],

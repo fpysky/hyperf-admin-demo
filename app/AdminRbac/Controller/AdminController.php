@@ -49,15 +49,15 @@ use Qbhy\SimpleJwt\Exceptions\SignatureException;
 use Qbhy\SimpleJwt\Exceptions\TokenExpiredException;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class AdminController extends AbstractAction
 {
     #[Inject]
     protected AuthManager $auth;
 
-    #[PostMapping(path: '/admin')]
-    #[Post(path: '/admin', summary: '添加管理员', tags: ['系统管理/管理员管理'])]
+    #[PostMapping(path: 'admin')]
+    #[Post(path: 'admin', summary: '添加管理员', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status'],
         properties: [
@@ -115,8 +115,8 @@ class AdminController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/admin')]
-    #[Delete(path: '/admin', summary: '管理员删除', tags: ['系统管理/管理员管理'])]
+    #[DeleteMapping(path: 'admin')]
+    #[Delete(path: 'admin', summary: '管理员删除', tags: ['系统管理/管理员管理'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -141,8 +141,8 @@ class AdminController extends AbstractAction
         return $this->message('管理员删除成功');
     }
 
-    #[PutMapping(path: '/admin')]
-    #[Put(path: '/admin', summary: '修改管理员', tags: ['系统管理/管理员管理'])]
+    #[PutMapping(path: 'admin')]
+    #[Put(path: 'admin', summary: '修改管理员', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status', 'roleIds'],
         properties: [
@@ -201,8 +201,8 @@ class AdminController extends AbstractAction
         return $this->message('管理员编辑成功');
     }
 
-    #[GetMapping(path: '/admin')]
-    #[Get(path: '/admin', summary: '管理员列表', tags: ['系统管理/管理员管理'])]
+    #[GetMapping(path: 'admin')]
+    #[Get(path: 'admin', summary: '管理员列表', tags: ['系统管理/管理员管理'])]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'keyword', description: '搜索关键词', required: false, schema: new Schema(type: 'string'))]
@@ -276,8 +276,8 @@ class AdminController extends AbstractAction
         ]);
     }
 
-    #[GetMapping(path: '/admin/{id:\d+}')]
-    #[Get(path: '/admin/{id}', summary: '管理员详情', tags: ['系统管理/管理员管理'])]
+    #[GetMapping(path: 'admin/{id:\d+}')]
+    #[Get(path: 'admin/{id}', summary: '管理员详情', tags: ['系统管理/管理员管理'])]
     #[PathParameter(name: 'id', description: '管理员id', required: true, schema: new Schema(type: 'integer'), example: 1)]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -338,8 +338,8 @@ class AdminController extends AbstractAction
         return $this->success($data);
     }
 
-    #[PatchMapping(path: '/admin/resetPassword')]
-    #[Patch(path: '/admin/resetPassword', summary: '重置管理员密码', tags: ['系统管理/管理员管理'])]
+    #[PatchMapping(path: 'admin/resetPassword')]
+    #[Patch(path: 'admin/resetPassword', summary: '重置管理员密码', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password'],
         properties: [
@@ -378,8 +378,8 @@ class AdminController extends AbstractAction
      * @throws InvalidTokenException
      * @throws TokenExpiredException
      */
-    #[PatchMapping(path: '/admin/status')]
-    #[Patch(path: '/admin/status', summary: '修改管理员状态', tags: ['系统管理/管理员管理'])]
+    #[PatchMapping(path: 'admin/status')]
+    #[Patch(path: 'admin/status', summary: '修改管理员状态', tags: ['系统管理/管理员管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['ids', 'status'],
         properties: [

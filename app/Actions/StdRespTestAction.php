@@ -9,10 +9,10 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\RequestMapping;
 use Psr\Http\Message\ResponseInterface;
 
-#[Controller]
+#[Controller(prefix: 'api')]
 class StdRespTestAction extends AbstractAction
 {
-    #[RequestMapping(path: '/stdRespTest', methods: ['GET', 'POST'])]
+    #[RequestMapping(path: 'stdRespTest', methods: ['GET', 'POST'])]
     public function handle(): ResponseInterface
     {
         Log::get('order', 'orderCallback')->info('1111');

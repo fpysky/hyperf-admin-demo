@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class PostController extends AbstractAction
 {
-    #[GetMapping(path: '/system/backend/backendAdminPost/page')]
+    #[GetMapping(path: 'system/backend/backendAdminPost/page')]
     public function index(): ResponseInterface
     {
         $pageSize = (int) $this->request->input('pageSize', 15);
@@ -39,7 +39,7 @@ class PostController extends AbstractAction
         return $this->success($paginator);
     }
 
-    #[PostMapping(path: '/system/backend/backendAdminPost')]
+    #[PostMapping(path: 'system/backend/backendAdminPost')]
     public function store(PostStoreRequest $request): ResponseInterface
     {
         $name = (string) $request->input('name');
@@ -60,7 +60,7 @@ class PostController extends AbstractAction
         return $this->message('岗位添加成功');
     }
 
-    #[PutMapping(path: '/system/backend/backendAdminPost')]
+    #[PutMapping(path: 'system/backend/backendAdminPost')]
     public function update(PostUpdateRequest $request): ResponseInterface
     {
         $name = (string) $request->input('name');
@@ -87,7 +87,7 @@ class PostController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/system/backend/backendAdminPost/{ids}')]
+    #[DeleteMapping(path: 'system/backend/backendAdminPost/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
         $ids = explode(',', $ids) ?? [];
@@ -100,7 +100,7 @@ class PostController extends AbstractAction
         return $this->message('岗位删除成功');
     }
 
-    #[PutMapping(path: '/system/backend/backendAdminPost/status')]
+    #[PutMapping(path: 'system/backend/backendAdminPost/status')]
     public function upStatus(): ResponseInterface
     {
         $ids = (array) $this->request->input('ids');
@@ -119,7 +119,7 @@ class PostController extends AbstractAction
         return $this->message($msg);
     }
 
-    #[GetMapping(path: '/system/backend/backendAdminPost/postCombobox')]
+    #[GetMapping(path: 'system/backend/backendAdminPost/postCombobox')]
     public function postCombobox(): ResponseInterface
     {
         $list = Post::query()
@@ -132,7 +132,7 @@ class PostController extends AbstractAction
         return $this->success($list);
     }
 
-    #[GetMapping(path: '/system/backend/backendAdminPost/{id:\d+}')]
+    #[GetMapping(path: 'system/backend/backendAdminPost/{id:\d+}')]
     public function detail(int $id): ResponseInterface
     {
         $post = Post::query()->findOrFail($id);

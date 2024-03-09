@@ -39,12 +39,12 @@ use Hyperf\Swagger\Annotation\Schema;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class RoleController extends AbstractAction
 {
-    #[PostMapping(path: '/role')]
-    #[Post(path: '/role', summary: '添加角色', tags: ['系统管理/角色管理'])]
+    #[PostMapping(path: 'role')]
+    #[Post(path: 'role', summary: '添加角色', tags: ['系统管理/角色管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'desc', 'status', 'sort'],
         properties: [
@@ -82,8 +82,8 @@ class RoleController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/role')]
-    #[Delete(path: '/role', summary: '角色删除', tags: ['系统管理/角色管理'])]
+    #[DeleteMapping(path: 'role')]
+    #[Delete(path: 'role', summary: '角色删除', tags: ['系统管理/角色管理'])]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -112,8 +112,8 @@ class RoleController extends AbstractAction
         return $this->message('角色删除成功');
     }
 
-    #[GetMapping(path: '/role/{id:\d+}')]
-    #[Get(path: '/role/{id}', summary: '角色详情', tags: ['系统管理/角色管理'])]
+    #[GetMapping(path: 'role/{id:\d+}')]
+    #[Get(path: 'role/{id}', summary: '角色详情', tags: ['系统管理/角色管理'])]
     #[PathParameter(name: 'id', description: '角色id', required: true, schema: new Schema(type: 'integer'), example: 1)]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -144,8 +144,8 @@ class RoleController extends AbstractAction
         return $this->success(new RoleResource($role));
     }
 
-    #[GetMapping(path: '/role')]
-    #[Get(path: '/role', summary: '角色列表', tags: ['系统管理/角色管理'])]
+    #[GetMapping(path: 'role')]
+    #[Get(path: 'role', summary: '角色列表', tags: ['系统管理/角色管理'])]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]
     #[Response(response: 200, content: new JsonContent(
@@ -196,8 +196,8 @@ class RoleController extends AbstractAction
         ]);
     }
 
-    #[GetMapping(path: '/role/selectData')]
-    #[Get(path: '/role/selectData', summary: '角色下拉数据', tags: ['系统管理/角色管理'])]
+    #[GetMapping(path: 'role/selectData')]
+    #[Get(path: 'role/selectData', summary: '角色下拉数据', tags: ['系统管理/角色管理'])]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
         properties: [
@@ -229,8 +229,8 @@ class RoleController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[PostMapping(path: '/role/setRule')]
-    #[Post(path: '/role/setRule', summary: '角色设置权限', tags: ['系统管理/角色管理'])]
+    #[PostMapping(path: 'role/setRule')]
+    #[Post(path: 'role/setRule', summary: '角色设置权限', tags: ['系统管理/角色管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['ruleIds', 'roleId'],
         properties: [
@@ -257,8 +257,8 @@ class RoleController extends AbstractAction
         return $this->message('权限分配成功');
     }
 
-    #[PutMapping(path: '/role')]
-    #[Put(path: '/role', summary: '修改角色', tags: ['系统管理/角色管理'])]
+    #[PutMapping(path: 'role')]
+    #[Put(path: 'role', summary: '修改角色', tags: ['系统管理/角色管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'desc', 'status', 'sort'],
         properties: [
@@ -296,8 +296,8 @@ class RoleController extends AbstractAction
         return $this->message('角色编辑成功');
     }
 
-    #[PatchMapping(path: '/role/status')]
-    #[Patch(path: '/role/status', summary: '修改角色状态', tags: ['系统管理/角色管理'])]
+    #[PatchMapping(path: 'role/status')]
+    #[Patch(path: 'role/status', summary: '修改角色状态', tags: ['系统管理/角色管理'])]
     #[RequestBody(content: new JsonContent(
         required: ['ids', 'status'],
         properties: [

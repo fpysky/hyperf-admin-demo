@@ -23,11 +23,11 @@ use Hyperf\Swagger\Annotation\HyperfServer;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class DeptController extends AbstractAction
 {
-    #[GetMapping(path: '/system/backend/backendAdminDept/deptCombobox')]
+    #[GetMapping(path: 'system/backend/backendAdminDept/deptCombobox')]
     public function deptCombobox(): ResponseInterface
     {
         $list = Dept::query()
@@ -38,7 +38,7 @@ class DeptController extends AbstractAction
         return $this->success($list);
     }
 
-    #[PostMapping(path: '/dept')]
+    #[PostMapping(path: 'dept')]
     public function create(DeptStoreRequest $request): ResponseInterface
     {
         $name = $request->input('name');
@@ -61,7 +61,7 @@ class DeptController extends AbstractAction
     /**
      * @throws \Exception
      */
-    #[DeleteMapping(path: '/dept/{ids}')]
+    #[DeleteMapping(path: 'dept/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
         $ids = explode(',', $ids) ?? [];
@@ -76,7 +76,7 @@ class DeptController extends AbstractAction
         return $this->message('部门删除成功');
     }
 
-    #[GetMapping(path: '/dept')]
+    #[GetMapping(path: 'dept')]
     public function index(): ResponseInterface
     {
         $list = Dept::query()
@@ -88,7 +88,7 @@ class DeptController extends AbstractAction
         return $this->success(DeptResource::collection($list));
     }
 
-    #[GetMapping(path: '/dept/tree')]
+    #[GetMapping(path: 'dept/tree')]
     public function selectData(): ResponseInterface
     {
         $list = Dept::query()
@@ -109,7 +109,7 @@ class DeptController extends AbstractAction
         return $this->success(DeptSelectData::collection($list));
     }
 
-    #[PutMapping(path: '/dept')]
+    #[PutMapping(path: 'dept')]
     public function update(DeptUpdateRequest $request): ResponseInterface
     {
         $id = (int) $request->input('id');
@@ -130,7 +130,7 @@ class DeptController extends AbstractAction
         return $this->message('部门编辑成功');
     }
 
-    #[PutMapping(path: '/dept/upStatus')]
+    #[PutMapping(path: 'dept/upStatus')]
     public function upStatus(): ResponseInterface
     {
         $ids = (array) $this->request->input('ids');

@@ -14,11 +14,11 @@ use Hyperf\Swagger\Annotation\HyperfServer;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
-#[Controller]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class])]
 class UserInfoAction extends AbstractAction
 {
-    #[GetMapping(path: '/userInfo')]
+    #[GetMapping(path: 'userInfo')]
     public function handle(): ResponseInterface
     {
         $admin = admin();
