@@ -1,6 +1,7 @@
 version: '3'
 services:
   hyperf-skeleton:
+    network_mode: host
     container_name: hyperf-admin
     image: hyperf/hyperf:8.1-alpine-v3.18-swoole
     build:
