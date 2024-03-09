@@ -8,8 +8,8 @@ services:
       context: .
     volumes:
       - "./:${DOCKER_PROJECT_PATH}"
-    ports:
-      - "${HTTP_PORT}:${HTTP_PORT}"
+#    ports:
+#      - "${HTTP_PORT}:${HTTP_PORT}"
     environment:
       - APP_ENV=prod
       - SCAN_CACHEABLE=false
