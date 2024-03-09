@@ -18,7 +18,3 @@ services:
       - |
         chmod +x ${DOCKER_PROJECT_PATH}/sh.d/*
         "${DOCKER_PROJECT_PATH}/sh.d/start-server.sh"
-
-networks:
-  default:
-    name: hyperf-admin
