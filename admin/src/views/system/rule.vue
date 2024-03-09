@@ -47,7 +47,7 @@
         <el-table-column label="操作" width="200">
           <template #default="scope">
             <el-button size="small" @click="openCreateOrUpdate(scope.row.id)" :disabled="scope.row.type === 4">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])" :disabled="scope.row.type === 4">删除</el-button>
+            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
