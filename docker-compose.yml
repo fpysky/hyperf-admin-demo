@@ -6,12 +6,18 @@ services:
     build:
       context: .
     volumes:
-      - ./:/opt/www
+      - "./:${DOCKER_PROJECT_PATH}"
     ports:
-      - 9501:9501
+      - "${HTTP_PORT}:${HTTP_PORT}"
     environment:
       - APP_ENV=prod
       - SCAN_CACHEABLE=false
+    command:
+      - /bin/bash
+      - -c
+      - |
+        chmod +x ${DOCKER_PROJECT_PATH}/sh.d/*
+        "${DOCKER_PROJECT_PATH}/sh.d/start-server.sh"
 
 networks:
   default:
