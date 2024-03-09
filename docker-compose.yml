@@ -1,21 +1,18 @@
 version: '3'
-
 services:
-  business-api:
-    container_name: ${APP_NAME}
-    image: 172.29.151.244:80/jykeji-dev-php/hyperf-php8.1-apk3.15:v1.0
-    ports:
-      - "${HTTP_PORT}:20222"
-    stdin_open: true
-    tty: true
-    privileged: true
-    network_mode: "host"
+  hyperf-skeleton:
+    container_name: hyperf-admin
+    image: hyperf/hyperf:8.1-alpine-v3.18-swoole
+    build:
+      context: .
     volumes:
-      - "./:${DOCKER_PROJECT_PATH}"
-    command:
-      - /bin/bash
-      - -c
-      - |
-        chmod +x ${DOCKER_PROJECT_PATH}/sh.d/*
-        "${DOCKER_PROJECT_PATH}/sh.d/start-server.sh" ${APP_ENV}
+      - ./:/opt/www
+    ports:
+      - 9501:9501
+    environment:
+      - APP_ENV=prod
+      - SCAN_CACHEABLE=false
 
+networks:
+  default:
+    name: hyperf-admin
