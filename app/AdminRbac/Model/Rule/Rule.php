@@ -8,6 +8,7 @@ use App\AdminRbac\Model\Origin\Rule as Base;
 use App\AdminRbac\Model\Rule\Traits\RuleRelationship;
 use App\Exception\RecordNotFoundException;
 use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 
@@ -101,5 +102,18 @@ class Rule extends Base
     public function getTypeZh(): string
     {
         return self::TYPE_ZH[$this->type] ?? '未知类型';
+    }
+
+    public static function getParentMenuRuleIdByName(string $name): int
+    {
+        try {
+            $parentRule = self::query()
+                ->where('type', Rule::TYPE_MENU)
+                ->where('name', $name)
+                ->firstOrFail();
+            return $parentRule->id;
+        } catch (ModelNotFoundException) {
+            return 0;
+        }
     }
 }
