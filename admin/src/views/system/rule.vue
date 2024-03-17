@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
-            <el-switch @change="(val) => handleRoleStatusChage(val, scope.row.id)" v-model="scope.row.status"
+            <el-switch @change="(val:number) => handleRoleStatusChange(val, scope.row.id)" v-model="scope.row.status"
                        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
                        :inactive-value="0"/>
           </template>
@@ -212,7 +212,7 @@ const state = reactive({
   formDialogVisible: false,
   submitLoading: false,
   isEdit: false,
-  tableData: [],
+  tableData: <RuleForm[]>([]),
   colorStyle: true,
   formActiveName: 'directory',
   topRule: [],
@@ -262,13 +262,13 @@ const handleDelete = (ids: Array<number>) => {
   })
 }
 
-const initingTopRule = () => {
+const initTopRule = () => {
   topRule().then(resp => {
     state.topRule = resp.data
   })
 }
 
-const initingParentMenusTree = () => {
+const initParentMenusTree = () => {
   parentMenusTree().then(resp => {
     state.parentMenusTree = resp.data
   })
@@ -278,25 +278,25 @@ const handleFormTabsClick = (tab: TabsPaneContext) => {
   if (!state.isEdit) {
     resetForm()
   }
-  initingTabData(tab.paneName)
+  initTabData(tab.paneName)
 }
 
-const initingTabData = (activeName: string | number | undefined) => {
+const initTabData = (activeName: string | number | undefined) => {
   switch (activeName) {
     case 'directory':
       state.ruleForm.type = 1
       break
     case 'menu':
       state.ruleForm.type = 2
-      initingTopRule()
+      initTopRule()
       break
     case 'button':
       state.ruleForm.type = 3
-      initingParentMenusTree()
+      initParentMenusTree()
       break
     case 'api':
       state.ruleForm.type = 4
-      initingParentMenusTree()
+      initParentMenusTree()
       break
   }
 }
@@ -305,7 +305,7 @@ const handleColorStyleChange = (val: boolean) => {
   state.colorStyle = Boolean(val)
 }
 
-const tableRowClassName = ({row}: { row }) => {
+const tableRowClassName = (row: any) => {
   if (row.type === 3) {
     return 'warning-row'
   } else if (row.type === 4) {
@@ -314,7 +314,7 @@ const tableRowClassName = ({row}: { row }) => {
   return ''
 }
 
-const handleRoleStatusChage = (val, id) => {
+const handleRoleStatusChange = (val: number, id: number) => {
   upRuleStatus({ids: [id], status: val})
 }
 
@@ -385,7 +385,7 @@ const findTableData = (data, id: number) => {
   return undefined
 }
 
-const initingAdminForm = async (item) => {
+const initAdminForm = async (item: RuleForm | undefined) => {
   if (item !== undefined) {
     state.ruleForm = <RuleForm>{
       id: item.id,
@@ -429,11 +429,11 @@ const openCreateOrUpdate = async (id: number | undefined) => {
     item = findTableData(state.tableData, id);
     type = item.type;
   }
-  await initingAdminForm(item)
-  initingTab(type, state.isEdit)
+  await initAdminForm(item)
+  initTab(type, state.isEdit)
 }
 
-const initingTab = (type, isEdit) => {
+const initTab = (type: number, isEdit: boolean) => {
   let activeName = ''
   switch (type) {
     default:
@@ -471,7 +471,7 @@ const initingTab = (type, isEdit) => {
       break
   }
   state.formActiveName = activeName
-  initingTabData(activeName)
+  initTabData(activeName)
 }
 
 onMounted(() => {
