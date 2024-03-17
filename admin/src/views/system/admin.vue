@@ -130,11 +130,11 @@ const state = reactive({
   submitLoading: false,
   isEdit: false,
   roles: [],
-  tableData: [],
+  tableData: <AdminForm[]>([]),
   searchData: {
     keyword: ""
   },
-  adminForm: <AdminForm>{
+  adminForm: <AdminForm>({
     id: 0,
     name: "",
     mobile: "",
@@ -143,7 +143,7 @@ const state = reactive({
     email: "",
     status: 0,
     roleIds: []
-  },
+  }),
   rules: <FormRules>{
     name: [
       {required: true, message: "请输入姓名", trigger: "blur"}
@@ -245,8 +245,8 @@ const initingRoles = async () => {
   });
 };
 
-const initingFormData = async (index: number) => {
-  if (state.isEdit) {
+const initFormData = async (index: number|undefined) => {
+  if (index !== undefined) {
     const data = state.tableData[index];
     state.adminForm = <AdminForm>{
       id: data.id,
@@ -254,13 +254,17 @@ const initingFormData = async (index: number) => {
       mobile: data.mobile,
       email: data.email,
       status: data.status,
-      roleIds: data.roleIds
+      roleIds: data.roleIds,
+      password: "",
+      rePassword: "",
     };
   } else {
     state.adminForm = <AdminForm>{
       id: 0,
       name: "",
       mobile: "",
+      password: "",
+      rePassword: "",
       email: "",
       status: 0,
       roleIds: []
@@ -274,7 +278,7 @@ const openCreateOrUpdate = async (index: number | undefined) => {
   state.formDialogLoading = true;
   state.isEdit = index !== undefined;
   await initingRoles();
-  await initingFormData(index);
+  await initFormData(index);
   state.formDialogLoading = false;
 };
 </script>
