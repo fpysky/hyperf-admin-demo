@@ -3,34 +3,35 @@
     <div class="toolbar">
       <el-button size="small" style="margin-right: 10px;" @click="openCreateOrUpdate(undefined)">
         <el-icon size="small" style="vertical-align: middle;">
-          <Plus />
+          <Plus/>
         </el-icon>
         <span style="vertical-align: middle">添加</span>
       </el-button>
       <el-button type="primary" size="small" :loading="state.tableLoading" style="margin-right: 10px;" @click="getData">
         <el-icon size="small" style="vertical-align: middle;">
-          <Refresh />
+          <Refresh/>
         </el-icon>
         <span style="vertical-align: middle">刷新</span>
       </el-button>
-      <el-switch active-text="使用颜色区分" inactive-text="不使用颜色区分" @change="handleColorStyleChage" v-model="state.colorStyle"
-        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" />
+      <el-switch active-text="使用颜色区分" inactive-text="不使用颜色区分" @change="handleColorStyleChange"
+                 v-model="state.colorStyle"
+                 style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/>
     </div>
     <div class="content">
       <el-table :border="true" :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
-        row-key="id" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
+                row-key="id" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
         <el-table-column prop="name" label="名称" width="300">
           <template #default="scope">
             <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
-            <span v-if="scope.row.type === 3"><el-icon><Pointer /></el-icon> {{ scope.row.name }}</span>
-            <span v-if="scope.row.type === 4"><el-icon><Switch /></el-icon> {{ scope.row.name }}</span>
+            <span v-if="scope.row.type === 3"><el-icon><Pointer/></el-icon> {{ scope.row.name }}</span>
+            <span v-if="scope.row.type === 4"><el-icon><Switch/></el-icon> {{ scope.row.name }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
             <el-switch @change="(val) => handleRoleStatusChage(val, scope.row.id)" v-model="scope.row.status"
-              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
-              :inactive-value="0" />
+                       style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
+                       :inactive-value="0"/>
           </template>
         </el-table-column>
         <el-table-column prop="type" label="类型" width="100" align="center">
@@ -41,136 +42,139 @@
             <el-tag v-if="scope.row.type === 4" type="danger">{{ scope.row.typeZh }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="route" label="后端路由" />
-        <el-table-column prop="path" label="前端路由" width="180" />
+        <el-table-column prop="route" label="后端路由"/>
+        <el-table-column prop="path" label="前端路由" width="180"/>
         <el-table-column prop="sort" label="排序" width="150" align="center"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button size="small" @click="openCreateOrUpdate(scope.row.id)" :disabled="scope.row.type === 4">编辑</el-button>
+            <el-button size="small" @click="openCreateOrUpdate(scope.row.id)" :disabled="scope.row.type === 4">编辑
+            </el-button>
             <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog style="text-align: center;" v-model="state.formDialogVisible" :title="state.isEdit ? '编辑权限' : '新增权限'"
-        width="30%">
+      <el-dialog style="text-align: center;" v-model="state.formDialogVisible"
+                 :title="state.isEdit ? '编辑权限' : '新增权限'"
+                 width="30%">
         <el-tabs v-model="state.formActiveName" type="card" @tab-click="handleFormTabsClick">
           <el-tab-pane :disabled="state.directoryTabDisabled" label="目录权限" name="directory">
             <el-form ref="ruleFormRefDirectory" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
-              :rules="state.rules" label-width="83px">
+                     :rules="state.rules" label-width="83px">
               <el-form-item required label="名称:" prop="name">
-                <el-input v-model="state.ruleForm.name" />
+                <el-input v-model="state.ruleForm.name"/>
               </el-form-item>
               <el-form-item label="前端路由:" prop="path">
-                <el-input v-model="state.ruleForm.path" />
+                <el-input v-model="state.ruleForm.path"/>
               </el-form-item>
               <el-form-item label="图标:" prop="icon">
-                <el-input v-model="state.ruleForm.icon" />
+                <el-input v-model="state.ruleForm.icon"/>
               </el-form-item>
               <el-form-item label="排序:">
-                <el-input v-model="state.ruleForm.sort" />
+                <el-input v-model="state.ruleForm.sort"/>
               </el-form-item>
               <el-form-item required label="是否启用:">
                 <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
-                  :active-value="1" :inactive-value="0">
+                           :active-value="1" :inactive-value="0">
                 </el-switch>
               </el-form-item>
               <el-form-item>
                 <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"
-                  @click="ruleSubmit(ruleFormRefDirectory)">提交
+                           @click="ruleSubmit(ruleFormRefDirectory)">提交
                 </el-button>
               </el-form-item>
             </el-form>
           </el-tab-pane>
           <el-tab-pane :disabled="state.menuTabDisabled" label="菜单权限" name="menu">
-            <el-form ref="ruleFormRefMenu" style="width:80%;margin: 0 auto;" :model="state.ruleForm" :rules="state.rules"
-              label-width="83px">
+            <el-form ref="ruleFormRefMenu" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
+                     :rules="state.rules"
+                     label-width="83px">
               <el-form-item required label="父级:" prop="parentId">
                 <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
-                  <el-option v-for="rule in state.topRule" :key="rule.id" :label="rule.name" :value="rule.id" />
+                  <el-option v-for="rule in state.topRule" :key="rule.id" :label="rule.name" :value="rule.id"/>
                 </el-select>
               </el-form-item>
               <el-form-item required label="名称:" prop="name">
-                <el-input v-model="state.ruleForm.name" />
+                <el-input v-model="state.ruleForm.name"/>
               </el-form-item>
               <el-form-item label="前端路由:" prop="path">
-                <el-input v-model="state.ruleForm.path" />
+                <el-input v-model="state.ruleForm.path"/>
               </el-form-item>
               <el-form-item label="图标:" prop="icon">
-                <el-input v-model="state.ruleForm.icon" />
+                <el-input v-model="state.ruleForm.icon"/>
               </el-form-item>
               <el-form-item label="排序:">
-                <el-input v-model="state.ruleForm.sort" />
+                <el-input v-model="state.ruleForm.sort"/>
               </el-form-item>
               <el-form-item required label="是否启用:">
                 <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
-                  :active-value="1" :inactive-value="0">
+                           :active-value="1" :inactive-value="0">
                 </el-switch>
               </el-form-item>
               <el-form-item>
                 <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"
-                  @click="ruleSubmit(ruleFormRefMenu)">提交
+                           @click="ruleSubmit(ruleFormRefMenu)">提交
                 </el-button>
               </el-form-item>
             </el-form>
           </el-tab-pane>
           <el-tab-pane :disabled="state.buttonTabDisabled" label="按钮权限" name="button">
             <el-form ref="ruleFormRefButton" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
-              :rules="state.rules" label-width="83px">
+                     :rules="state.rules" label-width="83px">
               <el-form-item required label="父级:" prop="parentId">
                 <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
-                  <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id" />
+                  <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id"/>
                 </el-select>
               </el-form-item>
               <el-form-item required label="名称:" prop="name">
-                <el-input v-model="state.ruleForm.name" />
+                <el-input v-model="state.ruleForm.name"/>
               </el-form-item>
               <el-form-item label="后端路由:" prop="route">
-                <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx" />
+                <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx"/>
               </el-form-item>
               <el-form-item label="排序:">
-                <el-input v-model="state.ruleForm.sort" />
+                <el-input v-model="state.ruleForm.sort"/>
               </el-form-item>
               <el-form-item required label="是否启用:">
                 <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
-                  :active-value="1" :inactive-value="0">
+                           :active-value="1" :inactive-value="0">
                 </el-switch>
               </el-form-item>
               <el-form-item>
                 <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"
-                  @click="ruleSubmit(ruleFormRefButton)">提交
+                           @click="ruleSubmit(ruleFormRefButton)">提交
                 </el-button>
               </el-form-item>
             </el-form>
           </el-tab-pane>
-<!--          <el-tab-pane :disabled="state.apiTabDisabled" label="接口权限" name="api">-->
-<!--            <el-form ref="ruleFormRefApi" style="width:80%;margin: 0 auto;" :model="state.ruleForm" :rules="state.rules"-->
-<!--              label-width="83px">-->
-<!--              <el-form-item required label="父级:" prop="parentId">-->
-<!--                <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">-->
-<!--                  <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id" />-->
-<!--                </el-select>-->
-<!--              </el-form-item>-->
-<!--              <el-form-item required label="名称:" prop="name">-->
-<!--                <el-input v-model="state.ruleForm.name" />-->
-<!--              </el-form-item>-->
-<!--              <el-form-item label="后端路由:" prop="route">-->
-<!--                <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx" />-->
-<!--              </el-form-item>-->
-<!--              <el-form-item label="排序:" prop="sort">-->
-<!--                <el-input v-model="state.ruleForm.sort" />-->
-<!--              </el-form-item>-->
-<!--              <el-form-item required label="是否启用:">-->
-<!--                <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"-->
-<!--                  :active-value="1" :inactive-value="0">-->
-<!--                </el-switch>-->
-<!--              </el-form-item>-->
-<!--              <el-form-item>-->
-<!--                <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"-->
-<!--                  @click="ruleSubmit(ruleFormRefApi)">提交-->
-<!--                </el-button>-->
-<!--              </el-form-item>-->
-<!--            </el-form>-->
-<!--          </el-tab-pane>-->
+          <!--          <el-tab-pane :disabled="state.apiTabDisabled" label="接口权限" name="api">-->
+          <!--            <el-form ref="ruleFormRefApi" style="width:80%;margin: 0 auto;" :model="state.ruleForm" :rules="state.rules"-->
+          <!--              label-width="83px">-->
+          <!--              <el-form-item required label="父级:" prop="parentId">-->
+          <!--                <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">-->
+          <!--                  <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id" />-->
+          <!--                </el-select>-->
+          <!--              </el-form-item>-->
+          <!--              <el-form-item required label="名称:" prop="name">-->
+          <!--                <el-input v-model="state.ruleForm.name" />-->
+          <!--              </el-form-item>-->
+          <!--              <el-form-item label="后端路由:" prop="route">-->
+          <!--                <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx" />-->
+          <!--              </el-form-item>-->
+          <!--              <el-form-item label="排序:" prop="sort">-->
+          <!--                <el-input v-model="state.ruleForm.sort" />-->
+          <!--              </el-form-item>-->
+          <!--              <el-form-item required label="是否启用:">-->
+          <!--                <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"-->
+          <!--                  :active-value="1" :inactive-value="0">-->
+          <!--                </el-switch>-->
+          <!--              </el-form-item>-->
+          <!--              <el-form-item>-->
+          <!--                <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"-->
+          <!--                  @click="ruleSubmit(ruleFormRefApi)">提交-->
+          <!--                </el-button>-->
+          <!--              </el-form-item>-->
+          <!--            </el-form>-->
+          <!--          </el-tab-pane>-->
         </el-tabs>
       </el-dialog>
     </div>
@@ -178,10 +182,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ruleList, upRuleStatus, createRule, editRule, topRule, parentMenusTree, deleteRule } from '@/api/rule'
-import { onMounted, reactive, ref } from 'vue'
-import { ElMessageBox, FormInstance, FormRules, TabsPaneContext } from 'element-plus'
-import { Plus } from "@element-plus/icons-vue";
+import {ruleList, upRuleStatus, createRule, editRule, topRule, parentMenusTree, deleteRule} from '@/api/rule'
+import {onMounted, reactive, ref} from 'vue'
+import {ElMessageBox, FormInstance, FormRules, TabsPaneContext} from 'element-plus'
+import {Plus} from "@element-plus/icons-vue";
 
 interface RuleForm {
   id: number,
@@ -230,16 +234,16 @@ const state = reactive({
   },
   rules: <FormRules>{
     name: [
-      { required: true, message: '请输入名称', trigger: 'blur' },
+      {required: true, message: '请输入名称', trigger: 'blur'},
     ],
     path: [
-      { required: true, message: '请输入后端路由', trigger: 'blur' },
+      {required: true, message: '请输入后端路由', trigger: 'blur'},
     ],
     route: [
-      { required: true, message: '请输入前端路由', trigger: 'blur' },
+      {required: true, message: '请输入前端路由', trigger: 'blur'},
     ],
     icon: [
-      { required: true, message: '请输入图标', trigger: 'blur' },
+      {required: true, message: '请输入图标', trigger: 'blur'},
     ],
   }
 })
@@ -252,7 +256,7 @@ const handleDelete = (ids: Array<number>) => {
       type: 'warning',
     }
   ).then(() => {
-    deleteRule({ ids: ids }).then(() => {
+    deleteRule({ids: ids}).then(() => {
       getData()
     })
   })
@@ -297,11 +301,11 @@ const initingTabData = (activeName: string | number | undefined) => {
   }
 }
 
-const handleColorStyleChage = (val) => {
+const handleColorStyleChange = (val: boolean) => {
   state.colorStyle = Boolean(val)
 }
 
-const tableRowClassName = ({ row }: { row }) => {
+const tableRowClassName = ({row}: { row }) => {
   if (row.type === 3) {
     return 'warning-row'
   } else if (row.type === 4) {
@@ -311,7 +315,7 @@ const tableRowClassName = ({ row }: { row }) => {
 }
 
 const handleRoleStatusChage = (val, id) => {
-  upRuleStatus({ ids: [id], status: val })
+  upRuleStatus({ids: [id], status: val})
 }
 
 const ruleSubmit = async (formEl: FormInstance | undefined) => {
@@ -416,7 +420,7 @@ const openCreateOrUpdate = async (id: number | undefined) => {
   state.buttonTabDisabled = false
   state.apiTabDisabled = false;
 
-  let item,type;
+  let item, type;
   if (id === undefined) {
     state.isEdit = false;
     type = 1;
@@ -426,43 +430,43 @@ const openCreateOrUpdate = async (id: number | undefined) => {
     type = item.type;
   }
   await initingAdminForm(item)
-  initingTab(type,state.isEdit)
+  initingTab(type, state.isEdit)
 }
 
-const initingTab = (type,isEdit) => {
+const initingTab = (type, isEdit) => {
   let activeName = ''
   switch (type) {
     default:
     case 1:
       activeName = 'directory';
-      if(isEdit){
-          state.menuTabDisabled = true
-          state.buttonTabDisabled = true
-          state.apiTabDisabled = true
+      if (isEdit) {
+        state.menuTabDisabled = true
+        state.buttonTabDisabled = true
+        state.apiTabDisabled = true
       }
       break
     case 2:
       activeName = 'menu';
-      if(isEdit){
-          state.directoryTabDisabled = true
-          state.buttonTabDisabled = true
-          state.apiTabDisabled = true
+      if (isEdit) {
+        state.directoryTabDisabled = true
+        state.buttonTabDisabled = true
+        state.apiTabDisabled = true
       }
       break
     case 3:
       activeName = 'button';
-      if(isEdit){
-          state.directoryTabDisabled = true
-          state.menuTabDisabled = true
-          state.apiTabDisabled = true
+      if (isEdit) {
+        state.directoryTabDisabled = true
+        state.menuTabDisabled = true
+        state.apiTabDisabled = true
       }
       break
     case 4:
       activeName = 'api';
-      if(isEdit){
-          state.directoryTabDisabled = true
-          state.menuTabDisabled = true
-          state.buttonTabDisabled = true
+      if (isEdit) {
+        state.directoryTabDisabled = true
+        state.menuTabDisabled = true
+        state.buttonTabDisabled = true
       }
       break
   }
@@ -505,7 +509,7 @@ onMounted(() => {
   --el-table-tr-bg-color: var(--el-color-success-light-9);
 }
 
-.demo-tabs>.el-tabs__content {
+.demo-tabs > .el-tabs__content {
   padding: 32px;
   color: #6b778c;
   font-size: 32px;

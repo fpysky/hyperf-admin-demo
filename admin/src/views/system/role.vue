@@ -20,7 +20,7 @@
         <el-table-column prop="name" label="名称" width="180"/>
         <el-table-column prop="status" label="状态" width="180">
           <template #default="scope">
-            <el-switch @change="(val) => handleRoleStatusChange(val, scope.row.id)" v-model="scope.row.status"
+            <el-switch @change="(val: number) => handleRoleStatusChange(val, scope.row.id)" v-model="scope.row.status"
                        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
                        :inactive-value="0"/>
           </template>
@@ -70,15 +70,15 @@
                  style="width:80%;margin: 0 auto;min-height: 600px;" label-width="83px">
           <el-form-item label="设置权限:">
             <el-tree
-                ref="treeRef"
-                :data="state.ruleTree"
-                show-checkbox
-                node-key="id"
-                highlight-current
-                :props="defaultProps"
-                :render-after-expand=false
-                :default-expanded-keys="state.checkedNode"
-                @check-change="handleTreeCheckChange"
+              ref="treeRef"
+              :data="state.ruleTree"
+              show-checkbox
+              node-key="id"
+              highlight-current
+              :props="defaultProps"
+              :render-after-expand=false
+              :default-expanded-keys="state.checkedNode"
+              @check-change="handleTreeCheckChange"
             />
           </el-form-item>
         </el-form>
@@ -97,7 +97,7 @@
 <script lang="ts" setup>
 import {roleList, upRoleStatus, editRole, createRole, deleteRole, setRule} from '@/api/role'
 import {ruleList, roleRuleTree} from '@/api/rule'
-import {nextTick, onMounted, reactive, ref, toRefs} from 'vue'
+import {nextTick, onMounted, reactive, ref} from 'vue'
 import {ElMessage, ElMessageBox, FormInstance, FormRules} from 'element-plus'
 import type Node from 'element-plus/es/components/tree/src/model/node'
 
@@ -131,20 +131,20 @@ const state = reactive({
   formDialogVisible: false,
   submitLoading: false,
   isEdit: false,
-  tableData: [],
-  roleForm: <RoleForm>{
+  tableData: <RoleForm[]>([]),
+  roleForm: <RoleForm>({
     id: 0,
     name: '',
     desc: '',
     sort: 1,
     status: 0,
-  },
-  rules: <FormRules>{
+  }),
+  rules: <FormRules>({
     name: [
       {required: true, message: '请输入角色名称', trigger: 'blur'},
     ],
-  },
-  ruleTree: <Tree>[],
+  }),
+  ruleTree: <Tree[]>([]),
   roleId: 0,
   checkedNode: [],
   setRuleDialogVisible: false,
@@ -153,9 +153,9 @@ const state = reactive({
 })
 
 const handleTreeCheckChange = (
-    data: Tree,
-    checked: boolean,
-    indeterminate: boolean
+  data: Tree,
+  checked: boolean,
+  indeterminate: boolean
 ) => {
   state.checkedNode = treeRef.value!.getCheckedNodes(false, true)
 }
@@ -163,8 +163,8 @@ const handleTreeCheckChange = (
 const setRuleSubmit = () => {
   state.setRuleDialogVisible = true
   const checkedNodes = treeRef.value!.getCheckedNodes(false, true)
-  let ruleIds = []
-  checkedNodes.forEach(node => {
+  let ruleIds: number[] = []
+  checkedNodes.forEach((node: { id: number; }) => {
     ruleIds.push(node.id)
   })
   setRule({
@@ -189,11 +189,11 @@ const initRuleTree = async () => {
 
 const handleDelete = (ids: Array<number>) => {
   ElMessageBox.confirm('你确定要删除吗?', '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
   ).then(() => {
     deleteRole({ids: ids}).then(() => {
       getData()
@@ -201,7 +201,7 @@ const handleDelete = (ids: Array<number>) => {
   })
 }
 
-const handleRoleStatusChange = (val, id) => {
+const handleRoleStatusChange = (val: number, id: number) => {
   upRoleStatus({ids: [id], status: val})
 }
 
@@ -250,7 +250,7 @@ const resetForm = async () => {
 
 const initAdminForm = async (index: number | undefined) => {
   if (index !== undefined) {
-    const data = state.tableData[index]
+    const data: RoleForm = state.tableData[index]
     state.roleForm = <RoleForm>{
       id: data.id,
       name: data.name,
@@ -276,10 +276,10 @@ const openCreateOrUpdate = async (index: number | undefined) => {
   if (index === undefined) await resetForm()
 }
 
-const openSetRule = async (index: number | undefined) => {
+const openSetRule = async (index: number) => {
   state.setRuleDialogVisible = true
   state.setRuleDialogLoading = true
-  const data = state.tableData[index]
+  const data: RoleForm = state.tableData[index]
   state.roleId = data.id
   await initRuleTree()
   await initRoleRuleTree(data.id)
