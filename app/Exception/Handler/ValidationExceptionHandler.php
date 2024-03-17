@@ -9,7 +9,6 @@ use App\Extend\StandardOutput\StandardOutput;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 /**
  * 参数错误异常处理器.
@@ -19,7 +18,7 @@ class ValidationExceptionHandler extends ExceptionHandler
 {
     use StandardOutput;
 
-    public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
+    public function handle(\Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         /** @var ValidationException $throwable */
         $this->stopPropagation();
@@ -34,7 +33,7 @@ class ValidationExceptionHandler extends ExceptionHandler
             ->withStatus($throwable->status);
     }
 
-    public function isValid(Throwable $throwable): bool
+    public function isValid(\Throwable $throwable): bool
     {
         return $throwable instanceof ValidationException;
     }

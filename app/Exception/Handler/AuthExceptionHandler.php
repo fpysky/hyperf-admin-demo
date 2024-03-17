@@ -9,6 +9,7 @@ use App\Extend\StandardOutput\StandardOutput;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Psr\Http\Message\ResponseInterface;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
+use Qbhy\SimpleJwt\Exceptions\TokenExpiredException;
 
 class AuthExceptionHandler extends ExceptionHandler
 {
@@ -28,6 +29,10 @@ class AuthExceptionHandler extends ExceptionHandler
 
     public function isValid(\Throwable $throwable): bool
     {
-        return $throwable instanceof UnauthorizedException;
+        if ($throwable instanceof UnauthorizedException || $throwable instanceof TokenExpiredException) {
+            return true;
+        }
+
+        return false;
     }
 }
