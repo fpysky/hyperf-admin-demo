@@ -82,12 +82,12 @@ class AdminController extends AbstractAction
     ))]
     public function create(AdminStoreRequest $request): ResponseInterface
     {
-        $name = $request->input('name');
-        $mobile = $request->input('mobile');
-        $password = $request->input('password');
-        $roleIds = (array) $request->input('roleIds');
-        $status = $request->input('status');
-        $email = $request->input('email');
+        $name = $request->string('name');
+        $mobile = $request->string('mobile');
+        $password = $request->string('password');
+        $roleIds = $request->array('roleIds');
+        $status = $request->integer('status');
+        $email = $request->string('email');
 
         try {
             Db::beginTransaction();
