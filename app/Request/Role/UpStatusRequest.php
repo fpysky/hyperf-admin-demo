@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Request\Role;
 
-use Hyperf\Validation\Request\FormRequest;
+use App\Request\FormRequest;
 
 class UpStatusRequest extends FormRequest
 {

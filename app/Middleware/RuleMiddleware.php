@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\AdminRbac\Model\Admin\AdminRole;
-use App\AdminRbac\Model\Rule\Rule;
 use App\Exception\GeneralException;
+use App\Model\Admin\AdminRole;
+use App\Model\Rule\Rule;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

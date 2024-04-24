@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Request\Account;
 
-use Hyperf\Validation\Request\FormRequest;
+use App\Request\FormRequest;
 
 class ChangePasswordRequest extends FormRequest
 {

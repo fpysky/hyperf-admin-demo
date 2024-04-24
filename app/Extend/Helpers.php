@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\AdminRbac\Model\Admin\Admin;
 use App\Constants\ErrorCode;
 use App\Exception\GeneralException;
 use App\Extend\Log\Log;
+use App\Model\Admin\Admin;
 use Hyperf\Context\ApplicationContext;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -169,7 +169,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => EloquentProvider::class,
-            'model' => \App\AdminRbac\Model\Admin\Admin::class, // 需要实现 Qbhy\HyperfAuth\Authenticatable 接口
+            'model' => \App\Model\Admin\Admin::class, // 需要实现 Qbhy\HyperfAuth\Authenticatable 接口
         ],
     ],
 ];

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Request\Common;
 
-use Hyperf\Validation\Request\FormRequest;
+
+use App\Request\FormRequest;
 
 class PaginateRequest extends FormRequest
 {

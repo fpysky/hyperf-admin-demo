@@ -2,7 +2,7 @@
 
 namespace App\Resource\Rule;
 
-use App\AdminRbac\Model\Rule\Rule;
+use App\Model\Rule\Rule;
 use Hyperf\Resource\Json\JsonResource;
 
 class ButtonResource extends JsonResource
