@@ -16,7 +16,7 @@ return [
     '/get/api/system/backend/backendAdminRole/{id:\d+}',
     '/post/api/login/backend',
     '/delete/api/logout',
-    '/post/api/system/backend/changePassword',
+    '/post/api/system/changePassword',
     '/get/api/businessCircle/selectData',
     '/get/api/jyOpenApi/secure/rsa/publicKey',
     '/get/api/system/backend/backendCos/domain',
