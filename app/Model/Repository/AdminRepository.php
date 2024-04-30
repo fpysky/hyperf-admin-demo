@@ -14,7 +14,8 @@ use App\Model\Rule;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\HasMany;
 
-trait AdminRepository {
+trait AdminRepository
+{
     /**
      * @param array<int> $adminIds
      */
