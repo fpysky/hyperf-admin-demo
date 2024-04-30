@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\RequestAuth;
 
+use App\Controller\AbstractController;
 use App\Middleware\AuthMiddleware;
 use App\Model\Rule;
 use Hyperf\HttpServer\Annotation\Controller;

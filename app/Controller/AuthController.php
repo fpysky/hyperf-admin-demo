@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Annotation\NoApiPermission;
 use App\Exception\UnprocessableEntityException;
 use App\Model\Admin;
 use App\Request\LoginRequest;
@@ -34,6 +35,7 @@ class AuthController extends AbstractController
 
     #[PostMapping(path: 'login')]
     #[Post(path: 'login', summary: '登陆', tags: ['后台管理/账号'])]
+    #[NoApiPermission]
     #[RequestBody(content: new JsonContent(
         required: ['username', 'password'],
         properties: [

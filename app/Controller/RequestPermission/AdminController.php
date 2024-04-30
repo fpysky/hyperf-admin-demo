@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\RequestPermission;
 
 use App\Constants\ErrorCode;
+use App\Controller\AbstractController;
 use App\Exception\GeneralException;
 use App\Exception\SystemErrException;
 use App\Exception\UnprocessableEntityException;

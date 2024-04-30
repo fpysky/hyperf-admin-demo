@@ -15,7 +15,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 #[Command]
-class GenApiRule extends HyperfCommand
+class ApiRuleDetector extends HyperfCommand
 {
     private array $routeWhiteList;
 
