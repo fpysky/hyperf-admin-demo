@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resource;
 
-use App\Model\Rule\Rule;
+use App\Model\Rule;
 use Hyperf\Resource\Json\JsonResource;
 
 class RuleResource extends JsonResource

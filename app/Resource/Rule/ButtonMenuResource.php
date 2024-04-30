@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resource\Rule;
 
-use App\Model\Rule\Rule;
+use App\Model\Rule;
 use Hyperf\Resource\Json\JsonResource;
 
 class ButtonMenuResource extends JsonResource

@@ -2,47 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Admin;
+namespace App\Model\Repository;
 
 use App\Exception\RecordNotFoundException;
-use App\Model\Admin\Traits\AdminRelationship;
-use App\Model\Origin\Admin as Base;
-use App\Model\Role\Role;
-use App\Model\Role\RoleRule;
-use App\Model\Rule\Rule;
+use App\Model\Admin;
+use App\Model\AdminDept;
+use App\Model\AdminRole;
+use App\Model\Role;
+use App\Model\RoleRule;
+use App\Model\Rule;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\HasMany;
-use Hyperf\Database\Model\SoftDeletes;
-use Qbhy\HyperfAuth\Authenticatable;
 
-/**
- * @property Collection $adminRole
- * @property Collection $adminDept
- */
-class Admin extends Base implements Authenticatable
-{
-    use AdminRelationship;
-    use SoftDeletes;
-
-    /** 类型：超级管理员 */
-    public const TYPE_SUPER = 1;
-    /** 类型：普通管理员 */
-    public const TYPE_NORMAL = 2;
-    /** 状态：启用 */
-    public const STATUS_ENABLE = 1;
-    /** 状态：禁用 */
-    public const STATUS_DISABLED = 0;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public static function retrieveById($key): ?Authenticatable
-    {
-        return self::query()->findOrFail((int) $key);
-    }
-
+trait AdminRepository {
     /**
      * @param array<int> $adminIds
      */
@@ -137,7 +109,7 @@ class Admin extends Base implements Authenticatable
     /**
      * @throws \Exception
      */
-    public function clearDept()
+    public function clearDept(): void
     {
         AdminDept::query()
             ->where('admin_id', $this->id)
@@ -147,7 +119,7 @@ class Admin extends Base implements Authenticatable
     /**
      * @throws \Exception
      */
-    public function clearRole()
+    public function clearRole(): void
     {
         AdminRole::query()
             ->where('admin_id', $this->id)

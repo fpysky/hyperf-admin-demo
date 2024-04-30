@@ -11,7 +11,7 @@ use App\Exception\UnprocessableEntityException;
 use App\Extend\Auth\AuthManager;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use App\Model\Admin\Admin;
+use App\Model\Admin;
 use App\Request\AdminStoreRequest;
 use App\Request\AdminUpdateRequest;
 use App\Request\ResetPasswordRequest;

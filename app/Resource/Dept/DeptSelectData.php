@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Resource\Dept;
 
-use App\Model\Dept\Dept;
+use App\Model\Dept;
 use Hyperf\Resource\Json\JsonResource;
 
 class DeptSelectData extends JsonResource

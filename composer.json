@@ -86,6 +86,7 @@
           "php8.1 ./bin/hyperf.php start"
         ],
         "gen:adminRbac-model":"php8.1 ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/AdminRbac/Model/Origin",
-        "gen:swagger":"php ./bin/hyperf.php gen:swagger"
+        "gen:swagger":"php ./bin/hyperf.php gen:swagger",
+        "refresh-model":"php8.1 ./bin/hyperf.php gen:model $1 --refresh-fillable --with-comments --path=app/Model"
     }
 }

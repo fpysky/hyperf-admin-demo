@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Admin\Traits;
+namespace App\Model\Relationship;
 
-use App\Model\Admin\AdminDept;
-use App\Model\Admin\AdminRole;
-use App\Model\Post\Post;
+use App\Model\AdminDept;
+use App\Model\AdminRole;
+use App\Model\Post;
 use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\HasMany;
 

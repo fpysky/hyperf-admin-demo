@@ -7,7 +7,7 @@ namespace App\Controller;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use App\Model\Admin\Admin;
+use App\Model\Admin;
 use App\Request\Account\ChangePasswordRequest;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;

@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use App\Model\Rule\Rule;
+use App\Model\Rule;
 use App\Resource\AdminMenusResource;
 use App\Utils\Help;
 use Hyperf\Di\Annotation\Inject;

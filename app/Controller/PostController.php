@@ -7,7 +7,7 @@ namespace App\Controller;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use App\Model\Post\Post;
+use App\Model\Post;
 use App\Request\PostStoreRequest;
 use App\Request\PostUpdateRequest;
 use Hyperf\HttpServer\Annotation\Controller;

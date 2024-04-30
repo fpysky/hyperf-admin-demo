@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Role\Traits;
+namespace App\Model\Relationship;
 
-use App\Model\Role\RoleRule;
+use App\Model\RoleRule;
 use Hyperf\Database\Model\Relations\HasMany;
 
 trait RoleRelationship

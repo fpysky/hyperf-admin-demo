@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use App\Model\Dept\Dept;
+use App\Model\Dept;
 use App\Request\DeptStoreRequest;
 use App\Request\DeptUpdateRequest;
 use App\Resource\Dept\DeptResource;

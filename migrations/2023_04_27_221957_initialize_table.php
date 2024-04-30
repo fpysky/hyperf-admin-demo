@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Model\Admin\Admin;
-use App\Model\Dept\Dept;
-use App\Model\Post\Post;
-use App\Model\Role\Role;
+use App\Model\Admin;
+use App\Model\Dept;
+use App\Model\Post;
+use App\Model\Role;
 use Hyperf\Database\Migrations\Migration;
 
 class InitializeTable extends Migration

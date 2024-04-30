@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\Model\Repository\AdminOperationLogRepository;
-use Carbon\Carbon;
+use App\Model\Model;
 
 /**
- * @property int $id 
- * @property string $module 
- * @property int $operate_type 
- * @property string $method 
- * @property int $admin_id 
- * @property string $admin_name 
- * @property string $operate_ip 
- * @property int $operate_status 
- * @property string $operated_at 
- * @property \Carbon\Carbon $created_at 
- * @property \Carbon\Carbon $updated_at 
- * @property string $deleted_at 
+ * @property int $id ID
+ * @property string $module 模块
+ * @property int $operate_type 操作类型 1.新增 2.删除 3.修改 4.查询
+ * @property string $method 方法
+ * @property int $admin_id 操作人id
+ * @property string $admin_name 操作人姓名
+ * @property string $operate_ip 操作IP
+ * @property int $operate_status 操作状态 0.失败 1.成功
+ * @property string $operated_at 操作时间
+ * @property \Carbon\Carbon $created_at 创建时间
+ * @property \Carbon\Carbon $updated_at 更新时间
+ * @property string $deleted_at 删除时间
  */
 class AdminOperationLog extends Model
 {
-    use AdminOperationLogRepository;
-
     /**
      * The table associated with the model.
      */

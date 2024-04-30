@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command\Rule;
 
-use App\Model\Rule\Rule;
+use App\Model\Rule;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Hyperf\HttpServer\Router\DispatcherFactory;

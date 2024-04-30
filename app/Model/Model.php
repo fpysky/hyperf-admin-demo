@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\Exception\RecordNotFoundException;
 use Carbon\Carbon;
 use Hyperf\DbConnection\Model\Model as BaseModel;
 use Hyperf\ModelCache\Cacheable;
@@ -51,46 +50,21 @@ abstract class Model extends BaseModel implements CacheableInterface
         return '';
     }
 
-    /**
-     * 获取创建时间的unix时间戳.
-     * @return int
-     * @author fengpengyuan 2023/2/21
-     * @modifier fengpengyuan 2023/2/21
-     */
     public function getUnixCreatedAt(): int
     {
         return $this->getUnixTimestamp($this->created_at);
     }
 
-    /**
-     * 获取更新时间的unix时间戳.
-     * @return int
-     * @author fengpengyuan 2023/2/21
-     * @modifier fengpengyuan 2023/2/21
-     */
     public function getUnixUpdatedAt(): int
     {
         return $this->getUnixTimestamp($this->updated_at);
     }
 
-    /**
-     * 获取删除时间的unix时间戳.
-     * @return int
-     * @author fengpengyuan 2023/2/21
-     * @modifier fengpengyuan 2023/2/21
-     */
     public function getUnixDeletedAt(): int
     {
         return $this->getUnixTimestamp($this->deleted_at);
     }
 
-    /**
-     * 获取Unix时间戳.
-     * @param $time
-     * @return int
-     * @author fengpengyuan 2023/2/21
-     * @modifier fengpengyuan 2023/2/21
-     */
     public function getUnixTimestamp($time): int
     {
         if (is_int($time)) {

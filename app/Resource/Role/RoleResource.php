@@ -2,7 +2,7 @@
 
 namespace App\Resource\Role;
 
-use App\Model\Role\Role;
+use App\Model\Role;
 use Hyperf\Resource\Json\JsonResource;
 
 class RoleResource extends JsonResource

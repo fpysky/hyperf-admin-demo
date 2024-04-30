@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Dept\Traits;
+namespace App\Model\Relationship;
 
-use App\Model\Dept\Dept;
+use App\Model\Dept;
 use Hyperf\Database\Model\Relations\HasMany;
 
 trait DeptRelationship

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\UnprocessableEntityException;
-use App\Model\Admin\Admin;
+use App\Model\Admin;
 use App\Request\LoginRequest;
 use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Di\Annotation\Inject;

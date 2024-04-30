@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Middleware;
 
 use App\Exception\GeneralException;
-use App\Model\Admin\AdminRole;
-use App\Model\Rule\Rule;
+use App\Model\AdminRole;
+use App\Model\Rule;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
