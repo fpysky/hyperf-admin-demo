@@ -18,6 +18,9 @@ abstract class Model extends BaseModel implements CacheableInterface
 {
     use Cacheable;
 
+    /** 默认分页条数 */
+    protected int $perPage = 15;
+
     public function getFormattedCreatedAt(string $format = 'Y-m-d H:i:s'): string
     {
         return $this->getFormattedDateTime($this->created_at, $format);

@@ -23,7 +23,6 @@ class Post extends Model
 
     /** 状态：启用 */
     public const STATUS_ENABLE = 1;
-
     /** 状态：禁用 */
     public const STATUS_DISABLED = 0;
     /**

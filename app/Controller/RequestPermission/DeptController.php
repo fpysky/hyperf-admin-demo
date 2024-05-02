@@ -41,11 +41,11 @@ class DeptController extends AbstractController
     #[PostMapping(path: 'dept')]
     public function create(DeptStoreRequest $request): ResponseInterface
     {
-        $name = $request->input('name');
-        $remark = $request->input('remark');
-        $parentId = (int) $request->input('parentId');
-        $status = (int) $request->input('status');
-        $sort = (int) $request->input('sort');
+        $name = $request->string('name');
+        $remark = $request->string('remark');
+        $parentId = $request->integer('parentId');
+        $status = $request->integer('status');
+        $sort = $request->integer('sort');
 
         $dept = new Dept();
         $dept->parent_id = $parentId;
@@ -112,12 +112,12 @@ class DeptController extends AbstractController
     #[PutMapping(path: 'dept')]
     public function update(DeptUpdateRequest $request): ResponseInterface
     {
-        $id = (int) $request->input('id');
-        $name = $request->input('name');
-        $remark = $request->input('remark');
-        $parentId = (int) $request->input('parentId');
-        $status = (int) $request->input('status');
-        $sort = (int) $request->input('sort');
+        $id = $request->integer('id');
+        $name = $request->string('name');
+        $remark = $request->string('remark');
+        $parentId = $request->integer('parentId');
+        $status = $request->integer('status');
+        $sort = $request->integer('sort');
 
         $dept = Dept::findFromCacheOrFail($id);
         $dept->parent_id = $parentId;
@@ -133,8 +133,8 @@ class DeptController extends AbstractController
     #[PutMapping(path: 'dept/upStatus')]
     public function upStatus(): ResponseInterface
     {
-        $ids = (array) $this->request->input('ids');
-        $status = (int) $this->request->input('status');
+        $ids = $this->request->array('ids');
+        $status = $this->request->integer('status');
 
         Dept::query()
             ->whereIn('id', $ids)

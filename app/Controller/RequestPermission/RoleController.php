@@ -64,10 +64,10 @@ class RoleController extends AbstractController
     ))]
     public function create(RoleStoreRequest $request): ResponseInterface
     {
-        $name = $request->input('name');
-        $desc = $request->input('desc');
-        $sort = (int) $request->input('sort');
-        $status = (int) $request->input('status');
+        $name = $request->string('name');
+        $desc = $request->string('desc');
+        $sort = $request->integer('sort');
+        $status = $request->integer('status');
 
         $role = new Role();
         $role->name = $name;
@@ -95,7 +95,7 @@ class RoleController extends AbstractController
     ))]
     public function destroy(): ResponseInterface
     {
-        $ids = (array) $this->request->input('ids', []);
+        $ids = $this->request->array('ids', []);
 
         $hasAdminRole = AdminRole::query()
             ->whereIn('role_id', $ids)
@@ -183,12 +183,10 @@ class RoleController extends AbstractController
     ))]
     public function index(): ResponseInterface
     {
-        $pageSize = (int) $this->request->input('pageSize', 15);
-
         $paginator = Role::query()
             ->orderBy('sort')
             ->orderByDesc('id')
-            ->paginate($pageSize);
+            ->paginate();
 
         return $this->success([
             'total' => $paginator->total(),

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Request;
 
-use Hyperf\Validation\Request\FormRequest;
-
 class UpStatusRequest extends FormRequest
 {
     /**
@@ -27,7 +25,7 @@ class UpStatusRequest extends FormRequest
         ];
     }
 
-    public function messages():array
+    public function messages(): array
     {
         return [
             'ids.required' => 'ids不能为空',

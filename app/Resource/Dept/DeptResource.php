@@ -7,6 +7,9 @@ namespace App\Resource\Dept;
 use App\Model\Dept;
 use Hyperf\Resource\Json\JsonResource;
 
+/**
+ * @mixin Dept
+ */
 class DeptResource extends JsonResource
 {
     /**
@@ -16,7 +19,6 @@ class DeptResource extends JsonResource
      */
     public function toArray(): array
     {
-        /** @var Dept $this */
         return [
             'id' => $this->id,
             'parentId' => $this->parent_id,

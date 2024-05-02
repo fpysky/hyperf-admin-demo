@@ -128,7 +128,7 @@ class AdminController extends AbstractController
     ))]
     public function destroy(): ResponseInterface
     {
-        $ids = (array) $this->request->input('ids', []);
+        $ids = $this->request->array('ids');
 
         if (Admin::hasSuperAdmin($ids)) {
             throw new UnprocessableEntityException('不能删除超级管理员');
@@ -168,12 +168,12 @@ class AdminController extends AbstractController
     ))]
     public function update(AdminUpdateRequest $request): ResponseInterface
     {
-        $id = (int) $request->input('id');
-        $name = $request->input('name');
-        $mobile = $request->input('mobile');
-        $roleIds = (array) $request->input('roleIds');
-        $status = $request->input('status');
-        $email = $request->input('email');
+        $id = $request->integer('id');
+        $name = $request->string('name');
+        $mobile = $request->string('mobile');
+        $roleIds = $request->array('roleIds');
+        $status = $request->integer('status');
+        $email = $request->string('email');
 
         $admin = Admin::findFromCacheOrFail($id);
 
@@ -253,8 +253,7 @@ class AdminController extends AbstractController
     ))]
     public function index(): ResponseInterface
     {
-        $pageSize = (int) $this->request->input('pageSize', 15);
-        $keyword = (string) $this->request->input('keyword');
+        $keyword = $this->request->string('keyword');
 
         $builder = Admin::query()
             ->with(['adminDept', 'adminRole'])
@@ -268,7 +267,7 @@ class AdminController extends AbstractController
             });
         }
 
-        $paginator = $builder->paginate($pageSize);
+        $paginator = $builder->paginate();
 
         return $this->success([
             'list' => AdminResource::collection($paginator->items()),
@@ -357,8 +356,8 @@ class AdminController extends AbstractController
     ))]
     public function resetPassword(ResetPasswordRequest $request): ResponseInterface
     {
-        $id = (int) $request->input('id');
-        $password = (string) $request->input('password');
+        $id = $request->integer('id');
+        $password = $request->string('password');
 
         $admin = Admin::findFromCacheOrFail($id);
 
@@ -397,8 +396,8 @@ class AdminController extends AbstractController
     ))]
     public function changeStatus(UpStatusRequest $request): ResponseInterface
     {
-        $ids = (array) $request->input('ids');
-        $status = (int) $request->input('status');
+        $ids = $request->array('ids');
+        $status = $request->integer('status');
 
         if (Admin::hasSuperAdmin($ids)) {
             throw new UnprocessableEntityException('不能禁用超级管理员');

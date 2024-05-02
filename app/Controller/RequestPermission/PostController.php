@@ -26,15 +26,13 @@ class PostController extends AbstractController
     #[GetMapping(path: 'system/backend/backendAdminPost/page')]
     public function index(): ResponseInterface
     {
-        $pageSize = (int) $this->request->input('pageSize', 15);
-
         $paginator = Post::query()
             ->select([
                 'id', 'name', 'status', 'order as sort',
                 'mark as remark', 'created_at as createTime',
             ])
             ->orderBy('order')
-            ->paginate($pageSize);
+            ->paginate();
 
         return $this->success($paginator);
     }
@@ -42,17 +40,17 @@ class PostController extends AbstractController
     #[PostMapping(path: 'system/backend/backendAdminPost')]
     public function store(PostStoreRequest $request): ResponseInterface
     {
-        $name = (string) $request->input('name');
+        $name = $request->string('name');
 
         if (Post::existName($name)) {
             throw new UnprocessableEntityException('岗位已存在');
         }
 
         $data = [
-            'name' => (string) $request->input('name'),
-            'status' => (int) $request->input('status'),
-            'order' => (int) $request->input('sort'),
-            'mark' => (string) $request->input('remark'),
+            'name' => $name,
+            'status' => $request->integer('status'),
+            'order' => $request->integer('sort'),
+            'mark' => $request->string('remark'),
         ];
 
         Post::query()->create($data);
@@ -63,18 +61,18 @@ class PostController extends AbstractController
     #[PutMapping(path: 'system/backend/backendAdminPost')]
     public function update(PostUpdateRequest $request): ResponseInterface
     {
-        $name = (string) $request->input('name');
-        $id = (int) $request->input('id');
+        $name = $request->string('name');
+        $id = $request->integer('id');
 
         if (Post::existName($name, $id)) {
             throw new UnprocessableEntityException('岗位已存在');
         }
 
         $data = [
-            'name' => (string) $request->input('name'),
-            'status' => (int) $request->input('status'),
-            'order' => (int) $request->input('sort'),
-            'mark' => (string) $request->input('remark'),
+            'name' => $name,
+            'status' => $request->integer('status'),
+            'order' => $request->integer('sort'),
+            'mark' => $request->string('remark'),
         ];
 
         Post::query()
@@ -103,8 +101,8 @@ class PostController extends AbstractController
     #[PutMapping(path: 'system/backend/backendAdminPost/status')]
     public function upStatus(): ResponseInterface
     {
-        $ids = (array) $this->request->input('ids');
-        $status = (int) $this->request->input('status');
+        $ids = $this->request->array('ids');
+        $status = $this->request->integer('status');
 
         Post::query()
             ->whereIn('id', $ids)
@@ -124,7 +122,7 @@ class PostController extends AbstractController
     {
         $list = Post::query()
             ->select(['id', 'name as label'])
-            ->where('status', 1)
+            ->where('status', Post::STATUS_ENABLE)
             ->orderBy('order')
             ->orderBy('id', 'desc')
             ->get();
@@ -140,8 +138,8 @@ class PostController extends AbstractController
         $data = [
             'id' => $post->id,
             'name' => $post->name,
-            'remark' => $post->mark,
-            'sort' => $post->order,
+            'remark' => $post->remark,
+            'sort' => $post->sort,
             'status' => $post->status,
         ];
 

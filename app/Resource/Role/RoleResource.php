@@ -5,6 +5,9 @@ namespace App\Resource\Role;
 use App\Model\Role;
 use Hyperf\Resource\Json\JsonResource;
 
+/**
+ * @mixin Role
+ */
 class RoleResource extends JsonResource
 {
     /**
@@ -14,7 +17,6 @@ class RoleResource extends JsonResource
      */
     public function toArray(): array
     {
-        /** @var Role $this */
         return [
             'id' => $this->id,
             'status' => $this->status,
