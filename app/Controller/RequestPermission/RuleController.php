@@ -62,14 +62,14 @@ class RuleController extends AbstractController
     public function store(RuleStoreRequest $request): ResponseInterface
     {
         $rule = new Rule();
-        $rule->parent_id = (int) $request->input('parentId');
-        $rule->status = (int) $request->input('status');
-        $rule->type = (int) $request->input('type');
-        $rule->sort = (int) $request->input('sort');
-        $rule->name = $request->input('name');
-        $rule->icon = $request->input('icon');
-        $rule->route = $request->input('route');
-        $rule->path = $request->input('path');
+        $rule->parent_id = $request->integer('parentId');
+        $rule->status = $request->integer('status');
+        $rule->type = $request->integer('type');
+        $rule->sort = $request->integer('sort');
+        $rule->name = $request->string('name');
+        $rule->icon = $request->string('icon');
+        $rule->route = $request->string('route');
+        $rule->path = $request->string('path');
         $rule->save();
 
         $this->cacheRule->asyncRemoveCache();
@@ -80,18 +80,18 @@ class RuleController extends AbstractController
     #[PutMapping(path: 'rule')]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
-        $id = (int) $request->input('id');
+        $id = $request->integer('id');
 
         $rule = Rule::query()->findOrFail($id);
 
-        $rule->parent_id = (int) $request->input('parentId');
-        $rule->status = (int) $request->input('status');
-        $rule->type = (int) $request->input('type');
-        $rule->sort = (int) $request->input('sort');
-        $rule->name = $request->input('name');
-        $rule->icon = $request->input('icon');
-        $rule->route = $request->input('route');
-        $rule->path = $request->input('path');
+        $rule->parent_id = $request->integer('parentId');
+        $rule->status = $request->integer('status');
+        $rule->type = $request->integer('type');
+        $rule->sort = $request->integer('sort');
+        $rule->name = $request->string('name');
+        $rule->icon = $request->string('icon');
+        $rule->route = $request->string('route');
+        $rule->path = $request->string('path');
         $rule->save();
 
         $this->cacheRule->asyncRemoveCache();
@@ -116,8 +116,8 @@ class RuleController extends AbstractController
     #[PatchMapping(path: 'rule/status')]
     public function upStatus(): ResponseInterface
     {
-        $ids = (array) $this->request->input('ids');
-        $status = (int) $this->request->input('status');
+        $ids = $this->request->array('ids');
+        $status = $this->request->integer('status');
 
         Rule::query()
             ->whereIn('id', $ids)
@@ -138,7 +138,7 @@ class RuleController extends AbstractController
     #[DeleteMapping(path: 'rule')]
     public function destroy(): ResponseInterface
     {
-        $ids = (array) $this->request->input('ids', []);
+        $ids = $this->request->array('ids');
 
         Rule::query()
             ->whereIn('id', $ids)

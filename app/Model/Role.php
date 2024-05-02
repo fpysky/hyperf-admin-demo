@@ -6,6 +6,7 @@ namespace App\Model;
 
 use App\Exception\RecordNotFoundException;
 use App\Model\Relationship\RoleRelationship;
+use Carbon\Carbon;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
@@ -14,8 +15,8 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property int $sort 排序
  * @property string $name 角色名称
  * @property string $desc 描述
- * @property \Carbon\Carbon $created_at 创建时间
- * @property \Carbon\Carbon $updated_at 更新时间
+ * @property Carbon $created_at 创建时间
+ * @property Carbon $updated_at 更新时间
  * @property string $deleted_at 删除时间
  */
 class Role extends Model
@@ -24,10 +25,10 @@ class Role extends Model
     use RoleRelationship;
 
     /** 状态：启用 */
-    const STATUS_ENABLE = 1;
+    public const STATUS_ENABLE = 1;
 
     /** 状态：禁用 */
-    const STATUS_DISABLED = 0;
+    public const STATUS_DISABLED = 0;
 
     /**
      * The table associated with the model.
@@ -44,7 +45,7 @@ class Role extends Model
      */
     protected array $casts = ['id' => 'integer', 'status' => 'integer', 'sort' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
-    public static function nameExist(string $name, int $exceptId = null): bool
+    public static function nameExist(string $name, ?int $exceptId = null): bool
     {
         $builder = self::query()->where('name', $name);
 
@@ -72,12 +73,12 @@ class Role extends Model
     {
         $this->clearRule();
 
-        $insertData = array_map(function ($ruleId){
+        $insertData = array_map(function ($ruleId) {
             return [
                 'role_id' => $this->id,
                 'rule_id' => $ruleId,
             ];
-        },$ruleIds);
+        }, $ruleIds);
 
         RoleRule::query()->insert($insertData);
     }
@@ -91,5 +92,18 @@ class Role extends Model
         }
 
         return $model;
+    }
+
+    public static function roleIsBindingAdmin(array|int $id): bool
+    {
+        $query = AdminRole::query();
+
+        if (is_array($id)) {
+            $query->whereIn('role_id', $id);
+        } else {
+            $query->where('role_id', $id);
+        }
+
+        return $query->exists();
     }
 }

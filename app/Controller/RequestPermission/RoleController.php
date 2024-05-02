@@ -8,7 +8,6 @@ use App\Controller\AbstractController;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
-use App\Model\AdminRole;
 use App\Model\Role;
 use App\Request\Role\SetRuleRequest;
 use App\Request\Role\UpStatusRequest;
@@ -95,13 +94,9 @@ class RoleController extends AbstractController
     ))]
     public function destroy(): ResponseInterface
     {
-        $ids = $this->request->array('ids', []);
+        $ids = $this->request->array('ids');
 
-        $hasAdminRole = AdminRole::query()
-            ->whereIn('role_id', $ids)
-            ->exists();
-
-        if ($hasAdminRole) {
+        if (Role::roleIsBindingAdmin($ids)) {
             throw new UnprocessableEntityException('有管理员绑定此角色，请解绑后再操作');
         }
 
@@ -246,8 +241,8 @@ class RoleController extends AbstractController
     ))]
     public function handle(SetRuleRequest $request): ResponseInterface
     {
-        $ruleIds = (array) $request->input('ruleIds');
-        $roleId = (int) $request->input('roleId');
+        $ruleIds = $request->array('ruleIds');
+        $roleId = $request->integer('roleId');
 
         Role::findFromCacheOrFail($roleId)
             ->setRule($ruleIds);
@@ -277,11 +272,11 @@ class RoleController extends AbstractController
     ))]
     public function update(RoleUpdateRequest $request): ResponseInterface
     {
-        $id = $request->input('id');
-        $name = $request->input('name');
-        $desc = $request->input('desc');
-        $sort = (int) $request->input('sort');
-        $status = (int) $request->input('status');
+        $id = $request->integer('id');
+        $name = $request->string('name');
+        $desc = $request->string('desc');
+        $sort = $request->integer('sort');
+        $status = $request->integer('status');
 
         $role = Role::findFromCacheOrFail($id);
 
@@ -313,8 +308,8 @@ class RoleController extends AbstractController
     ))]
     public function changeStatus(UpStatusRequest $request): ResponseInterface
     {
-        $ids = (array) $request->input('ids');
-        $status = (int) $request->input('status');
+        $ids = $request->array('ids');
+        $status = $request->integer('status');
 
         Role::query()
             ->whereIn('id', $ids)
