@@ -45,6 +45,8 @@ return [
                 'force_casts' => true,
                 'inheritance' => 'Model',
                 'uses' => 'App\Model\Model',
+                'refresh_fillable' => true,
+                'with_comments'=> true,
             ],
         ],
     ],

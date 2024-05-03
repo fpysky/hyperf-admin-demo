@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Extend\Generator;
+namespace App\Command\Generator;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Devtool\Generator\GeneratorCommand;

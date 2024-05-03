@@ -59,16 +59,6 @@ class Admin extends Model implements Authenticatable
      */
     protected array $casts = ['id' => 'integer', 'status' => 'integer', 'type' => 'integer', 'dept_id' => 'integer', 'last_login_time' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public static function retrieveById($key): ?Authenticatable
-    {
-        return self::query()->findOrFail((int) $key);
-    }
-
     public function adminRole(): HasMany
     {
         return $this->hasMany(AdminRole::class, 'admin_id', 'id');
@@ -82,5 +72,15 @@ class Admin extends Model implements Authenticatable
     public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class, 'post_id', 'id');
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public static function retrieveById($key): ?Authenticatable
+    {
+        return self::query()->findOrFail((int) $key);
     }
 }

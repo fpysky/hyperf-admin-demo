@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Extend\Generator;
+namespace App\Command\Generator;
 
 use Hyperf\CodeParser\Project;
 use Hyperf\Command\Command;
@@ -29,7 +29,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use function Hyperf\Support\make;
 
 class ModelCommand extends Command
