@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Exception\RecordNotFoundException;
-use App\Model\Relationship\RoleRelationship;
 use Carbon\Carbon;
+use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
@@ -18,11 +18,11 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property Carbon $created_at 创建时间
  * @property Carbon $updated_at 更新时间
  * @property string $deleted_at 删除时间
+ * @property-read null|\Hyperf\Database\Model\Collection|RoleRule[] $roleRule 
  */
 class Role extends Model
 {
     use SoftDeletes;
-    use RoleRelationship;
 
     /** 状态：启用 */
     public const STATUS_ENABLE = 1;
@@ -105,5 +105,10 @@ class Role extends Model
         }
 
         return $query->exists();
+    }
+
+    public function roleRule(): HasMany
+    {
+        return $this->hasMany(RoleRule::class, 'role_id', 'id');
     }
 }

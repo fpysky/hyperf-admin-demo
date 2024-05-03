@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use App\Model\Relationship\AdminRelationship;
 use App\Model\Repository\AdminRepository;
 use Carbon\Carbon;
+use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\Relations\BelongsTo;
+use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 use Qbhy\HyperfAuth\Authenticatable;
 
@@ -25,10 +27,12 @@ use Qbhy\HyperfAuth\Authenticatable;
  * @property Carbon $created_at 创建时间
  * @property Carbon $updated_at 更新时间
  * @property string $deleted_at 删除时间
+ * @property null|AdminRole[]|Collection $adminRole
+ * @property null|AdminDept[]|Collection $adminDept
+ * @property null|Post $post
  */
 class Admin extends Model implements Authenticatable
 {
-    use AdminRelationship;
     use AdminRepository;
     use SoftDeletes;
 
@@ -63,5 +67,20 @@ class Admin extends Model implements Authenticatable
     public static function retrieveById($key): ?Authenticatable
     {
         return self::query()->findOrFail((int) $key);
+    }
+
+    public function adminRole(): HasMany
+    {
+        return $this->hasMany(AdminRole::class, 'admin_id', 'id');
+    }
+
+    public function adminDept(): HasMany
+    {
+        return $this->hasMany(AdminDept::class, 'admin_id', 'id');
+    }
+
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'post_id', 'id');
     }
 }

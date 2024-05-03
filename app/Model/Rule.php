@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Exception\RecordNotFoundException;
-use App\Model\Relationship\RuleRelationship;
 use Carbon\Carbon;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\ModelNotFoundException;
+use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
- * @property int $id
+ * @property int $id 
  * @property int $parent_id 父级id
  * @property int $status 状态：0.禁用 1.启用
  * @property int $type 类型：1-菜单，2-目录，3-按钮，4-接口
@@ -26,11 +26,14 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property Carbon $created_at 创建时间
  * @property Carbon $updated_at 更新时间
  * @property string $deleted_at 删除时间
+ * @property-read null|Collection|Rule[] $children 
+ * @property-read null|Collection|Rule[] $buttons 
+ * @property-read null|Collection|RoleRule[] $roleRule 
+ * @property-read null|Rule $parentRule 
  */
 class Rule extends Model
 {
     use SoftDeletes;
-    use RuleRelationship;
 
     /** 状态：启用 */
     public const STATUS_ENABLE = 1;
@@ -135,5 +138,26 @@ class Rule extends Model
         } catch (ModelNotFoundException) {
             return 0;
         }
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Rule::class, 'parent_id', 'id');
+    }
+
+    public function buttons(): HasMany
+    {
+        return $this->hasMany(Rule::class, 'parent_id', 'id')
+            ->where('type', self::TYPE_BUTTON);
+    }
+
+    public function roleRule(): HasMany
+    {
+        return $this->hasMany(RoleRule::class, 'rule_id', 'id');
+    }
+
+    public function parentRule(): BelongsTo
+    {
+        return $this->belongsTo(Rule::class, 'parent_id', 'id');
     }
 }

@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
- * @property int $id
+ * @property int $id 
  * @property string $name 职位名称
  * @property int $status 状态：0.禁用 1.启用
  * @property int $sort 排序：从小到大

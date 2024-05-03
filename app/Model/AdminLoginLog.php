@@ -13,6 +13,7 @@ use Hyperf\Database\Model\Relations\BelongsTo;
  * @property string $city 城市名称
  * @property int $last_login_time 登录时间
  * @property string $last_login_ip 最近登录ip
+ * @property-read null|Admin $admin 
  */
 class AdminLoginLog extends Model
 {

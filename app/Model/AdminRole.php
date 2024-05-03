@@ -7,9 +7,10 @@ namespace App\Model;
 use Hyperf\Database\Model\Relations\HasOne;
 
 /**
- * @property int $id
+ * @property int $id 
  * @property int $role_id 角色id
  * @property int $admin_id 用户id
+ * @property-read null|Role $role 
  */
 class AdminRole extends Model
 {

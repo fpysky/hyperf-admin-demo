@@ -8,9 +8,11 @@ use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\HasOne;
 
 /**
- * @property int $id
+ * @property int $id 
  * @property int $role_id 角色id
  * @property int $rule_id 权限id
+ * @property-read null|Rule $rule 
+ * @property-read null|Role $role 
  */
 class RoleRule extends Model
 {

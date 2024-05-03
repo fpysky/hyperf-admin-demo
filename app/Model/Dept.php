@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Exception\RecordNotFoundException;
-use App\Model\Relationship\DeptRelationship;
 use Carbon\Carbon;
+use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
- * @property int $id
+ * @property int $id 
  * @property int $parent_id 父级id
  * @property int $status 状态：0.禁用 1.启用
  * @property int $sort 排序
@@ -19,11 +19,12 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property Carbon $created_at 创建时间
  * @property Carbon $updated_at 更新时间
  * @property string $deleted_at 删除时间
+ * @property-read null|\Hyperf\Database\Model\Collection|Dept[] $children 
+ * @property-read null|\Hyperf\Database\Model\Collection|Dept[] $enabledChildren 
  */
 class Dept extends Model
 {
     use SoftDeletes;
-    use DeptRelationship;
 
     /** 状态：启用 */
     public const STATUS_ENABLE = 1;
@@ -64,5 +65,16 @@ class Dept extends Model
         }
 
         return $model;
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Dept::class, 'parent_id', 'id');
+    }
+
+    public function enabledChildren(): HasMany
+    {
+        return $this->hasMany(Dept::class, 'parent_id', 'id')
+            ->where('status', self::STATUS_ENABLE);
     }
 }
