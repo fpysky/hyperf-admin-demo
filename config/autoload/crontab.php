@@ -12,7 +12,7 @@ return [
             ->setName('自动更新API权限')
             ->setRule('*/1 * * * *')
             ->setCallback([
-                'command' => 'rule:genApiRule',
+                'command' => 'permission:scan',
                 '--disable-event-dispatcher' => true,
             ]),
     ],

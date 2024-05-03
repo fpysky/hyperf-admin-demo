@@ -2,6 +2,7 @@
 
 namespace App\Controller\Permission;
 
+use App\Annotation\Permission;
 use App\Controller\AbstractController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
@@ -29,6 +30,7 @@ class SystemController extends AbstractController
 {
     #[GetMapping(path: 'system/operateLog')]
     #[Get(path: 'system/operateLog', summary: '操作日志列表', tags: ['系统管理/操作日志'])]
+    #[Permission(name:'操作日志列表',module: '系统管理/操作日志')]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[QueryParameter(name: 'page', description: '页码', schema: new Schema(type: 'integer'), example: 1)]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', schema: new Schema(type: 'integer'), example: 15)]
@@ -121,6 +123,7 @@ class SystemController extends AbstractController
 
     #[GetMapping(path: 'system/operateLog/export')]
     #[Get(path: 'system/operateLog/export', summary: '操作日志列表导出', tags: ['系统管理/操作日志'])]
+    #[Permission(name:'操作日志列表导出',module: '系统管理/操作日志')]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[QueryParameter(name: 'module', description: '系统模块', schema: new Schema(type: 'string'), example: '系统模块')]
     #[QueryParameter(name: 'operateType', description: '操作类型 1.新增 2.删除 3.修改 4.查询', schema: new Schema(type: 'integer'), example: 1)]

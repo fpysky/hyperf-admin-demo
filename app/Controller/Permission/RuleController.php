@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Permission;
 
+use App\Annotation\Permission;
 use App\Controller\AbstractController;
 use App\Extend\CacheRule;
 use App\Middleware\AuthMiddleware;
@@ -41,6 +42,7 @@ class RuleController extends AbstractController
 
     #[GetMapping(path: 'rule')]
     #[Get(path: 'rule', summary: '权限列表', tags: ['系统管理/权限管理'])]
+    #[Permission(name:'权限列表',module: '系统管理/权限管理')]
     public function index(): ResponseInterface
     {
         $list = Rule::query()
@@ -59,6 +61,7 @@ class RuleController extends AbstractController
     }
 
     #[PostMapping(path: 'rule')]
+    #[Permission(name:'创建权限',module: '系统管理/权限管理')]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
         $rule = new Rule();
@@ -78,6 +81,7 @@ class RuleController extends AbstractController
     }
 
     #[PutMapping(path: 'rule')]
+    #[Permission(name:'编辑权限',module: '系统管理/权限管理')]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = $request->integer('id');
@@ -100,6 +104,7 @@ class RuleController extends AbstractController
     }
 
     #[PutMapping(path: 'system/backend/backendAdminRule/batchSortRule')]
+    #[Permission(name:'批量排序权限状态',module: '系统管理/权限管理')]
     public function upOrders(): ResponseInterface
     {
         $orders = $this->request->input('orders');
@@ -114,6 +119,7 @@ class RuleController extends AbstractController
     }
 
     #[PatchMapping(path: 'rule/status')]
+    #[Permission(name:'修改权限状态',module: '系统管理/权限管理')]
     public function upStatus(): ResponseInterface
     {
         $ids = $this->request->array('ids');
@@ -136,6 +142,7 @@ class RuleController extends AbstractController
      * @throws \Exception
      */
     #[DeleteMapping(path: 'rule')]
+    #[Permission(name:'删除权限',module: '系统管理/权限管理')]
     public function destroy(): ResponseInterface
     {
         $ids = $this->request->array('ids');
@@ -209,6 +216,7 @@ class RuleController extends AbstractController
     }
 
     #[GetMapping(path: 'rule/{id:\d+}')]
+    #[Permission(name:'权限详情',module: '系统管理/权限管理')]
     public function detail(int $id): ResponseInterface
     {
         $rule = Rule::findFromCacheOrFail($id);

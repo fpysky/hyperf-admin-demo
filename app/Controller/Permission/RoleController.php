@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Permission;
 
+use App\Annotation\Permission;
 use App\Controller\AbstractController;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
@@ -44,6 +45,7 @@ class RoleController extends AbstractController
 {
     #[PostMapping(path: 'role')]
     #[Post(path: 'role', summary: '添加角色', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'添加角色',module: '系统管理/角色管理')]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'desc', 'status', 'sort'],
         properties: [
@@ -83,6 +85,7 @@ class RoleController extends AbstractController
      */
     #[DeleteMapping(path: 'role')]
     #[Delete(path: 'role', summary: '角色删除', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'删除角色',module: '系统管理/角色管理')]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -109,6 +112,7 @@ class RoleController extends AbstractController
 
     #[GetMapping(path: 'role/{id:\d+}')]
     #[Get(path: 'role/{id}', summary: '角色详情', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'角色详情',module: '系统管理/角色管理')]
     #[PathParameter(name: 'id', description: '角色id', required: true, schema: new Schema(type: 'integer'), example: 1)]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -141,6 +145,7 @@ class RoleController extends AbstractController
 
     #[GetMapping(path: 'role')]
     #[Get(path: 'role', summary: '角色列表', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'角色列表',module: '系统管理/角色管理')]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]
     #[Response(response: 200, content: new JsonContent(
@@ -224,6 +229,7 @@ class RoleController extends AbstractController
      */
     #[PostMapping(path: 'role/setRule')]
     #[Post(path: 'role/setRule', summary: '角色设置权限', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'角色设置权限',module: '系统管理/角色管理')]
     #[RequestBody(content: new JsonContent(
         required: ['ruleIds', 'roleId'],
         properties: [
@@ -251,7 +257,8 @@ class RoleController extends AbstractController
     }
 
     #[PutMapping(path: 'role')]
-    #[Put(path: 'role', summary: '修改角色', tags: ['系统管理/角色管理'])]
+    #[Put(path: 'role', summary: '编辑角色', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'编辑角色',module: '系统管理/角色管理')]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'desc', 'status', 'sort'],
         properties: [
@@ -291,6 +298,7 @@ class RoleController extends AbstractController
 
     #[PatchMapping(path: 'role/status')]
     #[Patch(path: 'role/status', summary: '修改角色状态', tags: ['系统管理/角色管理'])]
+    #[Permission(name:'修改角色状态',module: '系统管理/角色管理')]
     #[RequestBody(content: new JsonContent(
         required: ['ids', 'status'],
         properties: [

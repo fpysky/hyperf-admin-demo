@@ -15,7 +15,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 #[Command]
-class ApiRuleDetector extends HyperfCommand
+class ApiRuleDetectorCp extends HyperfCommand
 {
     private array $routeWhiteList;
 
@@ -23,7 +23,7 @@ class ApiRuleDetector extends HyperfCommand
     {
         $this->routeWhiteList = \Hyperf\Config\config('notCheckRBAC');
 
-        parent::__construct('rule:genApiRule');
+        parent::__construct('rule:genApiRule_cp');
     }
 
     public function configure()

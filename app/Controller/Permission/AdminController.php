@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Permission;
 
+use App\Annotation\Permission;
 use App\Constants\ErrorCode;
 use App\Controller\AbstractController;
 use App\Exception\GeneralException;
@@ -58,6 +59,7 @@ class AdminController extends AbstractController
 
     #[PostMapping(path: 'admin')]
     #[Post(path: 'admin', summary: '添加管理员', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'添加管理员',module: '系统管理/管理员管理')]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status'],
         properties: [
@@ -117,6 +119,7 @@ class AdminController extends AbstractController
      */
     #[DeleteMapping(path: 'admin')]
     #[Delete(path: 'admin', summary: '管理员删除', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'删除管理员',module: '系统管理/管理员管理')]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -142,7 +145,8 @@ class AdminController extends AbstractController
     }
 
     #[PutMapping(path: 'admin')]
-    #[Put(path: 'admin', summary: '修改管理员', tags: ['系统管理/管理员管理'])]
+    #[Put(path: 'admin', summary: '编辑管理员', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'编辑管理员',module: '系统管理/管理员管理')]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status', 'roleIds'],
         properties: [
@@ -203,6 +207,7 @@ class AdminController extends AbstractController
 
     #[GetMapping(path: 'admin')]
     #[Get(path: 'admin', summary: '管理员列表', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'管理员列表',module: '系统管理/管理员管理')]
     #[QueryParameter(name: 'page', description: '页码', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'pageSize', description: '每页显示条数', required: false, schema: new Schema(type: 'integer'))]
     #[QueryParameter(name: 'keyword', description: '搜索关键词', required: false, schema: new Schema(type: 'string'))]
@@ -277,6 +282,7 @@ class AdminController extends AbstractController
 
     #[GetMapping(path: 'admin/{id:\d+}')]
     #[Get(path: 'admin/{id}', summary: '管理员详情', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'管理员详情',module: '系统管理/管理员管理')]
     #[PathParameter(name: 'id', description: '管理员id', required: true, schema: new Schema(type: 'integer'), example: 1)]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -339,6 +345,7 @@ class AdminController extends AbstractController
 
     #[PatchMapping(path: 'admin/resetPassword')]
     #[Patch(path: 'admin/resetPassword', summary: '重置管理员密码', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'重置管理员密码',module: '系统管理/管理员管理')]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password'],
         properties: [
@@ -379,6 +386,7 @@ class AdminController extends AbstractController
      */
     #[PatchMapping(path: 'admin/status')]
     #[Patch(path: 'admin/status', summary: '修改管理员状态', tags: ['系统管理/管理员管理'])]
+    #[Permission(name:'修改管理员状态',module: '系统管理/管理员管理')]
     #[RequestBody(content: new JsonContent(
         required: ['ids', 'status'],
         properties: [
