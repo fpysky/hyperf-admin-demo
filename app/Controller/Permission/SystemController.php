@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\RequestPermission;
+namespace App\Controller\Permission;
 
 use App\Controller\AbstractController;
 use App\Middleware\AuthMiddleware;

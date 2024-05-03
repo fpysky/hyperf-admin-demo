@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\RequestAuth;
+namespace App\Controller\Auth;
 
 use App\Controller\AbstractController;
 use App\Middleware\AuthMiddleware;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\RequestPermission;
+namespace App\Controller\Permission;
 
 use App\Constants\ErrorCode;
 use App\Controller\AbstractController;
