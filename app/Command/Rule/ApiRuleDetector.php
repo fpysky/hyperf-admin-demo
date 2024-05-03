@@ -80,9 +80,8 @@ class ApiRuleDetector extends HyperfCommand
                         'name' => $ruleName,
                         'route' => $route,
                     ]);
+                    $this->info("创建或更新[{$route}]接口权限成功");
                 }
-
-                $this->info("创建或更新[{$route}]接口权限成功");
             }
         }
         $this->info('操作完成√');

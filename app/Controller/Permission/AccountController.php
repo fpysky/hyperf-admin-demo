@@ -28,7 +28,7 @@ use Psr\Http\Message\ResponseInterface;
 class AccountController extends AbstractController
 {
     #[PostMapping(path: 'account/changePassword')]
-    #[Post(path: 'account/changePassword', summary: '管理密码修改', tags: ['后台管理/账号'])]
+    #[Post(path: 'account/changePassword', summary: '管理密码修改', tags: ['系统管理/管理员管理'])]
     #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password', 'newPassword', 'retNewPassword'],

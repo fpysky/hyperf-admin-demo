@@ -30,14 +30,7 @@ class Test extends HyperfCommand
      */
     public function handle()
     {
-        $this->isCompleted();
-
-        if (! $this->isCompleted()) {
-            for ($i = 0; $i < 10; ++$i) {
-                $this->doSomething();
-            }
-            exit;
-        }
+        var_dump(encryptPassword('admin123'));
     }
 
     private function doSomething()

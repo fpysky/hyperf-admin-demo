@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-$pageSize = include BASE_PATH . '/config/autoload/custom/pagesize.php';
-$redisKey = include BASE_PATH . '/config/autoload/custom/rediskey.php';
 $baidu = include BASE_PATH . '/config/autoload/custom/baidu.php';
 return [
-    'pageSize' => $pageSize, //页条数相关配置
-    'redisKey' => $redisKey, //redis的键名相关配置
     'baidu' => $baidu, //百度相关配置
     'moduleName' => 'admin', //后台模块名称
     'encryKey' => '&^*%(#)@!~', //对称加解密key
