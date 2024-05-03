@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git pull
+git checkout . && git reset --hard origin/master
 
 sudo docker stop hyperf-admin
 
