@@ -2,4 +2,4 @@
 
 sudo rm -R ./runtime/container
 
-composer update -o
+composer install
