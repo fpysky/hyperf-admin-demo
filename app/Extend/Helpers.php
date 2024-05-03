@@ -69,6 +69,6 @@ if (! function_exists('adminId')) {
 if (! function_exists('encryptPassword')) {
     function encryptPassword(string $password): string
     {
-        return password_hash($password, PASSWORD_DEFAULT);
+        return password_hash($password.config('admin.password_salt'), PASSWORD_DEFAULT);
     }
 }

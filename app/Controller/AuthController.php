@@ -78,7 +78,7 @@ class AuthController extends AbstractController
             throw new UnprocessableEntityException('账户不存在');
         }
 
-        if (! password_verify($password, $admin->password)) {
+        if (! password_verify($password.config('admin.password_salt'), $admin->password)) {
             throw new UnprocessableEntityException('账号或密码错误');
         }
 
@@ -96,7 +96,7 @@ class AuthController extends AbstractController
             'id' => $admin->id,
             'token' => $accessToken,
             'name' => $admin->name,
-            'logo' => $admin->logo ?: config('myconfig.adminImg'),
+            'logo' => $admin->logo ?: config('admin.default_admin_head_img'),
         ]);
     }
 
