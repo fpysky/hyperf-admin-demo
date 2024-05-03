@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2cf8400b0cfd6d0d4091bfc84e7a0c45",
+    "content-hash": "42d5d25aaa244b75f6c333e117cbcfc7",
     "packages": [
         {
             "name": "96qbhy/hyperf-auth",
@@ -10689,8 +10689,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1",
-        "ext-redis": "*",
-        "ext-pcntl": "*"
+        "ext-redis": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

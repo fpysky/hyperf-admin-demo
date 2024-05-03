@@ -16,6 +16,9 @@ class ErrorCode extends AbstractConstants
     /** @Message("认证失败，未授权") */
     public const UNAUTHORIZED = 401000;
 
+    /** @Message("登陆已过期") */
+    public const TOKEN_EXPIRED = 401001;
+
     /** @Message("请求被拒绝") */
     public const FORBIDDEN = 403000;
 

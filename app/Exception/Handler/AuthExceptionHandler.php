@@ -19,8 +19,14 @@ class AuthExceptionHandler extends ExceptionHandler
     {
         /** @var UnauthorizedException $throwable */
         $this->stopPropagation();
-        $msg = ErrorCode::getMessage(ErrorCode::UNAUTHORIZED);
-        $statusCode = method_exists($throwable, 'getStatusCode')? $throwable->getStatusCode() : ErrorCode::UNAUTHORIZED;
+
+        if($throwable instanceof TokenExpiredException){
+            $statusCode = ErrorCode::TOKEN_EXPIRED;
+            $msg = ErrorCode::getMessage(ErrorCode::TOKEN_EXPIRED);
+        }else{
+            $msg = ErrorCode::getMessage(ErrorCode::UNAUTHORIZED);
+            $statusCode = method_exists($throwable, 'getStatusCode')? $throwable->getStatusCode() : ErrorCode::UNAUTHORIZED;
+        }
 
         return $response
             ->withBody($this->buildStdOutput($msg, ErrorCode::UNAUTHORIZED))
