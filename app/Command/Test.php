@@ -35,15 +35,6 @@ class Test extends HyperfCommand
      */
     public function handle()
     {
-        $collector = AnnotationCollector::list();
-        foreach ($collector as $className => $metadata) {
-            if(isset($metadata['_c']) && isset($metadata['_c'][Controller::class])) {
-                foreach ($metadata['_m'] as $key => $value){
-                    if(isset($value[Permission::class])){
-                        var_dump($className);
-                    }
-                }
-            }
-        }
+        var_dump(date());
     }
 }
