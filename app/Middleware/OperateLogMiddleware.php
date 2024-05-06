@@ -15,8 +15,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-use function Hyperf\Coroutine\go;
-
 class OperateLogMiddleware implements MiddlewareInterface
 {
     #[Inject]
@@ -42,12 +40,8 @@ class OperateLogMiddleware implements MiddlewareInterface
 
         go(function () use ($statusCode, $admin, $request) {
             $method = $request->getMethod();
-            $requestUri = (string) $request->getUri();
-            $path = '/' . strtolower($method) . $this->getRequestPath($requestUri);
-
-            if($this->noNeedToLog($path)){
-                return;
-            }
+            $requestUri =  $request->getUri();
+            $path = '/' . strtolower($method) . $requestUri->getPath();
 
             // 匹配不到系统模块，不做记录
             if ($module = $this->matchModule($path)) {
@@ -67,23 +61,6 @@ class OperateLogMiddleware implements MiddlewareInterface
                 ]);
             }
         });
-    }
-
-    private function noNeedToLog(string $path): bool
-    {
-        $config = (array) config('operateLogExcept', []);
-
-        if (in_array($path, $config)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function getRequestPath(string $uri): string
-    {
-        $urlInfo = parse_url($uri);
-        return isset($urlInfo['path']) ? (string) $urlInfo['path'] : '';
     }
 
     private function matchModule(string $path): ?string
