@@ -65,21 +65,21 @@ class PermissionScan extends HyperfCommand
 
     public function getRequestPath(string $prefix, array $methodMetadata): string
     {
-        if(Str::length($prefix)){
-            if(Str::substr($prefix,0,1) === '/'){
-                $prefix = Str::substr($prefix,1);
+        if (Str::length($prefix)) {
+            if (Str::substr($prefix, 0, 1) === '/') {
+                $prefix = Str::substr($prefix, 1);
             }
-            if(Str::substr($prefix,-1,1) !== '/'){
+            if (Str::substr($prefix, -1, 1) !== '/') {
                 $prefix .= '/';
             }
         }
 
         return match (true) {
-            isset($methodMetadata[GetMapping::class]) => "/get/{$prefix}{$methodMetadata[GetMapping::class]->path}",
-            isset($methodMetadata[PostMapping::class]) => "/post/{$prefix}{$methodMetadata[PostMapping::class]->path}",
-            isset($methodMetadata[PutMapping::class]) => "/put/{$prefix}{$methodMetadata[PutMapping::class]->path}",
-            isset($methodMetadata[PatchMapping::class]) => "/patch/{$prefix}{$methodMetadata[PatchMapping::class]->path}",
-            isset($methodMetadata[DeleteMapping::class]) => "/delete/{$prefix}{$methodMetadata[DeleteMapping::class]->path}",
+            isset($methodMetadata[GetMapping::class]) => "/get/$prefix{$methodMetadata[GetMapping::class]->path}",
+            isset($methodMetadata[PostMapping::class]) => "/post/$prefix{$methodMetadata[PostMapping::class]->path}",
+            isset($methodMetadata[PutMapping::class]) => "/put/$prefix{$methodMetadata[PutMapping::class]->path}",
+            isset($methodMetadata[PatchMapping::class]) => "/patch/$prefix{$methodMetadata[PatchMapping::class]->path}",
+            isset($methodMetadata[DeleteMapping::class]) => "/delete/$prefix{$methodMetadata[DeleteMapping::class]->path}",
             default => '',
         };
     }

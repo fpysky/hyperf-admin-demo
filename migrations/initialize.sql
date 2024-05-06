@@ -98,5 +98,21 @@ CREATE TABLE `ad_admin_dept` (
    `admin_id` int unsigned NOT NULL DEFAULT '0' COMMENT '管理员id',
    `dept_id` int unsigned DEFAULT '0' COMMENT '部门id',
    UNIQUE KEY `ad_admin_dept_admin_id_dept_id_uindex` (`admin_id`,`dept_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员部门中间表'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='管理员部门中间表';
+
+CREATE TABLE `ad_admin_operation_log` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `module` varchar(100) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '模块',
+  `operate_type` int DEFAULT NULL COMMENT '操作类型 1.新增 2.删除 3.修改 4.查询',
+  `method` varchar(20) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '方法',
+  `admin_id` int unsigned NOT NULL DEFAULT '0' COMMENT '操作人id',
+  `admin_name` varchar(30) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作人姓名',
+  `operate_ip` varchar(30) COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作IP',
+  `operate_status` tinyint unsigned NOT NULL DEFAULT '1' COMMENT '操作状态 0.失败 1.成功',
+  `operated_at` datetime DEFAULT NULL COMMENT '操作时间',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
