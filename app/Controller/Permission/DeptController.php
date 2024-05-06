@@ -27,17 +27,6 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class DeptController extends AbstractController
 {
-    #[GetMapping(path: 'system/backend/backendAdminDept/deptCombobox')]
-    public function deptCombobox(): ResponseInterface
-    {
-        $list = Dept::query()
-            ->select(['id', 'name as label'])
-            ->where('status', Dept::STATUS_ENABLE)
-            ->get();
-
-        return $this->success($list);
-    }
-
     #[PostMapping(path: 'dept')]
     public function create(DeptStoreRequest $request): ResponseInterface
     {

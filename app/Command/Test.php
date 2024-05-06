@@ -32,33 +32,4 @@ class Test extends HyperfCommand
     {
         var_dump(encryptPassword('admin123'));
     }
-
-    private function doSomething()
-    {
-        $this->line('Doing something...');
-        sleep(5);
-        $this->line('Done.');
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function isCompleted()
-    {
-        $pid = pcntl_fork();
-        if ($pid == -1) {
-            throw new \Exception('Fork failed');
-        }
-        if ($pid) {
-            var_dump($pid);
-            pcntl_wait($status);
-            if ($status !== 0) {
-                exit(-1);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
 }

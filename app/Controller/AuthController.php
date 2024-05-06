@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Annotation\NoApiPermission;
 use App\Exception\UnprocessableEntityException;
 use App\Model\Admin;
 use App\Request\LoginRequest;
@@ -35,7 +34,6 @@ class AuthController extends AbstractController
 
     #[PostMapping(path: 'login')]
     #[Post(path: 'login', summary: '登陆', tags: ['后台管理/账号'])]
-    #[NoApiPermission]
     #[RequestBody(content: new JsonContent(
         required: ['username', 'password'],
         properties: [
@@ -78,7 +76,7 @@ class AuthController extends AbstractController
             throw new UnprocessableEntityException('账户不存在');
         }
 
-        if (! password_verify($password.config('admin.password_salt'), $admin->password)) {
+        if (! password_verify($password . config('admin.password_salt'), $admin->password)) {
             throw new UnprocessableEntityException('账号或密码错误');
         }
 
