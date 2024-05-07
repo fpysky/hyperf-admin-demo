@@ -43,6 +43,10 @@ class OperateLogMiddleware implements MiddlewareInterface
             $requestUri =  $request->getUri();
             $path = '/' . strtolower($method) . $requestUri->getPath();
 
+            if($this->inWhitelist($path)){
+                return;
+            }
+
             // 匹配不到系统模块，不做记录
             if ($module = $this->matchModule($path)) {
                 $xRealIp = $request->getHeaderLine('x-real-ip');
@@ -61,6 +65,13 @@ class OperateLogMiddleware implements MiddlewareInterface
                 ]);
             }
         });
+    }
+
+    private function inWhitelist(string $path): bool
+    {
+        return in_array($path, [
+            '/get/api/system/operateLog',
+        ]);
     }
 
     private function matchModule(string $path): ?string
