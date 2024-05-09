@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button size="small" style="margin-right: 10px;" @click="openCreateOrUpdate(undefined)">
+      <el-button size="small" style="margin-right: 10px;" @click="openCreateOrUpdateDialog(undefined)">
         <el-icon size="small" style="vertical-align: middle;">
           <Plus/>
         </el-icon>
@@ -46,7 +46,7 @@
         <el-table-column prop="updatedAt" label="更新时间" width="180"/>
         <el-table-column label="操作" width="200" fixed="right">
           <template #default="scope">
-            <el-button size="small" @click="openCreateOrUpdate(scope.$index)">编辑</el-button>
+            <el-button size="small" @click="openCreateOrUpdateDialog(scope.$index)">编辑</el-button>
             <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
@@ -195,18 +195,16 @@ const submitForm = async () => {
         state.submitLoading = true;
         if (state.isEdit) {
           editAdmin(state.adminForm).then(() => {
-            state.submitLoading = false;
             state.formDialogVisible = false;
             getData();
-          }).catch(() => {
+          }).finally(() => {
             state.submitLoading = false;
           });
         } else {
           createAdmin(state.adminForm).then(() => {
-            state.submitLoading = false;
             state.formDialogVisible = false;
             getData();
-          }).catch(() => {
+          }).finally(() => {
             state.submitLoading = false;
           });
         }
@@ -222,10 +220,9 @@ const getData = () => {
     pageSize: state.pageSize,
     keyword: state.searchData.keyword
   }).then(resp => {
-    state.tableLoading = false;
     state.tableData = resp.data.list;
     state.total = resp.data.total;
-  }).catch(() => {
+  }).finally(() => {
     state.tableLoading = false;
   });
 };
@@ -239,22 +236,22 @@ const resetForm = async () => {
   ruleFormRef.value.resetFields();
 };
 
-const initingRoles = async () => {
+const initRoles = async () => {
   await getRoleSelectData().then(resp => {
     state.roles = resp.data;
   });
 };
 
-const initFormData = async (index: number|undefined) => {
-  if (index !== undefined) {
-    const data = state.tableData[index];
+const initFormData = async (rowIndex: number | undefined) => {
+  if (rowIndex !== undefined) {
+    const rowData = state.tableData[rowIndex];
     state.adminForm = <AdminForm>{
-      id: data.id,
-      name: data.name,
-      mobile: data.mobile,
-      email: data.email,
-      status: data.status,
-      roleIds: data.roleIds,
+      id: rowData.id,
+      name: rowData.name,
+      mobile: rowData.mobile,
+      email: rowData.email,
+      status: rowData.status,
+      roleIds: rowData.roleIds,
       password: "",
       rePassword: "",
     };
@@ -273,12 +270,13 @@ const initFormData = async (index: number|undefined) => {
   }
 };
 
-const openCreateOrUpdate = async (index: number | undefined) => {
+const openCreateOrUpdateDialog = async (rowIndex: number | undefined) => {
+  console.log(rowIndex)
   state.formDialogVisible = true;
   state.formDialogLoading = true;
-  state.isEdit = index !== undefined;
-  await initingRoles();
-  await initFormData(index);
+  state.isEdit = rowIndex !== undefined;
+  await initRoles();
+  await initFormData(rowIndex);
   state.formDialogLoading = false;
 };
 </script>
