@@ -15,7 +15,7 @@
         </el-icon>
         <span style="vertical-align: middle">搜索</span>
       </el-button>
-      <el-button size="small" @click="clear()">
+      <el-button size="small" @click="clear()" title="清空搜索条件">
         <el-icon size="small" style="vertical-align: middle;">
           <Delete/>
         </el-icon>
@@ -52,7 +52,15 @@
         </el-table-column>
       </el-table>
       <div style="width:100%;">
-        <el-pagination style="margin-left: 20px;" background layout="prev, pager, next" :total="state.total"/>
+        <el-pagination
+          style="margin-left: 20px;"
+          background
+          layout="prev, pager, next"
+          :current-page="state.page"
+          :page-size="state.pageSize"
+          :total="state.total"
+          @current-change="handlePageChange"
+        />
       </div>
       <el-dialog style="text-align: center;" v-model="state.formDialogVisible"
                  :title="state.isEdit ? '编辑管理员' : '新增管理员'" width="30%">
@@ -84,7 +92,7 @@
               <el-checkbox :label="role.id" style="margin-right: 10px;">{{ role.name }}</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-form-item required label="是否启用:">
+          <el-form-item required label="是否启用:" prop="status">
             <el-switch v-model="state.adminForm.status" active-color="#13ce66" inactive-color="#ff4949"
                        :active-value="1" :inactive-value="0">
             </el-switch>
@@ -170,6 +178,11 @@ onMounted(() => {
   getData();
 });
 
+const handlePageChange = (page:number) => {
+  state.page = page;
+  getData();
+}
+
 const handleDelete = (ids: Array<number>) => {
   ElMessageBox.confirm("你确定要删除吗?", "提示",
     {
@@ -185,7 +198,9 @@ const handleDelete = (ids: Array<number>) => {
 };
 
 const handleStatusChange = (val: number, id: number) => {
-  upAdminStatus({ids: [id], status: val});
+  upAdminStatus({ids: [id], status: val}).then(() => {
+    ElNotification({title: '提示', message: '操作成功',type: 'success'})
+  });
 };
 
 const submitForm = async () => {
@@ -218,7 +233,7 @@ const getData = () => {
   adminList({
     page: state.page,
     pageSize: state.pageSize,
-    keyword: state.searchData.keyword
+    ...state.searchData
   }).then(resp => {
     state.tableData = resp.data.list;
     state.total = resp.data.total;
@@ -242,7 +257,7 @@ const initRoles = async () => {
   });
 };
 
-const initFormData = async (rowIndex: number | undefined) => {
+const loadEditData = async (rowIndex: number | undefined) => {
   if (rowIndex !== undefined) {
     const rowData = state.tableData[rowIndex];
     state.adminForm = <AdminForm>{
@@ -255,28 +270,18 @@ const initFormData = async (rowIndex: number | undefined) => {
       password: "",
       rePassword: "",
     };
-  } else {
-    state.adminForm = <AdminForm>{
-      id: 0,
-      name: "",
-      mobile: "",
-      password: "",
-      rePassword: "",
-      email: "",
-      status: 0,
-      roleIds: []
-    };
-    await resetForm();
   }
 };
 
 const openCreateOrUpdateDialog = async (rowIndex: number | undefined) => {
-  console.log(rowIndex)
   state.formDialogVisible = true;
   state.formDialogLoading = true;
   state.isEdit = rowIndex !== undefined;
   await initRoles();
-  await initFormData(rowIndex);
+  await resetForm();
+  if(state.isEdit){
+    await loadEditData(rowIndex);
+  }
   state.formDialogLoading = false;
 };
 </script>

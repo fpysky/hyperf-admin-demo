@@ -38,7 +38,15 @@
         </el-table-column>
       </el-table>
       <div style="width:100%;">
-        <el-pagination style="margin-left: 20px;" background layout="prev, pager, next" :total="state.total"/>
+        <el-pagination
+          style="margin-left: 20px;"
+          background
+          layout="prev, pager, next"
+          :current-page="state.page"
+          :page-size="state.pageSize"
+          :total="state.total"
+          @current-change="handlePageChange"
+        />
       </div>
       <el-dialog v-model="state.formDialogVisible" :title="state.isEdit ? '编辑角色' : '新增角色'"
                  width="800px">
@@ -151,6 +159,15 @@ const state = reactive({
   setRuleDialogLoading: false,
   setRuleLoading: false,
 })
+
+onMounted(() => {
+  getData()
+})
+
+const handlePageChange = (page:number) => {
+  state.page = page;
+  getData();
+}
 
 const handleTreeCheckChange = (
   data: Tree,
@@ -303,11 +320,6 @@ const initRoleRuleTree = async (roleId: number | undefined) => {
     await recursiveSetNodeCheck(data)
   })
 }
-
-onMounted(() => {
-  getData()
-})
-
 </script>
 
 <style lang="scss" scoped>

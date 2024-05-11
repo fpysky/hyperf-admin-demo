@@ -9,7 +9,7 @@
         </el-icon>
         <span style="vertical-align: middle">搜索</span>
       </el-button>
-      <el-button size="small" @click="clear()">
+      <el-button size="small" @click="clear()" title="清空搜索条件">
         <el-icon size="small" style="vertical-align: middle;">
           <Delete/>
         </el-icon>
@@ -28,7 +28,15 @@
         <el-table-column prop="operatedAt" label="操作日期" width="180"/>
       </el-table>
       <div style="width:100%;">
-        <el-pagination style="margin-left: 20px;" background layout="prev, pager, next" :total="state.total"/>
+        <el-pagination
+          style="margin-left: 20px;"
+          background
+          layout="prev, pager, next"
+          :current-page="state.page"
+          :page-size="state.pageSize"
+          :total="state.total"
+          @current-change="handlePageChange"
+        />
       </div>
     </div>
   </div>
@@ -39,9 +47,9 @@ import {getOperateLog} from "@/api/operateLog";
 import {onMounted, reactive} from "vue";
 
 const state = reactive({
-  total: 0,
   page: 1,
   pageSize: 15,
+  total: 0,
   tableLoading: false,
   tableData: [],
   searchData: {
@@ -53,17 +61,21 @@ onMounted(() => {
   getData();
 });
 
+const handlePageChange = (page:number) => {
+  state.page = page;
+  getData();
+}
+
 const getData = () => {
   state.tableLoading = true;
   getOperateLog({
     page: state.page,
     pageSize: state.pageSize,
-    keyword: state.searchData.keyword
+    ...state.searchData
   }).then(resp => {
-    state.tableLoading = false;
     state.tableData = resp.data.list;
     state.total = resp.data.total;
-  }).catch(() => {
+  }).finally(() => {
     state.tableLoading = false;
   });
 };
