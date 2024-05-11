@@ -92,8 +92,12 @@
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-              <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.setRuleLoading"
-                         @click="setRuleSubmit">提交
+              <el-button
+                style="width: 100%;margin: 0 auto;"
+                type="primary"
+                :loading="state.setRuleLoading"
+                @click="setRuleSubmit">
+                提交
             </el-button>
             </span>
         </template>
@@ -132,6 +136,7 @@ const ruleFormRef = ref<FormInstance>()
 const treeRef = ref()
 
 const state = reactive({
+  roleId: 0,
   total: 0,
   page: 1,
   pageSize: 15,
@@ -139,7 +144,12 @@ const state = reactive({
   formDialogVisible: false,
   submitLoading: false,
   isEdit: false,
+  checkedNode: [],
+  setRuleDialogVisible: false,
+  setRuleDialogLoading: false,
+  setRuleLoading: false,
   tableData: <RoleForm[]>([]),
+  ruleTree: <Tree[]>([]),
   roleForm: <RoleForm>({
     id: 0,
     name: '',
@@ -152,19 +162,13 @@ const state = reactive({
       {required: true, message: '请输入角色名称', trigger: 'blur'},
     ],
   }),
-  ruleTree: <Tree[]>([]),
-  roleId: 0,
-  checkedNode: [],
-  setRuleDialogVisible: false,
-  setRuleDialogLoading: false,
-  setRuleLoading: false,
 })
 
 onMounted(() => {
   getData()
 })
 
-const handlePageChange = (page:number) => {
+const handlePageChange = (page: number) => {
   state.page = page;
   getData();
 }
