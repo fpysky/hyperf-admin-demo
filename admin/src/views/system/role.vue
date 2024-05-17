@@ -1,45 +1,52 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button size="small" style="margin-right: 10px;" @click="openCreateOrUpdate(undefined)">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-button @click="openCreateOrUpdate(undefined)">
+        <el-icon style="vertical-align: middle;">
           <Plus/>
         </el-icon>
         <span style="vertical-align: middle">添加</span>
       </el-button>
-      <el-button type="primary" size="small" :loading="state.tableLoading" style="margin-right: 10px;" @click="getData">
-        <el-icon size="small" style="vertical-align: middle;">
-          <Refresh/>
+      <el-input v-model="state.searchData.keyword" style="width: 200px;margin-left: 10px;" placeholder="请输入关键词"/>
+      <el-button type="primary" style="margin-left: 10px;" :loading="state.tableLoading"
+                 @click="getData">
+        <el-icon style="vertical-align: middle;">
+          <Search/>
         </el-icon>
-        <span style="vertical-align: middle">刷新</span>
+        <span style="vertical-align: middle">搜索</span>
       </el-button>
     </div>
     <div class="content">
-      <el-table :data="state.tableData" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
-        <el-table-column prop="id" label="ID" width="180"/>
-        <el-table-column prop="name" label="名称" width="180"/>
-        <el-table-column prop="status" label="状态" width="180">
+      <el-table
+        :data="state.tableData"
+        v-loading="state.tableLoading"
+        style="width: 100%;"
+        :header-cell-style="{'text-align':'center'}"
+        border
+      >
+        <el-table-column prop="id" label="ID" width="90" align="center"/>
+        <el-table-column prop="name" label="名称" width="180" align="center"/>
+        <el-table-column prop="status" label="状态" width="100" align="center">
           <template #default="scope">
             <el-switch @change="(val: number) => handleRoleStatusChange(val, scope.row.id)" v-model="scope.row.status"
                        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
                        :inactive-value="0"/>
           </template>
         </el-table-column>
-        <el-table-column prop="sort" label="排序" width="180"/>
-        <el-table-column prop="desc" label="描述" width="180"/>
-        <el-table-column prop="createdAt" label="创建时间" width="180"/>
-        <el-table-column prop="updatedAt" label="更新时间" width="180"/>
-        <el-table-column label="操作" width="230">
+        <el-table-column prop="sort" label="排序" width="140" align="center"/>
+        <el-table-column prop="desc" label="描述" width="230" align="center"/>
+        <el-table-column prop="createdAt" label="创建时间" width="180" align="center"/>
+        <el-table-column prop="updatedAt" label="更新时间" width="180" align="center"/>
+        <el-table-column label="操作" width="280" align="center">
           <template #default="scope">
-            <el-button size="small" @click="openCreateOrUpdate(scope.$index)">编辑</el-button>
-            <el-button size="small" type="success" @click="openSetRule(scope.$index)">设置权限</el-button>
-            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="primary" @click="openCreateOrUpdate(scope.$index)">编辑</el-button>
+            <el-button type="success" @click="openSetRule(scope.$index)">设置权限</el-button>
+            <el-button type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div style="width:100%;">
+      <div style="width:100%; margin-top: 20px;">
         <el-pagination
-          style="margin-left: 20px;"
           background
           layout="prev, pager, next"
           :current-page="state.page"
@@ -48,20 +55,25 @@
           @current-change="handlePageChange"
         />
       </div>
-      <el-dialog v-model="state.formDialogVisible" :title="state.isEdit ? '编辑角色' : '新增角色'"
-                 width="800px">
-        <el-form ref="ruleFormRef" style="width:80%;margin: 0 auto;" :model="state.roleForm" :rules="state.rules"
-                 label-width="83px">
+      <el-dialog style="text-align: center;" v-model="state.formDialogVisible"
+                 :title="state.isEdit ? '编辑角色' : '新增角色'" width="600px">
+        <el-form
+          ref="ruleFormRef"
+          style="width:80%;margin: 0 auto;"
+          :model="state.roleForm"
+          :rules="state.rules"
+          label-width="83px"
+        >
           <el-form-item required label="名称:" prop="name">
             <el-input v-model="state.roleForm.name"/>
           </el-form-item>
-          <el-form-item label="描述:">
+          <el-form-item label="描述:" prop="desc">
             <el-input type="textarea" v-model="state.roleForm.desc"/>
           </el-form-item>
-          <el-form-item label="排序:">
+          <el-form-item label="排序:" prop="sort">
             <el-input v-model="state.roleForm.sort"/>
           </el-form-item>
-          <el-form-item required label="是否启用:">
+          <el-form-item required label="是否启用:" prop="status">
             <el-switch v-model="state.roleForm.status" active-color="#13ce66" inactive-color="#ff4949" :active-value="1"
                        :inactive-value="0">
             </el-switch>
@@ -148,6 +160,9 @@ const state = reactive({
   setRuleDialogVisible: false,
   setRuleDialogLoading: false,
   setRuleLoading: false,
+  searchData: {
+    keyword: ""
+  },
   tableData: <RoleForm[]>([]),
   ruleTree: <Tree[]>([]),
   roleForm: <RoleForm>({
@@ -223,7 +238,9 @@ const handleDelete = (ids: Array<number>) => {
 }
 
 const handleRoleStatusChange = (val: number, id: number) => {
-  upRoleStatus({ids: [id], status: val})
+  upRoleStatus({ids: [id], status: val}).then(() => {
+    ElNotification({title: '提示', message: '操作成功',type: 'success'})
+  })
 }
 
 const roleSubmit = async () => {
@@ -256,6 +273,7 @@ const getData = () => {
   roleList({
     page: state.page,
     pageSize: state.pageSize,
+    ...state.searchData
   }).then(resp => {
     state.tableData = resp.data.list
     state.total = resp.data.total
@@ -343,7 +361,6 @@ const initRoleRuleTree = async (roleId: number | undefined) => {
 .content {
   width: 100%;
   background-color: #fff;
-  margin-top: 20px;
   padding: 10px 0;
 }
 </style>

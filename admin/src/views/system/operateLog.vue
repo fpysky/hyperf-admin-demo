@@ -61,7 +61,7 @@ onMounted(() => {
   getData();
 });
 
-const handlePageChange = (page:number) => {
+const handlePageChange = (page: number) => {
   state.page = page;
   getData();
 }

@@ -15,6 +15,7 @@ use App\Request\Role\UpStatusRequest;
 use App\Request\RoleStoreRequest;
 use App\Request\RoleUpdateRequest;
 use App\Resource\Role\RoleResource;
+use Hyperf\Database\Model\Builder;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -22,6 +23,7 @@ use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PatchMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
+use Hyperf\Stringable\Str;
 use Hyperf\Swagger\Annotation\Delete;
 use Hyperf\Swagger\Annotation\Get;
 use Hyperf\Swagger\Annotation\HyperfServer;
@@ -183,10 +185,17 @@ class RoleController extends AbstractController
     ))]
     public function index(): ResponseInterface
     {
-        $paginator = Role::query()
+        $keyword = $this->request->string('keyword');
+
+        $builder = Role::query()
             ->orderBy('sort')
-            ->orderByDesc('id')
-            ->paginate();
+            ->orderByDesc('id');
+
+        if (Str::length($keyword) !== 0) {
+            $builder->where('name', 'like', "%{$keyword}%");
+        }
+
+        $paginator = $builder->paginate();
 
         return $this->success([
             'total' => $paginator->total(),

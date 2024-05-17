@@ -1,25 +1,26 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button size="small" style="margin-right: 10px;" @click="openCreateOrUpdate(undefined)">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-button @click="openCreateOrUpdateDialog(undefined)">
+        <el-icon style="vertical-align: middle;">
           <Plus/>
         </el-icon>
         <span style="vertical-align: middle">添加</span>
       </el-button>
-      <el-button type="primary" size="small" :loading="state.tableLoading" style="margin-right: 10px;" @click="getData">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-button type="primary" :loading="state.tableLoading" style="margin-right: 10px;" @click="getData">
+        <el-icon style="vertical-align: middle;">
           <Refresh/>
         </el-icon>
         <span style="vertical-align: middle">刷新</span>
       </el-button>
-      <el-switch active-text="使用颜色区分" inactive-text="不使用颜色区分" @change="handleColorStyleChange"
-                 v-model="state.colorStyle"
-                 style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"/>
     </div>
     <div class="content">
-      <el-table :border="true" :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
-                row-key="id" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
+      <el-table
+        border
+        :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
+        row-key="id" v-loading="state.tableLoading" style="width: 100%;"
+        :header-cell-style="{'text-align':'center'}"
+      >
         <el-table-column prop="name" label="名称" width="300">
           <template #default="scope">
             <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
@@ -29,9 +30,10 @@
         </el-table-column>
         <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
-            <el-switch @change="(val:number) => handleRoleStatusChange(val, scope.row.id)" v-model="scope.row.status"
-                       style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
-                       :inactive-value="0"/>
+            <el-switch
+              @change="(val:number) => handleRoleStatusChange(val, scope.row.id)" v-model="scope.row.status"
+              style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949" :active-value="1"
+              :inactive-value="0"/>
           </template>
         </el-table-column>
         <el-table-column prop="type" label="类型" width="100" align="center">
@@ -47,9 +49,10 @@
         <el-table-column prop="sort" label="排序" width="150" align="center"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button size="small" @click="openCreateOrUpdate(scope.row.id)" :disabled="scope.row.type === 4">编辑
+            <el-button type="primary" @click="openCreateOrUpdateDialog(scope.$index)" :disabled="scope.row.type === 4">
+              编辑
             </el-button>
-            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -90,6 +93,7 @@
                      label-width="83px">
               <el-form-item required label="父级:" prop="parentId">
                 <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
+                  <el-option :key="0" label="" :value="0"/>
                   <el-option v-for="rule in state.topRule" :key="rule.id" :label="rule.name" :value="rule.id"/>
                 </el-select>
               </el-form-item>
@@ -122,6 +126,7 @@
                      :rules="state.rules" label-width="83px">
               <el-form-item required label="父级:" prop="parentId">
                 <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
+                  <el-option :key="0" label="" :value="0"/>
                   <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id"/>
                 </el-select>
               </el-form-item>
@@ -197,7 +202,7 @@ const state = reactive({
     parentId: '',
     status: 0,
     type: 0,
-    sort: 1,
+    sort: 0,
     name: '',
     icon: '',
     route: '',
@@ -276,10 +281,6 @@ const initTabData = (activeName: string | number | undefined) => {
   }
 }
 
-const handleColorStyleChange = (val: boolean) => {
-  state.colorStyle = Boolean(val)
-}
-
 const tableRowClassName = (row: any) => {
   if (row.type === 3) {
     return 'warning-row'
@@ -290,7 +291,9 @@ const tableRowClassName = (row: any) => {
 }
 
 const handleRoleStatusChange = (val: number, id: number) => {
-  upRuleStatus({ids: [id], status: val})
+  upRuleStatus({ids: [id], status: val}).then(() => {
+    ElNotification({title: '提示', message: '操作成功', type: 'success'})
+  })
 }
 
 const ruleSubmit = async (formEl: FormInstance | undefined) => {
@@ -360,7 +363,7 @@ const findTableData = (data, id: number) => {
   return undefined
 }
 
-const initAdminForm = async (item: RuleForm | undefined) => {
+const loadEditData = async (item: RuleForm | undefined) => {
   if (item !== undefined) {
     state.ruleForm = <RuleForm>{
       id: item.id,
@@ -373,76 +376,55 @@ const initAdminForm = async (item: RuleForm | undefined) => {
       route: item.route,
       path: item.path,
     }
-  } else {
-    state.ruleForm = <RuleForm>{
-      id: 0,
-      parentId: '',
-      status: 0,
-      type: 0,
-      sort: 1,
-      name: '',
-      icon: '',
-      route: '',
-      path: '',
-    }
   }
 }
 
-const openCreateOrUpdate = async (id: number | undefined) => {
+const openCreateOrUpdateDialog = async (rowIndex: number | undefined) => {
   state.formDialogVisible = true
-  state.directoryTabDisabled = false
-  state.menuTabDisabled = false
-  state.buttonTabDisabled = false
-  state.apiTabDisabled = false;
+  state.isEdit = rowIndex !== undefined
+  await resetForm()
 
-  let item, type;
-  if (id === undefined) {
-    state.isEdit = false;
-    type = 1;
+  if (state.isEdit && rowIndex !== undefined) {
+    const rowData = state.tableData[rowIndex]
+    await loadEditData(rowData)
+    await initTab(rowData.type)
   } else {
-    state.isEdit = true;
-    item = findTableData(state.tableData, id);
-    type = item.type;
+    state.directoryTabDisabled = false
+    state.menuTabDisabled = false
+    state.buttonTabDisabled = false
+    state.apiTabDisabled = false
+    state.formActiveName = 'directory'
+    initTabData(state.formActiveName)
   }
-  await initAdminForm(item)
-  initTab(type, state.isEdit)
 }
 
-const initTab = (type: number, isEdit: boolean) => {
+const initTab = (type: number) => {
   let activeName = ''
   switch (type) {
     default:
     case 1:
       activeName = 'directory';
-      if (isEdit) {
-        state.menuTabDisabled = true
-        state.buttonTabDisabled = true
-        state.apiTabDisabled = true
-      }
+      state.menuTabDisabled = true
+      state.buttonTabDisabled = true
+      state.apiTabDisabled = true
       break
     case 2:
       activeName = 'menu';
-      if (isEdit) {
-        state.directoryTabDisabled = true
-        state.buttonTabDisabled = true
-        state.apiTabDisabled = true
-      }
+      state.directoryTabDisabled = true
+      state.buttonTabDisabled = true
+      state.apiTabDisabled = true
       break
     case 3:
       activeName = 'button';
-      if (isEdit) {
-        state.directoryTabDisabled = true
-        state.menuTabDisabled = true
-        state.apiTabDisabled = true
-      }
+      state.directoryTabDisabled = true
+      state.menuTabDisabled = true
+      state.apiTabDisabled = true
       break
     case 4:
       activeName = 'api';
-      if (isEdit) {
-        state.directoryTabDisabled = true
-        state.menuTabDisabled = true
-        state.buttonTabDisabled = true
-      }
+      state.directoryTabDisabled = true
+      state.menuTabDisabled = true
+      state.buttonTabDisabled = true
       break
   }
   state.formActiveName = activeName

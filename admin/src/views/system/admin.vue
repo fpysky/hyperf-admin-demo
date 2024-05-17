@@ -1,31 +1,37 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button size="small" style="margin-right: 10px;" @click="openCreateOrUpdateDialog(undefined)">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-button @click="openCreateOrUpdateDialog(undefined)">
+        <el-icon style="vertical-align: middle;">
           <Plus/>
         </el-icon>
         <span style="vertical-align: middle">添加</span>
       </el-button>
-      <el-input v-model="state.searchData.keyword" size="small" style="width: 200px;" placeholder="搜索管理员"/>
-      <el-button type="primary" style="margin-left: 10px;" size="small" :loading="state.tableLoading"
-                 @click="getData()">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-input v-model="state.searchData.keyword" style="width: 200px;margin-left: 10px" placeholder="请输入关键词"/>
+      <el-button type="primary" style="margin-left: 10px;" :loading="state.tableLoading"
+                 @click="getData">
+        <el-icon style="vertical-align: middle;">
           <Search/>
         </el-icon>
         <span style="vertical-align: middle">搜索</span>
       </el-button>
-      <el-button size="small" @click="clear()" title="清空搜索条件">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-button @click="clear()" title="清空搜索条件">
+        <el-icon style="vertical-align: middle;">
           <Delete/>
         </el-icon>
       </el-button>
     </div>
     <div class="content">
-      <el-table :data="state.tableData" v-loading="state.tableLoading" style="width: 100%;margin-bottom: 20px;">
-        <el-table-column prop="id" label="ID" width="180"/>
-        <el-table-column prop="name" label="名称" width="180"/>
-        <el-table-column prop="status" label="状态" width="180">
+      <el-table
+        :data="state.tableData"
+        v-loading="state.tableLoading"
+        :header-cell-style="{'text-align':'center'}"
+        border
+        style="width: 100%;"
+      >
+        <el-table-column prop="id" label="ID" width="90" align="center"/>
+        <el-table-column prop="name" label="名称" width="140" align="center"/>
+        <el-table-column prop="status" label="状态" width="80" align="center">
           <template #default="scope">
             <el-switch
               @change="(val: number) => handleStatusChange(val, scope.row.id)"
@@ -36,24 +42,28 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="类型" width="180"/>
-        <el-table-column prop="mobile" label="手机号" width="180"/>
-        <el-table-column prop="email" label="电子邮箱" width="200"/>
-        <el-table-column prop="lastLoginIp" label="最后登录IP" width="180"/>
-        <el-table-column prop="logo" label="logo" width="180"/>
-        <el-table-column prop="lastLoginTime" label="最后登录时间" width="180"/>
-        <el-table-column prop="createdAt" label="创建时间" width="180"/>
-        <el-table-column prop="updatedAt" label="更新时间" width="180"/>
-        <el-table-column label="操作" width="200" fixed="right">
+        <el-table-column prop="type" label="类型" width="110" align="center">
           <template #default="scope">
-            <el-button size="small" @click="openCreateOrUpdateDialog(scope.$index)">编辑</el-button>
-            <el-button size="small" type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="warning" v-if="scope.row.type === 1">超管</el-button>
+            <el-button plain v-else>普通</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="mobile" label="手机号" width="140" align="center"/>
+        <el-table-column prop="email" label="电子邮箱" width="200" align="center"/>
+        <el-table-column prop="lastLoginTime" label="最后登录时间" width="180" align="center"/>
+        <el-table-column prop="createdAt" label="创建时间" width="180" align="center"/>
+        <el-table-column prop="updatedAt" label="更新时间" width="180" align="center"/>
+        <el-table-column prop="lastLoginIp" label="最后登录IP" width="180" align="center"/>
+        <el-table-column prop="logo" label="logo" width="180" align="center"/>
+        <el-table-column label="操作" width="200" fixed="right" align="center">
+          <template #default="scope">
+            <el-button type="primary" @click="openCreateOrUpdateDialog(scope.$index)">编辑</el-button>
+            <el-button type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div style="width:100%;">
+      <div style="width:100%;margin-top: 20px">
         <el-pagination
-          style="margin-left: 20px;"
           background
           layout="prev, pager, next"
           :current-page="state.page"
@@ -191,7 +201,7 @@ const handleDelete = (ids: Array<number>) => {
       type: "warning"
     }
   ).then(() => {
-    deleteAdmin({ids: ids}).then(() => {
+    deleteAdmin({ids}).then(() => {
       getData();
     });
   });
@@ -303,7 +313,6 @@ const openCreateOrUpdateDialog = async (rowIndex: number | undefined) => {
 .content {
   width: 100%;
   background-color: #fff;
-  margin-top: 20px;
   padding: 10px 0;
 }
 </style>
