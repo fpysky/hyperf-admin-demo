@@ -59,3 +59,10 @@ export function roleRuleTree(roleId) {
         method: 'get'
     })
 }
+
+export function ruleDetail(id) {
+  return request({
+    url: '/rule/' + id,
+    method: 'get'
+  })
+}

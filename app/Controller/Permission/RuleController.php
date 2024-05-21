@@ -14,6 +14,7 @@ use App\Model\Rule;
 use App\Request\RuleStoreRequest;
 use App\Request\RuleUpdateRequest;
 use App\Resource\Rule\ButtonMenuResource;
+use App\Resource\Rule\RuleDetailResource;
 use App\Resource\RuleResource;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Di\Annotation\Inject;
@@ -221,7 +222,7 @@ class RuleController extends AbstractController
     {
         $rule = Rule::findFromCacheOrFail($id);
 
-        return $this->success(new \App\Resource\Rule\RuleResource($rule));
+        return $this->success(new RuleDetailResource($rule));
     }
 
     #[GetMapping(path: 'rule/parentMenusTree')]
