@@ -19,8 +19,7 @@
         border
         :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
         row-key="id" v-loading="state.tableLoading" style="width: 100%;"
-        :header-cell-style="{'text-align':'center'}"
-      >
+        :header-cell-style="{'text-align':'center'}">
         <el-table-column prop="name" label="名称" width="300">
           <template #default="scope">
             <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
@@ -59,17 +58,18 @@
       <el-dialog style="text-align: center;" v-model="state.formDialogVisible"
                  :title="state.isEdit ? '编辑权限' : '新增权限'"
                  width="30%">
-        <add-rule v-if="!state.isEdit" ref="addRuleRef"></add-rule>
-        <edit-rule v-if="state.isEdit" ref="editRuleRef" :id="state.editId"></edit-rule>
+        <add-rule v-if="!state.isEdit" ref="addRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"></add-rule>
+        <edit-rule v-if="state.isEdit" ref="editRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"
+                   :id="state.editId"></edit-rule>
       </el-dialog>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {ruleList, upRuleStatus, createRule, editRule, topRule, parentMenusTree, deleteRule} from '@/api/rule'
+import {ruleList, upRuleStatus, deleteRule} from '@/api/rule'
 import {onMounted, reactive, ref} from 'vue'
-import {ElMessageBox, FormInstance, FormRules, TabsPaneContext} from 'element-plus'
+import {ElMessageBox} from 'element-plus'
 import {Plus} from "@element-plus/icons-vue";
 import AddRule from "@/views/system/component/addRule.vue";
 import EditRule from "@/views/system/component/editRule.vue";
@@ -156,8 +156,9 @@ const openCreateOrUpdateDialog = async (id: number | undefined) => {
   state.formDialogVisible = true
 }
 
-const closeFormDialog = () => {
+const closeFormDialogAndReload = () => {
   state.formDialogVisible = false
+  getData()
 }
 </script>
 

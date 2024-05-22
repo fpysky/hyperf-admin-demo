@@ -14,8 +14,29 @@
         <el-form-item label="前端路由:" prop="path">
           <el-input v-model="state.ruleForm.path"/>
         </el-form-item>
-        <el-form-item label="图标:" prop="icon">
-          <el-input v-model="state.ruleForm.icon"/>
+        <el-form-item label="图标" prop="icon">
+          <el-popover
+            placement="bottom-start"
+            :width="540"
+            trigger="click"
+          >
+            <template #reference>
+              <el-input v-model="state.ruleForm.icon" placeholder="点击选择图标" @blur="showSelectIcon" readonly>
+                <template #prefix>
+                  <svg-icon
+                    v-if="state.ruleForm.icon"
+                    :icon-class="state.ruleForm.icon"
+                    class="el-input__icon"
+                    style="height: 32px;width: 16px;"
+                  />
+                  <el-icon v-else style="height: 32px;width: 16px;">
+                    <search/>
+                  </el-icon>
+                </template>
+              </el-input>
+            </template>
+            <icon-select ref="iconSelectRef" @selected="selected" model-value="" :active-icon="state.ruleForm.icon"/>
+          </el-popover>
         </el-form-item>
         <el-form-item label="排序:">
           <el-input v-model="state.ruleForm.sort"/>
@@ -109,9 +130,11 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref, defineEmits} from "vue";
 import {FormInstance, FormRules, TabsPaneContext} from "element-plus";
 import {createRule, parentMenusTree, topRule} from "@/api/rule";
+import SvgIcon from "@/components/SvgIcon";
+import IconSelect from "@/components/IconSelect";
 
 interface RuleForm {
   id: number,
@@ -125,9 +148,11 @@ interface RuleForm {
   path: string,
 }
 
+const emit = defineEmits(['closeDialogAndRefresh'])
 const ruleFormRefDirectory = ref<FormInstance>()
 const ruleFormRefMenu = ref<FormInstance>()
 const ruleFormRefButton = ref<FormInstance>()
+const iconSelectRef = ref()
 
 const state = reactive({
   formDialogVisible: false,
@@ -165,6 +190,17 @@ const state = reactive({
 onMounted(() => {
   initData()
 })
+
+const showSelectIcon = () => {
+  console.log(iconSelectRef)
+  if(iconSelectRef){
+    iconSelectRef.value.reset();
+  }
+}
+
+const selected = (name: string) => {
+  state.ruleForm.icon = name;
+}
 
 const initData = () => {
   state.formActiveName = 'directory'
@@ -227,6 +263,7 @@ const ruleSubmit = async (formEl: FormInstance | undefined) => {
         state.submitLoading = true
         createRule(state.ruleForm).then(() => {
           state.formDialogVisible = false
+          emit('closeDialogAndRefresh')
         }).finally(() => {
           state.submitLoading = false
         })

@@ -95,7 +95,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref,defineEmits} from "vue";
 import {FormInstance, FormRules, TabsPaneContext} from "element-plus";
 import {ruleDetail, editRule, parentMenusTree, topRule} from "@/api/rule";
 import {propTypes} from "@/utils/propTypes";
@@ -115,9 +115,7 @@ interface RuleForm {
 const props = defineProps({
   id: propTypes.number
 })
-
-const closeFormDialog = inject('closeFormDialog')
-
+const emit = defineEmits(['closeDialogAndRefresh'])
 const ruleFormRefDirectory = ref<FormInstance>()
 const ruleFormRefMenu = ref<FormInstance>()
 const ruleFormRefButton = ref<FormInstance>()
@@ -264,9 +262,10 @@ const ruleSubmit = async (formEl: FormInstance | undefined) => {
         state.submitLoading = true
         editRule(state.ruleForm).then(() => {
           state.formDialogVisible = false
+          emit('closeDialogAndRefresh')
         }).finally(() => {
           state.submitLoading = false
-          closeFormDialog()
+
         })
       }
     })
