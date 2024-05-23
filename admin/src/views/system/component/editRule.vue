@@ -1,6 +1,6 @@
 <template>
   <!--  目录-->
-  <el-form ref="ruleFormRefDirectory" v-if="!state.directoryTabDisabled" style="width:80%;margin: 0 auto;"
+  <el-form ref="ruleFormRefDirectory" v-if="state.directoryFormVisible" style="width:80%;margin: 0 auto;"
            :model="state.ruleForm"
            :rules="state.rules" label-width="83px">
     <el-form-item required label="名称:" prop="name">
@@ -31,7 +31,7 @@
     </el-form-item>
   </el-form>
   <!--  菜单-->
-  <el-form ref="ruleFormRefMenu" v-if="!state.menuTabDisabled" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
+  <el-form ref="ruleFormRefMenu" v-if="state.menuFormVisible" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
            :rules="state.rules"
            label-width="83px">
     <el-form-item required label="父级:" prop="parentId">
@@ -67,7 +67,7 @@
     </el-form-item>
   </el-form>
   <!--  按钮-->
-  <el-form ref="ruleFormRefButton" v-if="!state.buttonTabDisabled" style="width:80%;margin: 0 auto;"
+  <el-form ref="ruleFormRefButton" v-if="state.buttonFormVisible" style="width:80%;margin: 0 auto;"
            :model="state.ruleForm"
            :rules="state.rules" label-width="83px">
     <el-form-item required label="父级:" prop="parentId">
@@ -125,12 +125,10 @@ const ruleFormRefMenu = ref<FormInstance>()
 const ruleFormRefButton = ref<FormInstance>()
 
 const state = reactive({
-  formDialogVisible: false,
-  directoryTabDisabled: false,
-  menuTabDisabled: false,
-  buttonTabDisabled: false,
+  directoryFormVisible: false,
+  menuFormVisible: false,
+  buttonFormVisible: false,
   submitLoading: false,
-  formActiveName: 'directory',
   topRule: [],
   parentMenusTree: [],
   ruleForm: <RuleForm>{
@@ -170,9 +168,16 @@ const choiceIcon = (name: string) => {
 
 const initData = () => {
   resetForm()
+  resetFormVisible()
   nextTick(() => {
     getRuleDetail(props.id)
   })
+}
+
+const resetFormVisible = () => {
+  state.directoryFormVisible = false
+  state.menuFormVisible = false
+  state.buttonFormVisible = false
 }
 
 const getRuleDetail = async (id: number) => {
@@ -189,52 +194,22 @@ const getRuleDetail = async (id: number) => {
       route: data.route,
       path: data.path,
     }
-    initTab(state.ruleForm.type)
+    initFormData(state.ruleForm.type)
   })
 }
 
-const initTab = (type: number) => {
-  let activeName = ''
+const initFormData = (type: number) => {
   switch (type) {
     default:
     case 1:
-      activeName = 'directory';
-      state.directoryTabDisabled = false
-      state.menuTabDisabled = true
-      state.buttonTabDisabled = true
+      state.directoryFormVisible = true
       break
     case 2:
-      activeName = 'menu';
-      state.menuTabDisabled = false
-      state.directoryTabDisabled = true
-      state.buttonTabDisabled = true
-      break
-    case 3:
-      activeName = 'button';
-      state.buttonTabDisabled = false
-      state.directoryTabDisabled = true
-      state.menuTabDisabled = true
-      break
-  }
-  state.formActiveName = activeName
-  initTabData(activeName)
-}
-
-const initTabData = (activeName: string | number | undefined) => {
-  if (activeName === undefined) {
-    activeName = state.formActiveName
-  }
-
-  switch (activeName) {
-    case 'directory':
-      state.ruleForm.type = 1
-      break
-    case 'menu':
-      state.ruleForm.type = 2
+      state.menuFormVisible = true
       initTopRule()
       break
-    case 'button':
-      state.ruleForm.type = 3
+    case 3:
+      state.buttonFormVisible = true
       initParentMenusTree()
       break
   }
@@ -270,7 +245,6 @@ const ruleSubmit = async (formEl: FormInstance | undefined) => {
         state.ruleForm.parentId = Number(state.ruleForm.parentId)
         state.submitLoading = true
         editRule(state.ruleForm).then(() => {
-          state.formDialogVisible = false
           emit('closeDialogAndRefresh')
         }).finally(() => {
           state.submitLoading = false

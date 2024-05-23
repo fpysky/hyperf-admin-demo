@@ -22,7 +22,7 @@
             :active-icon="state.ruleForm.icon"/>
         </el-form-item>
         <el-form-item label="排序:">
-          <el-input v-model="state.ruleForm.sort"/>
+          <el-input-number v-model="state.ruleForm.sort" :min="0"/>
         </el-form-item>
         <el-form-item required label="是否启用:">
           <el-switch
@@ -69,7 +69,7 @@
             :active-icon="state.ruleForm.icon"/>
         </el-form-item>
         <el-form-item label="排序:">
-          <el-input v-model="state.ruleForm.sort"/>
+          <el-input-number v-model="state.ruleForm.sort" :min="0"/>
         </el-form-item>
         <el-form-item required label="是否启用:">
           <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
@@ -99,7 +99,7 @@
           <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx"/>
         </el-form-item>
         <el-form-item label="排序:">
-          <el-input v-model="state.ruleForm.sort"/>
+          <el-input-number v-model="state.ruleForm.sort" :min="0"/>
         </el-form-item>
         <el-form-item required label="是否启用:">
           <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
@@ -120,7 +120,6 @@
 import {onMounted, reactive, ref, defineEmits} from "vue";
 import {FormInstance, FormRules, TabsPaneContext} from "element-plus";
 import {createRule, parentMenusTree, topRule} from "@/api/rule";
-import SvgIcon from "@/components/SvgIcon";
 import IconSelect from "@/components/IconSelect";
 
 interface RuleForm {

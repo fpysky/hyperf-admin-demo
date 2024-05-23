@@ -57,7 +57,7 @@
                  :title="state.isEdit ? '编辑权限' : '新增权限'"
                  width="30%">
         <el-tabs v-model="state.formActiveName" type="card" @tab-click="handleFormTabsClick">
-          <el-tab-pane :disabled="state.directoryTabDisabled" label="目录权限" name="directory">
+          <el-tab-pane :disabled="state.directoryFormVisible" label="目录权限" name="directory">
             <el-form ref="ruleFormRefDirectory" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
                      :rules="state.rules" label-width="83px">
               <el-form-item required label="名称:" prop="name">
@@ -84,7 +84,7 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane :disabled="state.menuTabDisabled" label="菜单权限" name="menu">
+          <el-tab-pane :disabled="state.menuFormVisible" label="菜单权限" name="menu">
             <el-form ref="ruleFormRefMenu" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
                      :rules="state.rules"
                      label-width="83px">
@@ -117,7 +117,7 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane :disabled="state.buttonTabDisabled" label="按钮权限" name="button">
+          <el-tab-pane :disabled="state.buttonFormVisible" label="按钮权限" name="button">
             <el-form ref="ruleFormRefButton" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
                      :rules="state.rules" label-width="83px">
               <el-form-item required label="父级:" prop="parentId">
@@ -217,9 +217,9 @@ const state = reactive({
   formActiveName: 'directory',
   topRule: [],
   parentMenusTree: [],
-  directoryTabDisabled: false,
-  menuTabDisabled: false,
-  buttonTabDisabled: false,
+  directoryFormVisible: false,
+  menuFormVisible: false,
+  buttonFormVisible: false,
   apiTabDisabled: true,
   ruleForm: <RuleForm>{
     id: 0,
@@ -419,9 +419,9 @@ const initAdminForm = async (item: RuleForm | undefined) => {
 
 const openCreateOrUpdate = async (id: number | undefined) => {
   state.formDialogVisible = true
-  state.directoryTabDisabled = false
-  state.menuTabDisabled = false
-  state.buttonTabDisabled = false
+  state.directoryFormVisible = false
+  state.menuFormVisible = false
+  state.buttonFormVisible = false
   state.apiTabDisabled = false;
 
   let item, type;
@@ -444,33 +444,33 @@ const initTab = (type: number, isEdit: boolean) => {
     case 1:
       activeName = 'directory';
       if (isEdit) {
-        state.menuTabDisabled = true
-        state.buttonTabDisabled = true
+        state.menuFormVisible = true
+        state.buttonFormVisible = true
         state.apiTabDisabled = true
       }
       break
     case 2:
       activeName = 'menu';
       if (isEdit) {
-        state.directoryTabDisabled = true
-        state.buttonTabDisabled = true
+        state.directoryFormVisible = true
+        state.buttonFormVisible = true
         state.apiTabDisabled = true
       }
       break
     case 3:
       activeName = 'button';
       if (isEdit) {
-        state.directoryTabDisabled = true
-        state.menuTabDisabled = true
+        state.directoryFormVisible = true
+        state.menuFormVisible = true
         state.apiTabDisabled = true
       }
       break
     case 4:
       activeName = 'api';
       if (isEdit) {
-        state.directoryTabDisabled = true
-        state.menuTabDisabled = true
-        state.buttonTabDisabled = true
+        state.directoryFormVisible = true
+        state.menuFormVisible = true
+        state.buttonFormVisible = true
       }
       break
   }
