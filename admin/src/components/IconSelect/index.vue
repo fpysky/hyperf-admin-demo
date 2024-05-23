@@ -38,7 +38,7 @@ const props = defineProps({
   width: propTypes.string.def('400px')
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['choiceIcon']);
 const visible = ref(false);
 const { modelValue, width } = toRefs(props);
 const iconNames = ref<string[]>(icons);
@@ -62,7 +62,7 @@ const filterIcons = () => {
  * @param iconName 选择的图标名称
  */
 const selectedIcon = (iconName: string) => {
-  emit('update:modelValue', iconName);
+  emit('choiceIcon', iconName);
   visible.value = false;
 }
 </script>

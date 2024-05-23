@@ -29,8 +29,7 @@ class RuleMiddleware implements MiddlewareInterface
     {
         $currentRoute = '/' . strtolower($request->getMethod()) . $request->getUri()->getPath();
         $admin = admin();
-        $notCheckRBAC = config('notCheckRBAC');
-        if ($admin->isSuper() || in_array($currentRoute, $notCheckRBAC)) {
+        if ($admin->isSuper()) {
             return $handler->handle($request);
         }
 

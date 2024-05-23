@@ -94,28 +94,6 @@ export const constantRoutes: RouteOption[] = [
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes: RouteOption[] = [
   {
-    path: '/filesystem',
-    component: Layout,
-    name: 'filesystem',
-    meta: {
-      title: '文件管理',
-      icon: 'documentation'
-    },
-    hidden: false,
-    alwaysShow:true,
-    children: [
-      {
-        path: 'fileList',
-        component: () => import('@/views/filesystem/fileList.vue'),
-        name: 'fileList',
-        meta: {
-          title: '文件列表',
-          icon: 'list'
-        }
-      }
-    ]
-  },
-  {
     path: '/system',
     component: Layout,
     name: 'system',

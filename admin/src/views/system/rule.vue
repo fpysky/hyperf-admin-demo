@@ -59,8 +59,7 @@
                  :title="state.isEdit ? '编辑权限' : '新增权限'"
                  width="30%">
         <add-rule v-if="!state.isEdit" ref="addRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"></add-rule>
-        <edit-rule v-if="state.isEdit" ref="editRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"
-                   :id="state.editId"></edit-rule>
+        <edit-rule v-if="state.isEdit" ref="editRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload" :id="state.editId"></edit-rule>
       </el-dialog>
     </div>
   </div>
@@ -68,7 +67,7 @@
 
 <script lang="ts" setup>
 import {ruleList, upRuleStatus, deleteRule} from '@/api/rule'
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, reactive, ref,nextTick} from 'vue'
 import {ElMessageBox} from 'element-plus'
 import {Plus} from "@element-plus/icons-vue";
 import AddRule from "@/views/system/component/addRule.vue";

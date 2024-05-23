@@ -15,28 +15,11 @@
           <el-input v-model="state.ruleForm.path"/>
         </el-form-item>
         <el-form-item label="图标" prop="icon">
-          <el-popover
-            placement="bottom-start"
-            :width="540"
-            trigger="click"
-          >
-            <template #reference>
-              <el-input v-model="state.ruleForm.icon" placeholder="点击选择图标" @blur="showSelectIcon" readonly>
-                <template #prefix>
-                  <svg-icon
-                    v-if="state.ruleForm.icon"
-                    :icon-class="state.ruleForm.icon"
-                    class="el-input__icon"
-                    style="height: 32px;width: 16px;"
-                  />
-                  <el-icon v-else style="height: 32px;width: 16px;">
-                    <search/>
-                  </el-icon>
-                </template>
-              </el-input>
-            </template>
-            <icon-select ref="iconSelectRef" @selected="selected" model-value="" :active-icon="state.ruleForm.icon"/>
-          </el-popover>
+          <icon-select
+            ref="iconSelectRef"
+            @choiceIcon="choiceIcon"
+            :model-value="state.ruleForm.icon"
+            :active-icon="state.ruleForm.icon"/>
         </el-form-item>
         <el-form-item label="排序:">
           <el-input v-model="state.ruleForm.sort"/>
@@ -78,8 +61,12 @@
         <el-form-item label="前端路由:" prop="path">
           <el-input v-model="state.ruleForm.path"/>
         </el-form-item>
-        <el-form-item label="图标:" prop="icon">
-          <el-input v-model="state.ruleForm.icon"/>
+        <el-form-item label="图标" prop="icon">
+          <icon-select
+            ref="iconSelectRef"
+            @choiceIcon="choiceIcon"
+            :model-value="state.ruleForm.icon"
+            :active-icon="state.ruleForm.icon"/>
         </el-form-item>
         <el-form-item label="排序:">
           <el-input v-model="state.ruleForm.sort"/>
@@ -182,7 +169,7 @@ const state = reactive({
       {required: true, message: '请输入前端路由', trigger: 'blur'},
     ],
     icon: [
-      {required: true, message: '请输入图标', trigger: 'blur'},
+      {required: true, message: '请输入图标', trigger: 'click'},
     ],
   }
 })
@@ -191,14 +178,7 @@ onMounted(() => {
   initData()
 })
 
-const showSelectIcon = () => {
-  console.log(iconSelectRef)
-  if(iconSelectRef){
-    iconSelectRef.value.reset();
-  }
-}
-
-const selected = (name: string) => {
+const choiceIcon = (name: string) => {
   state.ruleForm.icon = name;
 }
 

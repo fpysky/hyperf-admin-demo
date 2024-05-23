@@ -34,11 +34,14 @@ export const usePermissionStore = defineStore('permission', () => {
   const filterAsyncRoutes = (asyncRoutes: RouteOption[], routes: any[]) => {
     const res: RouteOption[] = [];
     asyncRoutes.forEach((route) => {
-      const tmp = { ...route };
+      let tmp = { ...route };
       const findRoute = routes.find((item) => item.path === route.path);
       if (findRoute) {
         if (tmp.children) {
           tmp.children = filterAsyncRoutes(tmp.children, findRoute.children);
+        }
+        if(findRoute.icon && tmp.meta){
+          tmp.meta.icon = findRoute.icon;
         }
         res.push(tmp);
       }
