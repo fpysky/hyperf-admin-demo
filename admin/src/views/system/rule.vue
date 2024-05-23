@@ -43,9 +43,14 @@
             <el-tag v-if="scope.row.type === 4" type="danger">{{ scope.row.typeZh }}</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="icon" label="图标" align="center" width="100">
+          <template #default="scope">
+            <svg-icon :icon-class="scope.row.icon" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="sort" label="排序" width="150" align="center"/>
         <el-table-column prop="route" label="后端路由"/>
         <el-table-column prop="path" label="前端路由" width="180"/>
-        <el-table-column prop="sort" label="排序" width="150" align="center"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
             <el-button type="primary" @click="openCreateOrUpdateDialog(scope.row.id)" :disabled="scope.row.type === 4">
@@ -55,7 +60,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog style="text-align: center;" v-model="state.formDialogVisible"
+      <el-dialog style="text-align: center;min-height: 450px" v-model="state.formDialogVisible"
                  :title="state.isEdit ? '编辑权限' : '新增权限'"
                  width="30%">
         <add-rule v-if="!state.isEdit" ref="addRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"></add-rule>
