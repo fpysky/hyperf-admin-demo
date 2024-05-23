@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-input v-model="state.searchData.keyword" size="small" style="width: 200px;" placeholder="搜索"/>
-      <el-button type="primary" style="margin-left: 10px;" size="small" :loading="state.tableLoading"
+      <el-input v-model="state.searchData.keyword" style="width: 200px;" placeholder="搜索"/>
+      <el-button type="primary" style="margin-left: 10px;" :loading="state.tableLoading"
                  @click="getData()">
-        <el-icon size="small" style="vertical-align: middle;">
+        <el-icon style="vertical-align: middle;">
           <Search/>
         </el-icon>
         <span style="vertical-align: middle">搜索</span>
       </el-button>
-      <el-button size="small" @click="clear()" title="清空搜索条件">
-        <el-icon size="small" style="vertical-align: middle;">
+      <el-button @click="clear()" title="清空搜索条件">
+        <el-icon style="vertical-align: middle;">
           <Delete/>
         </el-icon>
       </el-button>

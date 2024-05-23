@@ -88,7 +88,6 @@
                :rules="state.rules" label-width="83px">
         <el-form-item required label="父级:" prop="parentId">
           <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
-            <el-option :key="0" label="" :value="0"/>
             <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id"/>
           </el-select>
         </el-form-item>

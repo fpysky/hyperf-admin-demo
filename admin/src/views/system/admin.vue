@@ -57,8 +57,11 @@
         <el-table-column prop="logo" label="logo" width="180" align="center"/>
         <el-table-column label="操作" width="200" fixed="right" align="center">
           <template #default="scope">
-            <el-button type="primary" @click="openCreateOrUpdateDialog(scope.$index)">编辑</el-button>
-            <el-button type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="primary" :disabled="scope.row.type === 1" @click="openCreateOrUpdateDialog(scope.$index)">
+              编辑
+            </el-button>
+            <el-button type="danger" :disabled="scope.row.type === 1" @click="handleDelete([scope.row.id])">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -188,7 +191,7 @@ onMounted(() => {
   getData();
 });
 
-const handlePageChange = (page:number) => {
+const handlePageChange = (page: number) => {
   state.page = page;
   getData();
 }
@@ -209,7 +212,7 @@ const handleDelete = (ids: Array<number>) => {
 
 const handleStatusChange = (val: number, id: number) => {
   upAdminStatus({ids: [id], status: val}).then(() => {
-    ElNotification({title: '提示', message: '操作成功',type: 'success'})
+    ElNotification({title: '提示', message: '操作成功', type: 'success'})
   });
 };
 
@@ -289,7 +292,7 @@ const openCreateOrUpdateDialog = async (rowIndex: number | undefined) => {
   state.isEdit = rowIndex !== undefined;
   await initRoles();
   await resetForm();
-  if(state.isEdit){
+  if (state.isEdit) {
     await loadEditData(rowIndex);
   }
   state.formDialogLoading = false;
