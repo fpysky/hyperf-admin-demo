@@ -13,13 +13,22 @@
         </el-icon>
         <span style="vertical-align: middle">刷新</span>
       </el-button>
+      <el-button
+        type="info"
+        plain
+        icon="Sort"
+        @click="toggleExpandAll"
+      >展开/折叠
+      </el-button>
     </div>
     <div class="content">
       <el-table
+        v-if="state.refreshTable"
         border
         :data="state.tableData" :row-class-name="state.colorStyle ? tableRowClassName : ''"
         row-key="id" v-loading="state.tableLoading" style="width: 100%;"
-        :header-cell-style="{'text-align':'center'}">
+        :header-cell-style="{'text-align':'center'}"
+        :default-expand-all="state.isExpandAll">
         <el-table-column prop="name" label="名称" width="300">
           <template #default="scope">
             <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
@@ -45,7 +54,7 @@
         </el-table-column>
         <el-table-column prop="icon" label="图标" align="center" width="100">
           <template #default="scope">
-            <svg-icon :icon-class="scope.row.icon" />
+            <svg-icon :icon-class="scope.row.icon"/>
           </template>
         </el-table-column>
         <el-table-column prop="sort" label="排序" width="150" align="center"/>
@@ -64,7 +73,8 @@
                  :title="state.isEdit ? '编辑权限' : '新增权限'"
                  width="30%">
         <add-rule v-if="!state.isEdit" ref="addRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"></add-rule>
-        <edit-rule v-if="state.isEdit" ref="editRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload" :id="state.editId"></edit-rule>
+        <edit-rule v-if="state.isEdit" ref="editRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"
+                   :id="state.editId"></edit-rule>
       </el-dialog>
     </div>
   </div>
@@ -72,7 +82,7 @@
 
 <script lang="ts" setup>
 import {ruleList, upRuleStatus, deleteRule} from '@/api/rule'
-import {onMounted, reactive, ref,nextTick} from 'vue'
+import {onMounted, reactive, ref, nextTick} from 'vue'
 import {ElMessageBox} from 'element-plus'
 import {Plus} from "@element-plus/icons-vue";
 import AddRule from "@/views/system/component/addRule.vue";
@@ -103,6 +113,8 @@ const state = reactive({
   tableData: <RuleForm[]>([]),
   colorStyle: true,
   editId: 0,
+  refreshTable: true,
+  isExpandAll: false,
 })
 
 onMounted(() => {
@@ -120,6 +132,14 @@ const handleDelete = (ids: Array<number>) => {
     deleteRule({ids: ids}).then(() => {
       getData()
     })
+  })
+}
+
+const toggleExpandAll = () => {
+  state.refreshTable = false
+  state.isExpandAll = !state.isExpandAll
+  nextTick(() => {
+    state.refreshTable = true
   })
 }
 

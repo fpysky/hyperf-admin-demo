@@ -1,8 +1,7 @@
 # 说明
 * 超级管理员账号/密码：18888888888/admin123456
-* 启动端口9541 可自行更改
-* token存储在redis的db1 可自行更改
-* /config/autoload/myconfig 里的bdMapAk要换掉
+
+# 
 
 # Introduction
 

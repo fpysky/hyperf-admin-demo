@@ -43,7 +43,7 @@ class RuleController extends AbstractController
 
     #[GetMapping(path: 'rule')]
     #[Get(path: 'rule', summary: '权限列表', tags: ['系统管理/权限管理'])]
-    #[Permission(name:'权限列表',module: '系统管理/权限管理')]
+    #[Permission(name: '权限列表', module: '系统管理/权限管理')]
     public function index(): ResponseInterface
     {
         $list = Rule::query()
@@ -62,19 +62,21 @@ class RuleController extends AbstractController
     }
 
     #[PostMapping(path: 'rule')]
-    #[Permission(name:'创建权限',module: '系统管理/权限管理')]
+    #[Permission(name: '创建权限', module: '系统管理/权限管理')]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
-        $rule = new Rule();
-        $rule->parent_id = $request->integer('parentId');
-        $rule->status = $request->integer('status');
-        $rule->type = $request->integer('type');
-        $rule->sort = $request->integer('sort');
-        $rule->name = $request->string('name');
-        $rule->icon = $request->string('icon');
-        $rule->route = $request->string('route');
-        $rule->path = $request->string('path');
-        $rule->save();
+        $data = [
+            'parent_id' => $request->integer('parentId'),
+            'status' => $request->integer('status'),
+            'type' => $request->integer('type'),
+            'sort' => $request->integer('sort'),
+            'name' => $request->string('name'),
+            'icon' => $request->string('icon'),
+            'route' => $request->string('route'),
+            'path' => $request->string('path'),
+        ];
+
+        Rule::query()->create($data);
 
         $this->cacheRule->asyncRemoveCache();
 
@@ -82,22 +84,25 @@ class RuleController extends AbstractController
     }
 
     #[PutMapping(path: 'rule')]
-    #[Permission(name:'编辑权限',module: '系统管理/权限管理')]
+    #[Permission(name: '编辑权限', module: '系统管理/权限管理')]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = $request->integer('id');
 
         $rule = Rule::query()->findOrFail($id);
 
-        $rule->parent_id = $request->integer('parentId');
-        $rule->status = $request->integer('status');
-        $rule->type = $request->integer('type');
-        $rule->sort = $request->integer('sort');
-        $rule->name = $request->string('name');
-        $rule->icon = $request->string('icon');
-        $rule->route = $request->string('route');
-        $rule->path = $request->string('path');
-        $rule->save();
+        $data = [
+            'parent_id' => $request->integer('parentId'),
+            'status' => $request->integer('status'),
+            'type' => $request->integer('type'),
+            'sort' => $request->integer('sort'),
+            'name' => $request->string('name'),
+            'icon' => $request->string('icon'),
+            'route' => $request->string('route'),
+            'path' => $request->string('path'),
+        ];
+
+        $rule->update($data);
 
         $this->cacheRule->asyncRemoveCache();
 
@@ -105,7 +110,7 @@ class RuleController extends AbstractController
     }
 
     #[PutMapping(path: 'system/backend/backendAdminRule/batchSortRule')]
-    #[Permission(name:'批量排序权限状态',module: '系统管理/权限管理')]
+    #[Permission(name: '批量排序权限状态', module: '系统管理/权限管理')]
     public function upOrders(): ResponseInterface
     {
         $orders = $this->request->input('orders');
@@ -120,7 +125,7 @@ class RuleController extends AbstractController
     }
 
     #[PatchMapping(path: 'rule/status')]
-    #[Permission(name:'修改权限状态',module: '系统管理/权限管理')]
+    #[Permission(name: '修改权限状态', module: '系统管理/权限管理')]
     public function upStatus(): ResponseInterface
     {
         $ids = $this->request->array('ids');
@@ -143,7 +148,7 @@ class RuleController extends AbstractController
      * @throws \Exception
      */
     #[DeleteMapping(path: 'rule')]
-    #[Permission(name:'删除权限',module: '系统管理/权限管理')]
+    #[Permission(name: '删除权限', module: '系统管理/权限管理')]
     public function destroy(): ResponseInterface
     {
         $ids = $this->request->array('ids');
@@ -217,7 +222,7 @@ class RuleController extends AbstractController
     }
 
     #[GetMapping(path: 'rule/{id:\d+}')]
-    #[Permission(name:'权限详情',module: '系统管理/权限管理')]
+    #[Permission(name: '权限详情', module: '系统管理/权限管理')]
     public function detail(int $id): ResponseInterface
     {
         $rule = Rule::findFromCacheOrFail($id);

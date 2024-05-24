@@ -1,13 +1,12 @@
 <template>
   <div class="relative" :style="{ width: width }">
-    <el-input v-model="modelValue" readonly @click="visible = !visible" placeholder="点击选择图标">
-      <template #prepend>
-        <svg-icon :icon-class="modelValue as string" />
-      </template>
-    </el-input>
-
-    <el-popover shadow="none" :visible="visible" placement="bottom-end" trigger="click" :width="450">
+    <el-popover :hide-after="20" shadow="none" placement="bottom-end" trigger="click" :width="450">
       <template #reference>
+        <el-input v-model="modelValue" readonly @click="visible = !visible" placeholder="点击选择图标">
+          <template #prepend>
+            <svg-icon :icon-class="modelValue as string" />
+          </template>
+        </el-input>
         <div @click="visible = !visible" class="cursor-pointer text-[#999] absolute right-[10px] top-0 height-[32px] leading-[32px]">
           <i-ep-caret-top v-show="visible"></i-ep-caret-top>
           <i-ep-caret-bottom v-show="!visible"></i-ep-caret-bottom>
@@ -63,6 +62,8 @@ const filterIcons = () => {
  */
 const selectedIcon = (iconName: string) => {
   emit('choiceIcon', iconName);
+  //模拟点击以关闭popover
+  document.body.click()
   visible.value = false;
 }
 </script>
