@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Permission;
+namespace App\Controller\Rbac;
 
 use App\Annotation\Permission;
 use App\Controller\AbstractController;
@@ -15,7 +15,6 @@ use App\Request\Role\UpStatusRequest;
 use App\Request\RoleStoreRequest;
 use App\Request\RoleUpdateRequest;
 use App\Resource\Role\RoleResource;
-use Hyperf\Database\Model\Builder;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;

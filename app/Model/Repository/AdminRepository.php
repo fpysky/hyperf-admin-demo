@@ -138,8 +138,8 @@ trait AdminRepository
     }
 
     /**
-     * @todo need to with adminRole
      * @return array
+     * @todo need to with adminRole
      */
     public function roleIds(): array
     {
@@ -198,7 +198,15 @@ trait AdminRepository
         return Rule::query()
             ->with([
                 'children' => function (HasMany $query) use ($adminRuleIds) {
-                    $query->whereIn('id', $adminRuleIds)
+                    $query->with([
+                        'children' => function (HasMany $query) use ($adminRuleIds) {
+                            $query->where('status', self::STATUS_ENABLE)
+                                ->whereIn('id', $adminRuleIds)
+                                ->where('type', Rule::TYPE_MENU)
+                                ->orderBy('sort');
+                        }])
+                        ->where('status', self::STATUS_ENABLE)
+                        ->whereIn('id', $adminRuleIds)
                         ->where('type', Rule::TYPE_MENU)
                         ->orderBy('sort');
                 },

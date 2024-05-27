@@ -37,7 +37,7 @@ export const usePermissionStore = defineStore('permission', () => {
       let tmp = { ...route };
       const findRoute = routes.find((item) => item.path === route.path);
       if (findRoute) {
-        if (tmp.children) {
+        if (tmp.children && findRoute.children) {
           tmp.children = filterAsyncRoutes(tmp.children, findRoute.children);
         }
         if(findRoute.icon && tmp.meta){

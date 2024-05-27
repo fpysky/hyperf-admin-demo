@@ -13,7 +13,7 @@ use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
- * @property int $id 
+ * @property int $id
  * @property int $parent_id 父级id
  * @property int $status 状态：0.禁用 1.启用
  * @property int $type 类型：1-菜单，2-目录，3-按钮，4-接口
@@ -26,10 +26,10 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property Carbon $created_at 创建时间
  * @property Carbon $updated_at 更新时间
  * @property string $deleted_at 删除时间
- * @property-read null|Collection|Rule[] $children 
- * @property-read null|Collection|Rule[] $buttons 
- * @property-read null|Collection|RoleRule[] $roleRule 
- * @property-read null|Rule $parentRule 
+ * @property null|Collection|Rule[] $children
+ * @property null|Collection|Rule[] $buttons
+ * @property null|Collection|RoleRule[] $roleRule
+ * @property null|Rule $parentRule
  */
 class Rule extends Model
 {
@@ -101,10 +101,18 @@ class Rule extends Model
         return self::query()
             ->with([
                 'children' => function (HasMany $query) {
-                    $query->where('type', Rule::TYPE_MENU)
+                    $query->with([
+                        'children' => function (HasMany $query) {
+                            $query->where('status', self::STATUS_ENABLE)
+                                ->where('type', Rule::TYPE_MENU)
+                                ->orderBy('sort');
+                        }])
+                        ->where('status', self::STATUS_ENABLE)
+                        ->where('type', Rule::TYPE_MENU)
                         ->orderBy('sort');
                 },
             ])
+            ->where('status', self::STATUS_ENABLE)
             ->where('parent_id', 0)
             ->where('type', self::TYPE_DIRECTORY)
             ->orderBy('sort')

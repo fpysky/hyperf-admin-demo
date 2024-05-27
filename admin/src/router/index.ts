@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, RouteOption, createWebHashHistory } from "vue-router";
+import {createWebHistory, createRouter, RouteOption, createWebHashHistory} from "vue-router";
 /* Layout */
 import Layout from '@/layout/index.vue';
 
@@ -71,7 +71,7 @@ export const constantRoutes: RouteOption[] = [
         path: '/index',
         component: () => import('@/views/index.vue'),
         name: 'Index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: {title: '首页', icon: 'dashboard', affix: true}
       }
     ]
   }
@@ -102,16 +102,37 @@ export const dynamicRoutes: RouteOption[] = [
       icon: 'system'
     },
     hidden: false,
-    alwaysShow:true,
+    alwaysShow: true,
     children: [
+      // {
+      //   path: 'admin',
+      //   component: () => import('@/views/system/admin.vue'),
+      //   name: 'admin',
+      //   meta: {
+      //     title: '管理员管理',
+      //     icon: 'user'
+      //   },
+      // },
       {
-        path: 'admin',
-        component: () => import('@/views/system/admin.vue'),
-        name: 'admin',
+        path: 'test',
+        name: 'test',
         meta: {
-          title: '管理员管理',
+          title: '测试嵌套',
           icon: 'user'
-        }
+        },
+        hidden: false,
+        alwaysShow: true,
+        children:[
+          {
+            path: 'admin',
+            component: () => import('@/views/system/admin.vue'),
+            name: 'admin',
+            meta: {
+              title: '管理员管理',
+              icon: 'user'
+            },
+          }
+        ],
       },
       {
         path: 'role',
@@ -225,7 +246,7 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition;
     } else {
-      return { top: 0 };
+      return {top: 0};
     }
   }
 });

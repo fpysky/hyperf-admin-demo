@@ -71,7 +71,7 @@
       </el-table>
       <el-dialog style="text-align: center;min-height: 450px" v-model="state.formDialogVisible"
                  :title="state.isEdit ? '编辑权限' : '新增权限'"
-                 width="30%">
+                 width="660px">
         <add-rule v-if="!state.isEdit" ref="addRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"></add-rule>
         <edit-rule v-if="state.isEdit" ref="editRuleRef" @closeDialogAndRefresh="closeFormDialogAndReload"
                    :id="state.editId"></edit-rule>

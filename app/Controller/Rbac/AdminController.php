@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Permission;
+namespace App\Controller\Rbac;
 
 use App\Annotation\Permission;
 use App\Constants\ErrorCode;

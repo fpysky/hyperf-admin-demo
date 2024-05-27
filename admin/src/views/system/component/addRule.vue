@@ -1,59 +1,66 @@
 <template>
   <el-tabs v-model="state.formActiveName" type="card" @tab-click="handleFormTabsClick">
-    <el-tab-pane label="目录权限" name="directory">
-      <el-form
-        ref="ruleFormRefDirectory"
-        style="width:80%;margin: 0 auto;"
-        :model="state.ruleForm"
-        :rules="state.rules"
-        label-width="83px"
-      >
-        <el-form-item required label="名称:" prop="name">
-          <el-input v-model="state.ruleForm.name"/>
-        </el-form-item>
-        <el-form-item label="前端路由:" prop="path">
-          <el-input v-model="state.ruleForm.path"/>
-        </el-form-item>
-        <el-form-item label="图标" prop="icon">
-          <icon-select
-            ref="iconSelectRef"
-            @choiceIcon="choiceIcon"
-            :model-value="state.ruleForm.icon"
-            :active-icon="state.ruleForm.icon"/>
-        </el-form-item>
-        <el-form-item label="排序:">
-          <el-input-number v-model="state.ruleForm.sort" :min="0"/>
-        </el-form-item>
-        <el-form-item required label="是否启用:">
-          <el-switch
-            v-model="state.ruleForm.status"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            :active-value="1"
-            :inactive-value="0"
-          >
-          </el-switch>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            style="width: 100%;margin: 0 auto;"
-            type="primary"
-            :loading="state.submitLoading"
-            @click="ruleSubmit(ruleFormRefDirectory)"
-          >
-            提交
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-tab-pane>
-    <el-tab-pane label="菜单权限" name="menu">
+<!--    <el-tab-pane label="目录权限" name="directory">-->
+<!--      <el-form-->
+<!--        ref="ruleFormRefDirectory"-->
+<!--        style="width:80%;margin: 0 auto;"-->
+<!--        :model="state.ruleForm"-->
+<!--        :rules="state.rules"-->
+<!--        label-width="83px"-->
+<!--      >-->
+<!--        <el-form-item required label="名称:" prop="name">-->
+<!--          <el-input v-model="state.ruleForm.name"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="前端路由:" prop="path">-->
+<!--          <el-input v-model="state.ruleForm.path"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="图标" prop="icon">-->
+<!--          <icon-select-->
+<!--            ref="iconSelectRef"-->
+<!--            @choiceIcon="choiceIcon"-->
+<!--            :model-value="state.ruleForm.icon"-->
+<!--            :active-icon="state.ruleForm.icon"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="排序:">-->
+<!--          <el-input-number v-model="state.ruleForm.sort" :min="0"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item required label="是否启用:">-->
+<!--          <el-switch-->
+<!--            v-model="state.ruleForm.status"-->
+<!--            active-color="#13ce66"-->
+<!--            inactive-color="#ff4949"-->
+<!--            :active-value="1"-->
+<!--            :inactive-value="0"-->
+<!--          >-->
+<!--          </el-switch>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item>-->
+<!--          <el-button-->
+<!--            style="width: 100%;margin: 0 auto;"-->
+<!--            type="primary"-->
+<!--            :loading="state.submitLoading"-->
+<!--            @click="ruleSubmit(ruleFormRefDirectory)"-->
+<!--          >-->
+<!--            提交-->
+<!--          </el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-tab-pane>-->
+    <el-tab-pane label="菜单" name="menu">
       <el-form ref="ruleFormRefMenu" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
                :rules="state.rules"
                label-width="83px">
-        <el-form-item required label="父级:" prop="parentId">
-          <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
-            <el-option v-for="rule in state.topRule" :key="rule.id" :label="rule.name" :value="rule.id"/>
-          </el-select>
+        <el-form-item label="父级:" prop="parentId">
+<!--          <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">-->
+<!--            <el-option v-for="rule in state.topRule" :key="rule.id" :label="rule.name" :value="rule.id"/>-->
+<!--          </el-select>-->
+          <el-tree-select
+            v-model="state.ruleForm.parentId"
+            :data="state.topRule"
+            check-strictly
+            :render-after-expand="false"
+            style="width: 100%"
+          />
         </el-form-item>
         <el-form-item required label="名称:" prop="name">
           <el-input v-model="state.ruleForm.name"/>
@@ -83,7 +90,7 @@
         </el-form-item>
       </el-form>
     </el-tab-pane>
-    <el-tab-pane label="按钮权限" name="button">
+    <el-tab-pane label="按钮" name="button">
       <el-form ref="ruleFormRefButton" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
                :rules="state.rules" label-width="83px">
         <el-form-item required label="父级:" prop="parentId">
@@ -118,7 +125,7 @@
 <script lang="ts" setup>
 import {onMounted, reactive, ref, defineEmits} from "vue";
 import {FormInstance, FormRules, TabsPaneContext} from "element-plus";
-import {createRule, parentMenusTree, topRule} from "@/api/rule";
+import {createRule, parentMenusTree, topRule, selectRuleTree} from "@/api/rule";
 import IconSelect from "@/components/IconSelect";
 
 interface RuleForm {
@@ -142,7 +149,7 @@ const iconSelectRef = ref()
 const state = reactive({
   formDialogVisible: false,
   submitLoading: false,
-  formActiveName: 'directory',
+  formActiveName: 'menu',
   topRule: [],
   parentMenusTree: [],
   ruleForm: <RuleForm>{
@@ -181,7 +188,7 @@ const choiceIcon = (name: string) => {
 }
 
 const initData = () => {
-  state.formActiveName = 'directory'
+  state.formActiveName = 'menu'
   initTabData(state.formActiveName)
   resetForm()
 };
@@ -211,7 +218,7 @@ const initTabData = (activeName: string | number | undefined) => {
 }
 
 const initTopRule = () => {
-  topRule().then(resp => {
+  selectRuleTree().then(resp => {
     state.topRule = resp.data
   })
 }

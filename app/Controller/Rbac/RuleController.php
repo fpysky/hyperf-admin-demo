@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Permission;
+namespace App\Controller\Rbac;
 
 use App\Annotation\Permission;
 use App\Controller\AbstractController;
@@ -16,6 +16,7 @@ use App\Request\RuleUpdateRequest;
 use App\Resource\Rule\ButtonMenuResource;
 use App\Resource\Rule\RuleDetailResource;
 use App\Resource\RuleResource;
+use App\Resource\SelectRuleTreeResource;
 use Hyperf\Database\Model\Relations\HasMany;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -273,6 +274,34 @@ class RuleController extends AbstractController
             ->get();
 
         return $this->success($rules);
+    }
+
+    #[GetMapping(path: 'rule/selectRuleTree')]
+    public function selectRuleTree(): ResponseInterface
+    {
+        $list = Rule::query()
+            ->where('parent_id', 0)
+            ->with([
+                'children' => function ($query) {
+                    $query->with([
+                        'children' => function ($query) {
+                            $query->with([
+                                'children' => function ($query) {
+                                    $query->where('type', Rule::TYPE_MENU)
+                                        ->orderBy('sort');
+                                }])
+                                ->where('type', Rule::TYPE_MENU)
+                                ->orderBy('sort');
+                        }])
+                        ->orderByDesc('type')
+                        ->orderBy('sort')
+                        ->where('type', Rule::TYPE_MENU);
+                },
+            ])
+            ->orderBy('sort')
+            ->get();
+
+        return $this->success(SelectRuleTreeResource::collection($list));
     }
 
     private function loadChildrenRulesToMenuRules(array $menuRules, array $childrenRules): array
