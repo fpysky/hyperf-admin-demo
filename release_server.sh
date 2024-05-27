@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# shellcheck disable=SC2164
+cd /var/www/hyperf-admin
+
 git fetch && git checkout . && git reset --hard origin/master && git pull
 
 sudo docker stop hyperf-admin
