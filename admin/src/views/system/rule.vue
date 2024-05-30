@@ -23,7 +23,7 @@
         row-key="id" v-loading="state.tableLoading" style="width: 100%;"
         :header-cell-style="{'text-align':'center'}"
         :default-expand-all="state.isExpandAll">
-        <el-table-column prop="name" label="名称" width="300" />
+        <el-table-column prop="name" label="名称" width="300"/>
         <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
             <el-switch
@@ -36,7 +36,8 @@
           <template #default="scope">
             <el-tag v-if="scope.row.type === 1" type="success">{{ scope.row.typeZh }}</el-tag>
             <el-tag v-if="scope.row.type === 2" type="warning">{{ scope.row.typeZh }}</el-tag>
-            <el-tag v-if="scope.row.type === 3" type="info">按钮</el-tag>&nbsp
+            <el-tag v-if="scope.row.type === 3" type="info">按钮</el-tag>
+            &nbsp
             <el-tag v-if="scope.row.type === 3 || scope.row.type === 4" type="danger">接口</el-tag>
           </template>
         </el-table-column>
@@ -50,10 +51,16 @@
         <el-table-column prop="path" label="前端路由" width="180"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button type="primary" v-hasPermission="['系统管理:权限管理:编辑权限']" @click="openCreateOrUpdateDialog(scope.row.id)" :disabled="scope.row.type === 4">
+            <el-button
+              type="primary"
+              v-hasPermission="['系统管理:权限管理:编辑权限']"
+              @click="openCreateOrUpdateDialog(scope.row.id)"
+              :disabled="scope.row.type === 4 || scope.row.type === 3">
               编辑
             </el-button>
-            <el-button type="danger" v-hasPermission="['系统管理:权限管理:删除权限']" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="danger" v-hasPermission="['系统管理:权限管理:删除权限']"
+                       @click="handleDelete([scope.row.id])">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
