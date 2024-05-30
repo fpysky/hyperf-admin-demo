@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Permission;
+namespace App\Controller;
 
-use App\Controller\AbstractController;
 use App\Exception\UnprocessableEntityException;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;

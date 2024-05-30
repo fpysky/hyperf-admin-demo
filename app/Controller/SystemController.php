@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controller\Permission;
+namespace App\Controller;
 
 use App\Annotation\Permission;
-use App\Controller\AbstractController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use App\Model\AdminOperationLog;
