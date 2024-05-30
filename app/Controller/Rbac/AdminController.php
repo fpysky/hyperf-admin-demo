@@ -59,7 +59,7 @@ class AdminController extends AbstractController
 
     #[PostMapping(path: 'admin')]
     #[Post(path: 'admin', summary: '添加管理员', tags: ['系统管理/管理员管理'])]
-    #[Permission(name:'添加管理员',module: '系统管理/管理员管理')]
+    #[Permission(name:'添加管理员',module: '系统管理/管理员管理',hasButton: true)]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status'],
         properties: [
@@ -119,7 +119,7 @@ class AdminController extends AbstractController
      */
     #[DeleteMapping(path: 'admin')]
     #[Delete(path: 'admin', summary: '管理员删除', tags: ['系统管理/管理员管理'])]
-    #[Permission(name:'删除管理员',module: '系统管理/管理员管理')]
+    #[Permission(name:'删除管理员',module: '系统管理/管理员管理',hasButton: true)]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -146,7 +146,7 @@ class AdminController extends AbstractController
 
     #[PutMapping(path: 'admin')]
     #[Put(path: 'admin', summary: '编辑管理员', tags: ['系统管理/管理员管理'])]
-    #[Permission(name:'编辑管理员',module: '系统管理/管理员管理')]
+    #[Permission(name:'编辑管理员',module: '系统管理/管理员管理',hasButton: true)]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'mobile', 'password', 'rePassword', 'email', 'deptId', 'postId', 'status', 'roleIds'],
         properties: [
@@ -345,7 +345,7 @@ class AdminController extends AbstractController
 
     #[PatchMapping(path: 'admin/resetPassword')]
     #[Patch(path: 'admin/resetPassword', summary: '重置管理员密码', tags: ['系统管理/管理员管理'])]
-    #[Permission(name:'重置管理员密码',module: '系统管理/管理员管理')]
+    #[Permission(name:'重置管理员密码',module: '系统管理/管理员管理',hasButton: true)]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'password'],
         properties: [

@@ -52,7 +52,7 @@ class Rule extends Model
     public const TYPE_ZH = [
         self::TYPE_DIRECTORY => '目录',
         self::TYPE_MENU => '菜单',
-        self::TYPE_BUTTON => '按钮',
+        self::TYPE_BUTTON => '按钮|接口',
         self::TYPE_API => '接口',
     ];
 
@@ -146,6 +146,25 @@ class Rule extends Model
         } catch (ModelNotFoundException) {
             return 0;
         }
+    }
+
+    public function getNamePath(): string
+    {
+        if($this->parentRule instanceof Rule){
+            return $this->linkName($this->parentRule,$this->name);
+        }else{
+            return $this->name;
+        }
+    }
+
+    public function linkName(Rule $rule,string $name): string
+    {
+        $linkName = "$rule->name:$name";
+        if($rule->parentRule instanceof Rule){
+            $linkName = $this->linkName($rule->parentRule,$linkName);
+        }
+
+        return $linkName;
     }
 
     public function children(): HasMany

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button @click="openCreateOrUpdate(undefined)">
+      <el-button @click="openCreateOrUpdate(undefined)" v-hasPermission="['系统管理:角色管理:添加角色']">
         <el-icon style="vertical-align: middle;">
           <Plus/>
         </el-icon>
@@ -39,9 +39,9 @@
         <el-table-column prop="updatedAt" label="更新时间" width="180" align="center"/>
         <el-table-column label="操作" width="280" align="center">
           <template #default="scope">
-            <el-button type="primary" @click="openCreateOrUpdate(scope.$index)">编辑</el-button>
-            <el-button type="success" @click="openSetRule(scope.$index)">设置权限</el-button>
-            <el-button type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="primary" @click="openCreateOrUpdate(scope.$index)" v-hasPermission="['系统管理:角色管理:编辑角色']">编辑</el-button>
+            <el-button type="success" @click="openSetRule(scope.$index)" v-hasPermission="['系统管理:角色管理:角色设置权限']">设置权限</el-button>
+            <el-button type="danger" @click="handleDelete([scope.row.id])" v-hasPermission="['系统管理:角色管理:删除角色']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

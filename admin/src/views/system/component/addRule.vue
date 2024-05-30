@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="state.formActiveName" type="card" @tab-click="handleFormTabsClick">
+<!--  <el-tabs v-model="state.formActiveName" type="card" @tab-click="handleFormTabsClick">-->
 <!--    <el-tab-pane label="目录权限" name="directory">-->
 <!--      <el-form-->
 <!--        ref="ruleFormRefDirectory"-->
@@ -46,18 +46,16 @@
 <!--        </el-form-item>-->
 <!--      </el-form>-->
 <!--    </el-tab-pane>-->
-    <el-tab-pane label="菜单" name="menu">
+<!--    <el-tab-pane label="菜单" name="menu">-->
       <el-form ref="ruleFormRefMenu" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
                :rules="state.rules"
                label-width="83px">
         <el-form-item label="父级:" prop="parentId">
-<!--          <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">-->
-<!--            <el-option v-for="rule in state.topRule" :key="rule.id" :label="rule.name" :value="rule.id"/>-->
-<!--          </el-select>-->
           <el-tree-select
             v-model="state.ruleForm.parentId"
             :data="state.topRule"
             check-strictly
+            clearable
             :render-after-expand="false"
             style="width: 100%"
           />
@@ -89,37 +87,37 @@
           </el-button>
         </el-form-item>
       </el-form>
-    </el-tab-pane>
-    <el-tab-pane label="按钮" name="button">
-      <el-form ref="ruleFormRefButton" style="width:80%;margin: 0 auto;" :model="state.ruleForm"
-               :rules="state.rules" label-width="83px">
-        <el-form-item required label="父级:" prop="parentId">
-          <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">
-            <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id"/>
-          </el-select>
-        </el-form-item>
-        <el-form-item required label="名称:" prop="name">
-          <el-input v-model="state.ruleForm.name"/>
-        </el-form-item>
-        <el-form-item label="后端路由:" prop="route">
-          <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx"/>
-        </el-form-item>
-        <el-form-item label="排序:">
-          <el-input-number v-model="state.ruleForm.sort" :min="0"/>
-        </el-form-item>
-        <el-form-item required label="是否启用:">
-          <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"
-                     :active-value="1" :inactive-value="0">
-          </el-switch>
-        </el-form-item>
-        <el-form-item>
-          <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"
-                     @click="ruleSubmit(ruleFormRefButton)">提交
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-tab-pane>
-  </el-tabs>
+<!--    </el-tab-pane>-->
+<!--    <el-tab-pane label="按钮" name="button">-->
+<!--      <el-form ref="ruleFormRefButton" style="width:80%;margin: 0 auto;" :model="state.ruleForm"-->
+<!--               :rules="state.rules" label-width="83px">-->
+<!--        <el-form-item required label="父级:" prop="parentId">-->
+<!--          <el-select v-model="state.ruleForm.parentId" style="width:100%;" placeholder="请选择父级">-->
+<!--            <el-option v-for="rule in state.parentMenusTree" :key="rule.id" :label="rule.name" :value="rule.id"/>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item required label="名称:" prop="name">-->
+<!--          <el-input v-model="state.ruleForm.name"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="后端路由:" prop="route">-->
+<!--          <el-input v-model="state.ruleForm.route" placeholder="/method/xx/xx"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="排序:">-->
+<!--          <el-input-number v-model="state.ruleForm.sort" :min="0"/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item required label="是否启用:">-->
+<!--          <el-switch v-model="state.ruleForm.status" active-color="#13ce66" inactive-color="#ff4949"-->
+<!--                     :active-value="1" :inactive-value="0">-->
+<!--          </el-switch>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item>-->
+<!--          <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"-->
+<!--                     @click="ruleSubmit(ruleFormRefButton)">提交-->
+<!--          </el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-tab-pane>-->
+<!--  </el-tabs>-->
 </template>
 
 <script lang="ts" setup>

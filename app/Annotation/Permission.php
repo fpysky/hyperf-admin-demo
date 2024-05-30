@@ -12,5 +12,6 @@ class Permission extends AbstractAnnotation
     public function __construct(
         public string $name,
         public string $module,
+        public bool $hasButton = false,
     ) {}
 }

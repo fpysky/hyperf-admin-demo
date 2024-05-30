@@ -46,7 +46,7 @@ class RoleController extends AbstractController
 {
     #[PostMapping(path: 'role')]
     #[Post(path: 'role', summary: '添加角色', tags: ['系统管理/角色管理'])]
-    #[Permission(name:'添加角色',module: '系统管理/角色管理')]
+    #[Permission(name:'添加角色',module: '系统管理/角色管理',hasButton: true)]
     #[RequestBody(content: new JsonContent(
         required: ['name', 'desc', 'status', 'sort'],
         properties: [
@@ -86,7 +86,7 @@ class RoleController extends AbstractController
      */
     #[DeleteMapping(path: 'role')]
     #[Delete(path: 'role', summary: '角色删除', tags: ['系统管理/角色管理'])]
-    #[Permission(name:'删除角色',module: '系统管理/角色管理')]
+    #[Permission(name:'删除角色',module: '系统管理/角色管理',hasButton: true)]
     #[PathParameter(name: 'ids', description: '管理员id集合', required: true, schema: new Schema(type: 'string'), example: '1,2')]
     #[Response(response: 200, content: new JsonContent(
         required: ['code', 'msg', 'data'],
@@ -237,7 +237,7 @@ class RoleController extends AbstractController
      */
     #[PostMapping(path: 'role/setRule')]
     #[Post(path: 'role/setRule', summary: '角色设置权限', tags: ['系统管理/角色管理'])]
-    #[Permission(name:'角色设置权限',module: '系统管理/角色管理')]
+    #[Permission(name:'角色设置权限',module: '系统管理/角色管理',hasButton: true)]
     #[RequestBody(content: new JsonContent(
         required: ['ruleIds', 'roleId'],
         properties: [
@@ -266,7 +266,7 @@ class RoleController extends AbstractController
 
     #[PutMapping(path: 'role')]
     #[Put(path: 'role', summary: '编辑角色', tags: ['系统管理/角色管理'])]
-    #[Permission(name:'编辑角色',module: '系统管理/角色管理')]
+    #[Permission(name:'编辑角色',module: '系统管理/角色管理',hasButton: true)]
     #[RequestBody(content: new JsonContent(
         required: ['id', 'name', 'desc', 'status', 'sort'],
         properties: [

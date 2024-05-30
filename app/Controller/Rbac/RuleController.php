@@ -63,7 +63,7 @@ class RuleController extends AbstractController
     }
 
     #[PostMapping(path: 'rule')]
-    #[Permission(name: '创建权限', module: '系统管理/权限管理')]
+    #[Permission(name: '创建权限', module: '系统管理/权限管理',hasButton: true)]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
         $data = [
@@ -85,7 +85,7 @@ class RuleController extends AbstractController
     }
 
     #[PutMapping(path: 'rule')]
-    #[Permission(name: '编辑权限', module: '系统管理/权限管理')]
+    #[Permission(name: '编辑权限', module: '系统管理/权限管理',hasButton: true)]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = $request->integer('id');
@@ -149,7 +149,7 @@ class RuleController extends AbstractController
      * @throws \Exception
      */
     #[DeleteMapping(path: 'rule')]
-    #[Permission(name: '删除权限', module: '系统管理/权限管理')]
+    #[Permission(name: '删除权限', module: '系统管理/权限管理',hasButton: true)]
     public function destroy(): ResponseInterface
     {
         $ids = $this->request->array('ids');

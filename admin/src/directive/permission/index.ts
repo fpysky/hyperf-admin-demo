@@ -3,7 +3,7 @@ import useUserStore from '@/store/modules/user';
 /**
  * 操作权限处理
  */
-export const hasPermi: Directive = {
+export const hasPermission: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { permissions } = useUserStore();
     // 「其他角色」按钮权限校验

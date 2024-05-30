@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button @click="openCreateOrUpdateDialog(undefined)">
+      <el-button @click="openCreateOrUpdateDialog(undefined)" v-hasPermission="['系统管理:权限管理:创建权限']">
         <el-icon style="vertical-align: middle;">
           <Plus/>
         </el-icon>
@@ -13,13 +13,7 @@
         </el-icon>
         <span style="vertical-align: middle">刷新</span>
       </el-button>
-      <el-button
-        type="info"
-        plain
-        icon="Sort"
-        @click="toggleExpandAll"
-      >展开/折叠
-      </el-button>
+      <el-button type="info" plain icon="Sort" @click="toggleExpandAll">展开/折叠</el-button>
     </div>
     <div class="content">
       <el-table
@@ -29,13 +23,7 @@
         row-key="id" v-loading="state.tableLoading" style="width: 100%;"
         :header-cell-style="{'text-align':'center'}"
         :default-expand-all="state.isExpandAll">
-        <el-table-column prop="name" label="名称" width="300">
-          <template #default="scope">
-            <span v-if="scope.row.type === 1 || scope.row.type === 2">{{ scope.row.name }}</span>
-            <span v-if="scope.row.type === 3"><el-icon><Pointer/></el-icon> {{ scope.row.name }}</span>
-            <span v-if="scope.row.type === 4"><el-icon><Switch/></el-icon> {{ scope.row.name }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="name" label="名称" width="300" />
         <el-table-column prop="status" label="状态" width="90" align="center">
           <template #default="scope">
             <el-switch
@@ -44,12 +32,12 @@
               :inactive-value="0"/>
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="类型" width="100" align="center">
+        <el-table-column prop="type" label="类型" width="150" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.type === 1" type="success">{{ scope.row.typeZh }}</el-tag>
             <el-tag v-if="scope.row.type === 2" type="warning">{{ scope.row.typeZh }}</el-tag>
-            <el-tag v-if="scope.row.type === 3" type="info">{{ scope.row.typeZh }}</el-tag>
-            <el-tag v-if="scope.row.type === 4" type="danger">{{ scope.row.typeZh }}</el-tag>
+            <el-tag v-if="scope.row.type === 3" type="info">按钮</el-tag>&nbsp
+            <el-tag v-if="scope.row.type === 3 || scope.row.type === 4" type="danger">接口</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="icon" label="图标" align="center" width="100">
@@ -62,10 +50,10 @@
         <el-table-column prop="path" label="前端路由" width="180"/>
         <el-table-column label="操作" width="200">
           <template #default="scope">
-            <el-button type="primary" @click="openCreateOrUpdateDialog(scope.row.id)" :disabled="scope.row.type === 4">
+            <el-button type="primary" v-hasPermission="['系统管理:权限管理:编辑权限']" @click="openCreateOrUpdateDialog(scope.row.id)" :disabled="scope.row.type === 4">
               编辑
             </el-button>
-            <el-button type="danger" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button type="danger" v-hasPermission="['系统管理:权限管理:删除权限']" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

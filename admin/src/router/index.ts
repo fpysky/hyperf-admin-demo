@@ -104,35 +104,14 @@ export const dynamicRoutes: RouteOption[] = [
     hidden: false,
     alwaysShow: true,
     children: [
-      // {
-      //   path: 'admin',
-      //   component: () => import('@/views/system/admin.vue'),
-      //   name: 'admin',
-      //   meta: {
-      //     title: '管理员管理',
-      //     icon: 'user'
-      //   },
-      // },
       {
-        path: 'test',
-        name: 'test',
+        path: 'admin',
+        component: () => import('@/views/system/admin.vue'),
+        name: 'admin',
         meta: {
-          title: '测试嵌套',
+          title: '管理员管理',
           icon: 'user'
         },
-        hidden: false,
-        alwaysShow: true,
-        children:[
-          {
-            path: 'admin',
-            component: () => import('@/views/system/admin.vue'),
-            name: 'admin',
-            meta: {
-              title: '管理员管理',
-              icon: 'user'
-            },
-          }
-        ],
       },
       {
         path: 'role',

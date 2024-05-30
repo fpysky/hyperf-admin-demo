@@ -11,8 +11,11 @@ use App\Model\AdminRole;
 use App\Model\Role;
 use App\Model\RoleRule;
 use App\Model\Rule;
+use App\Resource\Rule\ButtonPermissionResource;
 use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\HasMany;
+use Hyperf\Resource\Json\AnonymousResourceCollection;
 
 trait AdminRepository
 {
@@ -217,6 +220,42 @@ trait AdminRepository
             ->where('type', Rule::TYPE_DIRECTORY)
             ->orderBy('sort')
             ->get();
+    }
+
+    public function buttonPermissions(): array
+    {
+        $builder = Rule::query()
+            ->where('status', self::STATUS_ENABLE)
+            ->where('type', Rule::TYPE_BUTTON)
+            ->with(['parentRule' => function (BelongsTo $query) {
+                $query->with(['parentRule' => function (BelongsTo $query) {
+                    $query->with(['parentRule' => function (BelongsTo $query) {
+                        $query->with(['parentRule' => function (BelongsTo $query) {
+                            $query->with(['parentRule']);
+                        }]);
+                    }]);
+                }]);
+            }]);
+
+        $adminRuleIds = [];
+        if(!$this->isSuper()){
+            $adminRuleIds = $this->ruleIds();
+            $builder->whereIn('id', $adminRuleIds);
+        }
+
+        $list = $builder->get();
+        $ruleArr = [];
+        $list->each(function (Rule $rule)use(&$ruleArr,$adminRuleIds){
+            if($this->isSuper()){
+                $ruleArr[] = $rule->getNamePath();
+            }else{
+                if(in_array($rule->id,$adminRuleIds)){
+                    $ruleArr[] = $rule->getNamePath();
+                }
+            }
+        });
+
+        return $ruleArr;
     }
 
     public static function findFromCacheOrFail(int $id): self

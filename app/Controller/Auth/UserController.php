@@ -25,16 +25,14 @@ class UserController extends AbstractController
 
         if ($admin->isSuper()) {
             $roles = ['admin'];
-            $menus = Rule::getSuperAdminMenus();
         } else {
             $roles = $admin->getRolesNames();
-            $menus = $admin->menus();
         }
 
         return $this->success([
             'id' => $admin->getId(),
             'roles' => $roles,
-            'routes' => $menus,
+            'permissions' => $admin->buttonPermissions(),
         ]);
     }
 
