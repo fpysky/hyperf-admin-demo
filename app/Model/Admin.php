@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model;
 
 use App\Model\Repository\AdminRepository;
+use App\Model\Vo\AdminVo;
 use Carbon\Carbon;
 use Hyperf\Database\Model\Collection;
 use Hyperf\Database\Model\Relations\BelongsTo;
@@ -35,28 +36,21 @@ class Admin extends Model implements Authenticatable
 {
     use AdminRepository;
     use SoftDeletes;
+    use AdminVo;
 
     /** 类型：超级管理员 */
-    public const TYPE_SUPER = 1;
+    public const int TYPE_SUPER = 1;
     /** 类型：普通管理员 */
-    public const TYPE_NORMAL = 2;
+    public const int TYPE_NORMAL = 2;
     /** 状态：启用 */
-    public const STATUS_ENABLE = 1;
+    public const int STATUS_ENABLE = 1;
     /** 状态：禁用 */
-    public const STATUS_DISABLED = 0;
-    /**
-     * The table associated with the model.
-     */
+    public const int STATUS_DISABLED = 0;
+
     protected ?string $table = 'admin';
 
-    /**
-     * The attributes that are mass assignable.
-     */
     protected array $fillable = ['id', 'name', 'password', 'status', 'type', 'mobile', 'email', 'last_login_ip', 'logo', 'dept_id', 'last_login_time', 'created_at', 'updated_at', 'deleted_at'];
 
-    /**
-     * The attributes that should be cast to native types.
-     */
     protected array $casts = ['id' => 'integer', 'status' => 'integer', 'type' => 'integer', 'dept_id' => 'integer', 'last_login_time' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
     public function adminRole(): HasMany

@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button @click="openCreateOrUpdateDialog(undefined)" v-hasPermission="['系统管理:管理员管理:添加管理员']">
+      <el-button @click="openCreateOrUpdateDialog(undefined)">
         <el-icon style="vertical-align: middle;">
-          <Plus/>
+          <Plus />
         </el-icon>
         <span style="vertical-align: middle">添加</span>
       </el-button>
@@ -57,7 +57,7 @@
         <el-table-column prop="logo" label="logo" width="180" align="center"/>
         <el-table-column label="操作" width="200" fixed="right" align="center">
           <template #default="scope">
-            <el-button type="primary" v-hasPermission="['系统管理:管理员管理:编辑管理员']" :disabled="scope.row.type === 1" @click="openCreateOrUpdateDialog(scope.$index)">
+            <el-button type="primary" :disabled="scope.row.type === 1" @click="openCreateOrUpdateDialog(scope.$index)">
               编辑
             </el-button>
             <el-button type="danger" v-hasPermission="['系统管理:管理员管理:删除管理员']" :disabled="scope.row.type === 1" @click="handleDelete([scope.row.id])">删除

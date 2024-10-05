@@ -72,3 +72,10 @@ if (! function_exists('encryptPassword')) {
         return password_hash($password.config('admin.password_salt'), PASSWORD_DEFAULT);
     }
 }
+
+if(! function_exists('checkPassword')){
+    function checkPassword(string $password, string $passwordHash): bool
+    {
+        return password_verify($password.config('admin.password_salt'), $passwordHash);
+    }
+}

@@ -22,9 +22,9 @@ class Post extends Model
     use SoftDeletes;
 
     /** 状态：启用 */
-    public const STATUS_ENABLE = 1;
+    public const int STATUS_ENABLE = 1;
     /** 状态：禁用 */
-    public const STATUS_DISABLED = 0;
+    public const int STATUS_DISABLED = 0;
     /**
      * The table associated with the model.
      */

@@ -24,7 +24,7 @@ class InitializeTable extends Migration
     /**
      * @throws Exception
      */
-    private function initAdmin()
+    private function initAdmin(): void
     {
         $admin = new Admin();
 
@@ -39,7 +39,7 @@ class InitializeTable extends Migration
         $admin->setRole([1]);
     }
 
-    private function initRole()
+    private function initRole(): void
     {
         $role = new Role();
         $role->name = '默认角色';
@@ -48,7 +48,7 @@ class InitializeTable extends Migration
         $role->save();
     }
 
-    private function initDept()
+    private function initDept(): void
     {
         $dept = new Dept();
         $dept->name = '默认部门';
@@ -57,7 +57,7 @@ class InitializeTable extends Migration
         $dept->save();
     }
 
-    private function initPost()
+    private function initPost(): void
     {
         $post = new Post();
         $post->name = '默认职位';

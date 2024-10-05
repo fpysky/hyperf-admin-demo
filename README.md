@@ -1,8 +1,3 @@
-# 说明
-* 超级管理员账号/密码：18888888888/admin123456
-
-# 
-
 # Introduction
 
 This is a skeleton application using the Hyperf framework. This application is meant to be used as a starting place for those looking to get their feet wet with Hyperf Framework.

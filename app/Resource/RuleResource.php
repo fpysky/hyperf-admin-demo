@@ -7,6 +7,7 @@ namespace App\Resource;
 use App\Model\Rule;
 use Hyperf\Resource\Json\JsonResource;
 
+/** @mixin  Rule $this */
 class RuleResource extends JsonResource
 {
     /**
@@ -16,7 +17,6 @@ class RuleResource extends JsonResource
      */
     public function toArray(): array
     {
-        /** @var Rule $this */
         return [
             'id' => $this->id,
             'parentId' => $this->parent_id,

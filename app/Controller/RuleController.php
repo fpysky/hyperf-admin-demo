@@ -2,22 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Rbac;
+namespace App\Controller;
 
 use App\Annotation\Permission;
-use App\Controller\AbstractController;
-use App\Extend\CacheRule;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
+use App\Model\Dto\RuleDto;
 use App\Model\RoleRule;
 use App\Model\Rule;
 use App\Request\RuleStoreRequest;
 use App\Request\RuleUpdateRequest;
-use App\Resource\Rule\ButtonMenuResource;
 use App\Resource\Rule\RuleDetailResource;
 use App\Resource\RuleResource;
 use App\Resource\SelectRuleTreeResource;
-use Hyperf\Database\Model\Relations\HasMany;
+use App\Service\RuleService;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -28,10 +26,6 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\Swagger\Annotation\Get;
 use Hyperf\Swagger\Annotation\HyperfServer;
-use Hyperf\Swagger\Annotation\Items;
-use Hyperf\Swagger\Annotation\JsonContent;
-use Hyperf\Swagger\Annotation\Property;
-use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
@@ -40,72 +34,36 @@ use Psr\Http\Message\ResponseInterface;
 class RuleController extends AbstractController
 {
     #[Inject]
-    protected CacheRule $cacheRule;
+    protected RuleService $ruleService;
 
     #[GetMapping(path: 'rule')]
     #[Get(path: 'rule', summary: '权限列表', tags: ['系统管理/权限管理'])]
     #[Permission(name: '权限列表', module: '系统管理/权限管理')]
     public function index(): ResponseInterface
     {
-        $list = Rule::query()
-            ->where('parent_id', 0)
-            ->with([
-                'children' => function ($query) {
-                    $query->with('children')
-                        ->orderByDesc('type')
-                        ->orderBy('sort');
-                },
-            ])
-            ->orderBy('sort')
-            ->get();
+        $list = $this->ruleService->getRuleTree();
 
         return $this->success(RuleResource::collection($list));
     }
 
     #[PostMapping(path: 'rule')]
-    #[Permission(name: '创建权限', module: '系统管理/权限管理',hasButton: true)]
+    #[Permission(name: '创建权限', module: '系统管理/权限管理', hasButton: true)]
     public function store(RuleStoreRequest $request): ResponseInterface
     {
-        $data = [
-            'parent_id' => $request->integer('parentId'),
-            'status' => $request->integer('status'),
-            'type' => $request->integer('type'),
-            'sort' => $request->integer('sort'),
-            'name' => $request->string('name'),
-            'icon' => $request->string('icon'),
-            'route' => $request->string('route'),
-            'path' => $request->string('path'),
-        ];
-
-        Rule::query()->create($data);
-
-        $this->cacheRule->asyncRemoveCache();
+        $dto = $request->makeDto(RuleDto::class);
+        $this->ruleService->create($dto);
 
         return $this->message('权限添加成功');
     }
 
     #[PutMapping(path: 'rule')]
-    #[Permission(name: '编辑权限', module: '系统管理/权限管理',hasButton: true)]
+    #[Permission(name: '编辑权限', module: '系统管理/权限管理', hasButton: true)]
     public function update(RuleUpdateRequest $request): ResponseInterface
     {
         $id = $request->integer('id');
-
         $rule = Rule::query()->findOrFail($id);
-
-        $data = [
-            'parent_id' => $request->integer('parentId'),
-            'status' => $request->integer('status'),
-            'type' => $request->integer('type'),
-            'sort' => $request->integer('sort'),
-            'name' => $request->string('name'),
-            'icon' => $request->string('icon'),
-            'route' => $request->string('route'),
-            'path' => $request->string('path'),
-        ];
-
-        $rule->update($data);
-
-        $this->cacheRule->asyncRemoveCache();
+        $dto = $request->makeDto(RuleDto::class);
+        $this->ruleService->update($rule, $dto);
 
         return $this->message('权限编辑成功');
     }
@@ -145,81 +103,14 @@ class RuleController extends AbstractController
         return $this->message($msg);
     }
 
-    /**
-     * @throws \Exception
-     */
     #[DeleteMapping(path: 'rule')]
-    #[Permission(name: '删除权限', module: '系统管理/权限管理',hasButton: true)]
+    #[Permission(name: '删除权限', module: '系统管理/权限管理', hasButton: true)]
     public function destroy(): ResponseInterface
     {
         $ids = $this->request->array('ids');
-
-        Rule::query()
-            ->whereIn('id', $ids)
-            ->delete();
-
-        $this->cacheRule->asyncRemoveCache();
+        $this->ruleService->delete($ids);
 
         return $this->message('权限删除成功');
-    }
-
-    #[GetMapping(path: 'rule/buttons')]
-    #[Get(path: 'rule/buttons', summary: '按钮权限列表', tags: ['系统管理/权限管理'])]
-    #[Response(response: 200, content: new JsonContent(
-        required: ['code', 'msg', 'data'],
-        properties: [
-            new Property(property: 'code', description: '业务状态码', type: 'integer', example: 200000),
-            new Property(property: 'msg', description: '返回消息', type: 'string', example: ''),
-            new Property(
-                property: 'data',
-                description: '',
-                type: 'array',
-                items: new Items(
-                    required: ['id', 'path', 'name'],
-                    properties: [
-                        new Property(property: 'id', description: 'id', type: 'integer', example: 1),
-                        new Property(property: 'path', description: '菜单路由path', type: 'string', example: ''),
-                        new Property(property: 'name', description: '名称', type: 'string', example: ''),
-                        new Property(
-                            property: 'buttons',
-                            description: '按钮权限列表',
-                            type: 'array',
-                            items: new Items(
-                                required: ['id', 'name', 'status', 'icon', 'route', 'path', 'roles'],
-                                properties: [
-                                    new Property(property: 'id', description: '', type: 'integer', example: ''),
-                                    new Property(property: 'name', description: '名称', type: 'string', example: ''),
-                                    new Property(property: 'status', description: '状态：0.禁用 1.启用', type: 'integer', example: ''),
-                                    new Property(property: 'icon', description: '图标', type: 'string', example: ''),
-                                    new Property(property: 'route', description: '请求路由', type: 'string', example: ''),
-                                    new Property(property: 'path', description: '菜单路由path', type: 'string', example: ''),
-                                    new Property(property: 'roles', description: '角色列表', type: 'array', items: new Items(type: 'string', example: 'admin')),
-                                ],
-                                type: 'object'
-                            )
-                        ),
-                    ]
-                )
-            ),
-        ]
-    ))]
-    public function buttons(): ResponseInterface
-    {
-        $menuButtons = Rule::query()
-            ->select(['id', 'parent_id', 'path', 'name'])
-            ->with([
-                'buttons' => function (HasMany $query) {
-                    $query->with([
-                        'roleRule' => function (HasMany $hasMany) {
-                            $hasMany->with('role');
-                        },
-                    ]);
-                },
-            ])
-            ->where('type', Rule::TYPE_MENU)
-            ->get();
-
-        return $this->success(ButtonMenuResource::collection($menuButtons));
     }
 
     #[GetMapping(path: 'rule/{id:\d+}')]
@@ -266,7 +157,7 @@ class RuleController extends AbstractController
     }
 
     #[GetMapping(path: 'rule/topRule')]
-    public function handle(): ResponseInterface
+    public function topRule(): ResponseInterface
     {
         $rules = Rule::query()
             ->select(['id', 'name'])

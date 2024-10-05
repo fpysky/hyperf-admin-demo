@@ -30,6 +30,6 @@ class Test extends HyperfCommand
      */
     public function handle()
     {
-        var_dump(date());
+
     }
 }

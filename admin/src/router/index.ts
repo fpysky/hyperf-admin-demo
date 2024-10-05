@@ -141,77 +141,7 @@ export const dynamicRoutes: RouteOption[] = [
         }
       }
     ]
-  },
-  // {
-  //   path: '/system/user-auth',
-  //   component: Layout,
-  //   hidden: false,
-  //   permissions: ['system:user:edit'],
-  //   children: [
-  //     {
-  //       path: 'role/:userId(\\d+)',
-  //       component: () => import('@/views/system/user/authRole.vue'),
-  //       name: 'AuthRole',
-  //       meta: { title: '分配角色', activeMenu: '/system/user', icon: '' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/system/role-auth',
-  //   component: Layout,
-  //   hidden: false,
-  //   permissions: ['system:role:edit'],
-  //   children: [
-  //     {
-  //       path: 'user/:roleId(\\d+)',
-  //       component: () => import('@/views/system/role/authUser.vue'),
-  //       name: 'AuthUser',
-  //       meta: { title: '分配用户', activeMenu: '/system/role', icon: '' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/system/dict-data',
-  //   component: Layout,
-  //   hidden: false,
-  //   permissions: ['system:dict:list'],
-  //   children: [
-  //     {
-  //       path: 'index/:dictId(\\d+)',
-  //       component: () => import('@/views/system/dict/data.vue'),
-  //       name: 'Data',
-  //       meta: { title: '字典数据', activeMenu: '/system/dict', icon: '' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/system/oss-config',
-  //   component: Layout,
-  //   hidden: false,
-  //   permissions: ['system:oss:list'],
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/system/oss/config.vue'),
-  //       name: 'OssConfig',
-  //       meta: { title: '配置管理', activeMenu: '/system/oss', icon: '' }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/tool/gen-edit',
-  //   component: Layout,
-  //   hidden: false,
-  //   permissions: ['tool:gen:edit'],
-  //   children: [
-  //     {
-  //       path: 'index/:tableId(\\d+)',
-  //       component: () => import('@/views/tool/gen/editTable.vue'),
-  //       name: 'GenEdit',
-  //       meta: { title: '修改生成配置', activeMenu: '/tool/gen', icon: '' }
-  //     }
-  //   ]
-  // }
+  }
 ];
 
 /**

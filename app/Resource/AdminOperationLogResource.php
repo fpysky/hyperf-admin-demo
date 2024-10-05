@@ -8,11 +8,6 @@ use Hyperf\Resource\Json\JsonResource;
 /** @mixin AdminOperationLog */
 class AdminOperationLogResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array
-     */
     public function toArray(): array
     {
         return [

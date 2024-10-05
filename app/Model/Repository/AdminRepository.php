@@ -5,29 +5,32 @@ declare(strict_types=1);
 namespace App\Model\Repository;
 
 use App\Exception\RecordNotFoundException;
+use App\Exception\UnprocessableEntityException;
 use App\Model\Admin;
 use App\Model\AdminDept;
 use App\Model\AdminRole;
 use App\Model\Role;
 use App\Model\RoleRule;
 use App\Model\Rule;
-use App\Resource\Rule\ButtonPermissionResource;
+use Hyperf\Database\Model\Builder;
 use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\Model;
+use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\Database\Model\Relations\BelongsTo;
 use Hyperf\Database\Model\Relations\HasMany;
-use Hyperf\Resource\Json\AnonymousResourceCollection;
 
 trait AdminRepository
 {
     /**
      * @param array<int> $adminIds
      */
-    public static function hasSuperAdmin(array $adminIds): bool
+    public static function hasSpecialAdmin(array $adminIds): bool
     {
-        return self::query()
-            ->where('type', Admin::TYPE_SUPER)
-            ->whereIn('id', $adminIds)
-            ->exists();
+        if (in_array(1, $adminIds)) {
+            return true;
+        }
+
+        return false;
     }
 
     public static function existName(string $name, int $exceptId = 0): bool
@@ -62,6 +65,13 @@ trait AdminRepository
     public function isDisabled(): bool
     {
         return $this->status === self::STATUS_DISABLED;
+    }
+
+    public function syncUpdateLastLoginInfo(string $lastLoginIp): void
+    {
+        go(function () use ($lastLoginIp) {
+            $this->updateLastLoginInfo($lastLoginIp);
+        });
     }
 
     public function updateLastLoginInfo(string $lastLoginIp): void
@@ -238,18 +248,18 @@ trait AdminRepository
             }]);
 
         $adminRuleIds = [];
-        if(!$this->isSuper()){
+        if (! $this->isSuper()) {
             $adminRuleIds = $this->ruleIds();
             $builder->whereIn('id', $adminRuleIds);
         }
 
         $list = $builder->get();
         $ruleArr = [];
-        $list->each(function (Rule $rule)use(&$ruleArr,$adminRuleIds){
-            if($this->isSuper()){
+        $list->each(function (Rule $rule) use (&$ruleArr, $adminRuleIds) {
+            if ($this->isSuper()) {
                 $ruleArr[] = $rule->getNamePath();
-            }else{
-                if(in_array($rule->id,$adminRuleIds)){
+            } else {
+                if (in_array($rule->id, $adminRuleIds)) {
                     $ruleArr[] = $rule->getNamePath();
                 }
             }

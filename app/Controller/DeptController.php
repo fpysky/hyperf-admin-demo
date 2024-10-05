@@ -29,18 +29,16 @@ class DeptController extends AbstractController
     #[PostMapping(path: 'dept')]
     public function create(DeptStoreRequest $request): ResponseInterface
     {
-        $name = $request->string('name');
-        $remark = $request->string('remark');
-        $parentId = $request->integer('parentId');
-        $status = $request->integer('status');
-        $sort = $request->integer('sort');
+        $deptData = [
+            'parent_id' => $request->integer('parentId'),
+            'status' => $request->integer('status'),
+            'sort' => $request->integer('sort'),
+            'name' => $request->string('name'),
+            'remark' => $request->string('remark'),
+        ];
 
         $dept = new Dept();
-        $dept->parent_id = $parentId;
-        $dept->status = $status;
-        $dept->sort = $sort;
-        $dept->name = $name;
-        $dept->remark = $remark;
+        $dept->fill($deptData);
         $dept->save();
 
         return $this->message('部门添加成功');

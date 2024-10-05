@@ -14,18 +14,18 @@ trait StandardResponse
 {
     use StandardOutput;
 
-    public function success($input, string $msg = '', int $code = 200000): PsrResponseInterface
+    public function success(mixed $input, string $msg = '', int $code = 200000): PsrResponseInterface
     {
         return match (true) {
-            $input instanceof LengthAwarePaginatorInterface => $this->pagination($input),
+            $input instanceof LengthAwarePaginatorInterface => $this->pagination($input, $msg, $code),
             $input instanceof Collection => $this->collection($input, $msg, $code),
-            is_string($input), is_bool($input) => $this->item($input),
-            $input instanceof Arrayable,
-            $input instanceof \JsonSerializable,
-            is_array($input),
+            is_string($input) || is_bool($input) => $this->item($input, $msg, $code),
+            $input instanceof Arrayable ||
+            $input instanceof \JsonSerializable ||
+            is_array($input) ||
             $input instanceof \stdClass => $this->item($input, $msg, $code),
-            $input === null => $this->message(),
-            default => throw new \RuntimeException("can't handle input data."),
+            null => $this->message(),
+            default => throw new \RuntimeException("Cannot handle input data."),
         };
     }
 
@@ -37,7 +37,7 @@ trait StandardResponse
         ]);
     }
 
-    public function item($input, string $msg = '', int $code = 200000): PsrResponseInterface
+    public function item(mixed $input, string $msg = '', int $code = 200000): PsrResponseInterface
     {
         return $this->buildResp($msg, $code, $input);
     }

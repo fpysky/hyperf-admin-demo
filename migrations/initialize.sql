@@ -8,7 +8,6 @@ CREATE TABLE `ad_admin` (
     `email` varchar(100) NOT NULL DEFAULT '' COMMENT '邮箱号码',
     `last_login_ip` varchar(100) NOT NULL DEFAULT '' COMMENT '最近登录ip',
     `logo` varchar(255) NOT NULL DEFAULT '' COMMENT '管理员头像',
-    `dept_id` smallint unsigned NOT NULL DEFAULT '0' COMMENT '部门id',
     `last_login_time` int NOT NULL DEFAULT '0' COMMENT '最后登录时间',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

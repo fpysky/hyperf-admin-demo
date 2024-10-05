@@ -9,16 +9,12 @@ use App\Middleware\AuthMiddleware;
 use App\Middleware\RuleMiddleware;
 use App\Model\Admin;
 use App\Request\Account\ChangePasswordRequest;
+use App\Service\AdminService;
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\PostMapping;
-use Hyperf\Swagger\Annotation\HeaderParameter;
 use Hyperf\Swagger\Annotation\HyperfServer;
-use Hyperf\Swagger\Annotation\JsonContent;
-use Hyperf\Swagger\Annotation\Post;
-use Hyperf\Swagger\Annotation\Property;
-use Hyperf\Swagger\Annotation\RequestBody;
-use Hyperf\Swagger\Annotation\Response;
 use Psr\Http\Message\ResponseInterface;
 
 #[HyperfServer('http')]
@@ -26,26 +22,10 @@ use Psr\Http\Message\ResponseInterface;
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class AccountController extends AbstractController
 {
+    #[Inject]
+    protected AdminService $adminService;
+
     #[PostMapping(path: 'account/changePassword')]
-    #[Post(path: 'account/changePassword', summary: '管理密码修改', tags: ['系统管理/管理员管理'])]
-    #[HeaderParameter(name: 'Authorization', description: '登陆凭证', required: true, example: 'Bearer eyJ0eXAiOiJqd3QifQ.eyJzd')]
-    #[RequestBody(content: new JsonContent(
-        required: ['id', 'password', 'newPassword', 'retNewPassword'],
-        properties: [
-            new Property(property: 'id', description: '管理员id', type: 'integer', example: 1),
-            new Property(property: 'password', description: '原密码', type: 'string', example: '4343434'),
-            new Property(property: 'newPassword', description: '重置密码', type: 'string', example: 'sdsds'),
-            new Property(property: 'retNewPassword', description: '确认重置密码', type: 'string', example: 'sdsds'),
-        ]
-    ))]
-    #[Response(response: 200, content: new JsonContent(
-        required: ['code', 'msg', 'data'],
-        properties: [
-            new Property(property: 'code', description: '业务状态码', type: 'integer', example: 200000),
-            new Property(property: 'msg', description: '返回消息', type: 'string', example: '密码修改成功'),
-            new Property(property: 'data', description: '返回对象', type: 'object'),
-        ]
-    ))]
     public function changePassword(ChangePasswordRequest $request): ResponseInterface
     {
         $id = $request->integer('id');
@@ -62,8 +42,7 @@ class AccountController extends AbstractController
             throw new UnprocessableEntityException('原密码与修改密码相同');
         }
 
-        $admin->password = encryptPassword($newPassword);
-        $admin->save();
+        $this->adminService->changePassword($admin, $newPassword);
 
         return $this->message('密码修改成功');
     }

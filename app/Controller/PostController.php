@@ -18,11 +18,11 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Psr\Http\Message\ResponseInterface;
 
-#[Controller(prefix: 'post')]
+#[Controller(prefix: 'api')]
 #[Middlewares([AuthMiddleware::class, RuleMiddleware::class])]
 class PostController extends AbstractController
 {
-    #[GetMapping(path: 'system/backend/backendAdminPost/page')]
+    #[GetMapping(path: 'post')]
     public function index(): ResponseInterface
     {
         $paginator = Post::query()
@@ -36,7 +36,7 @@ class PostController extends AbstractController
         return $this->success($paginator);
     }
 
-    #[PostMapping(path: 'system/backend/backendAdminPost')]
+    #[PostMapping(path: 'post')]
     public function store(PostStoreRequest $request): ResponseInterface
     {
         $name = $request->string('name');
@@ -57,7 +57,7 @@ class PostController extends AbstractController
         return $this->message('岗位添加成功');
     }
 
-    #[PutMapping(path: 'system/backend/backendAdminPost')]
+    #[PutMapping(path: 'post')]
     public function update(PostUpdateRequest $request): ResponseInterface
     {
         $name = $request->string('name');
@@ -81,10 +81,7 @@ class PostController extends AbstractController
         return $this->message('岗位编辑成功');
     }
 
-    /**
-     * @throws \Exception
-     */
-    #[DeleteMapping(path: 'system/backend/backendAdminPost/{ids}')]
+    #[DeleteMapping(path: 'post/{ids}')]
     public function destroy(string $ids): ResponseInterface
     {
         $ids = explode(',', $ids) ?? [];
@@ -97,7 +94,7 @@ class PostController extends AbstractController
         return $this->message('岗位删除成功');
     }
 
-    #[PutMapping(path: 'system/backend/backendAdminPost/status')]
+    #[PutMapping(path: 'post/status')]
     public function upStatus(): ResponseInterface
     {
         $ids = $this->request->array('ids');
@@ -116,20 +113,7 @@ class PostController extends AbstractController
         return $this->message($msg);
     }
 
-    #[GetMapping(path: 'system/backend/backendAdminPost/postCombobox')]
-    public function postCombobox(): ResponseInterface
-    {
-        $list = Post::query()
-            ->select(['id', 'name as label'])
-            ->where('status', Post::STATUS_ENABLE)
-            ->orderBy('order')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return $this->success($list);
-    }
-
-    #[GetMapping(path: 'system/backend/backendAdminPost/{id:\d+}')]
+    #[GetMapping(path: 'post/{id:\d+}')]
     public function detail(int $id): ResponseInterface
     {
         $post = Post::query()->findOrFail($id);
