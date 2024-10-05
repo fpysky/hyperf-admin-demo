@@ -1,36 +1,30 @@
 <template>
   <div>
     <div class="toolbar">
-      <el-button @click="openCreateOrUpdateDialog(undefined)">
+      <el-button @click="openCreateOrUpdateDialog(undefined)" v-hasPermission="['系统管理:管理员管理:创建管理员']">
         <el-icon style="vertical-align: middle;">
           <Plus />
         </el-icon>
         <span style="vertical-align: middle">添加</span>
       </el-button>
-      <el-input v-model="state.searchData.keyword" style="width: 200px;margin-left: 10px" placeholder="请输入关键词"/>
-      <el-button type="primary" style="margin-left: 10px;" :loading="state.tableLoading"
-                 @click="getData">
+      <el-input
+        clearable
+        v-model="state.searchData.keyword"
+        @keyup.enter="getData"
+        style="width: 200px;margin-left: 10px"
+        placeholder="请输入关键词"
+      />
+      <el-button type="primary" style="margin-left: 10px;" :loading="state.tableLoading" @click="getData">
         <el-icon style="vertical-align: middle;">
-          <Search/>
+          <Search />
         </el-icon>
         <span style="vertical-align: middle">搜索</span>
       </el-button>
-      <el-button @click="clear()" title="清空搜索条件">
-        <el-icon style="vertical-align: middle;">
-          <Delete/>
-        </el-icon>
-      </el-button>
     </div>
     <div class="content">
-      <el-table
-        :data="state.tableData"
-        v-loading="state.tableLoading"
-        :header-cell-style="{'text-align':'center'}"
-        border
-        style="width: 100%;"
-      >
-        <el-table-column prop="id" label="ID" width="90" align="center"/>
-        <el-table-column prop="name" label="名称" width="140" align="center"/>
+      <el-table :data="state.tableData" v-loading="state.tableLoading" :header-cell-style="{'text-align':'center'}" border style="width: 100%;">
+        <el-table-column prop="id" label="ID" width="90" align="center" />
+        <el-table-column prop="name" label="名称" width="140" align="center" />
         <el-table-column prop="status" label="状态" width="80" align="center">
           <template #default="scope">
             <el-switch
@@ -48,35 +42,46 @@
             <el-button plain v-else>普通</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="mobile" label="手机号" width="140" align="center"/>
-        <el-table-column prop="email" label="电子邮箱" width="200" align="center"/>
-        <el-table-column prop="lastLoginTime" label="最后登录时间" width="180" align="center"/>
-        <el-table-column prop="createdAt" label="创建时间" width="180" align="center"/>
-        <el-table-column prop="updatedAt" label="更新时间" width="180" align="center"/>
-        <el-table-column prop="lastLoginIp" label="最后登录IP" width="180" align="center"/>
-        <el-table-column prop="logo" label="logo" width="180" align="center"/>
+        <el-table-column prop="mobile" label="手机号" width="140" align="center" />
+        <el-table-column prop="email" label="电子邮箱" width="200" align="center" />
+        <el-table-column prop="lastLoginTime" label="最后登录时间" width="180" align="center" />
+        <el-table-column prop="createdAt" label="创建时间" width="180" align="center" />
+        <el-table-column prop="updatedAt" label="更新时间" width="180" align="center" />
+        <el-table-column prop="lastLoginIp" label="最后登录IP" width="180" align="center" />
+        <el-table-column prop="logo" label="logo" width="180" align="center" />
         <el-table-column label="操作" width="200" fixed="right" align="center">
           <template #default="scope">
-            <el-button type="primary" :disabled="scope.row.type === 1" @click="openCreateOrUpdateDialog(scope.$index)">
-              编辑
+            <el-button
+              type="primary"
+              :disabled="scope.row.type === 1"
+              @click="openCreateOrUpdateDialog(scope.$index)"
+              v-hasPermission="['系统管理:管理员管理:编辑管理员']"
+              >编辑
             </el-button>
-            <el-button type="danger" v-hasPermission="['系统管理:管理员管理:删除管理员']" :disabled="scope.row.type === 1" @click="handleDelete([scope.row.id])">删除
+            <el-button
+              type="danger"
+              v-hasPermission="['系统管理:管理员管理:删除管理员']"
+              :disabled="scope.row.type === 1"
+              @click="handleDelete([scope.row.id])"
+              >删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div style="width:100%;margin-top: 20px">
+      <div style="width:100%;margin: 20px 0 0 10px">
         <el-pagination
-          background
-          layout="prev, pager, next"
-          :current-page="state.page"
+          v-model:current-page="state.page"
           :page-size="state.pageSize"
+          :page-sizes="[15, 30, 100, 200]"
+          :size="state.pageSize"
+          background
+          layout="total, sizes, prev, pager, next, jumper"
           :total="state.total"
-          @current-change="handlePageChange"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         />
       </div>
-      <el-dialog style="text-align: center;" v-model="state.formDialogVisible"
-                 :title="state.isEdit ? '编辑管理员' : '新增管理员'" width="30%">
+      <el-dialog style="text-align: center;" v-model="state.formDialogVisible" :title="state.isEdit ? '编辑管理员' : '新增管理员'" width="30%">
         <el-form
           :loading="state.formDialogLoading"
           ref="ruleFormRef"
@@ -86,19 +91,19 @@
           label-width="83px"
         >
           <el-form-item required label="姓名:" prop="name">
-            <el-input v-model="state.adminForm.name"/>
+            <el-input v-model="state.adminForm.name" />
           </el-form-item>
           <el-form-item required label="手机号:" prop="mobile">
-            <el-input v-model="state.adminForm.mobile"/>
+            <el-input v-model="state.adminForm.mobile" />
           </el-form-item>
           <el-form-item v-if="!state.isEdit" :required="!state.isEdit" label="密码:" prop="password">
-            <el-input v-model="state.adminForm.password" type="password"/>
+            <el-input v-model="state.adminForm.password" type="password" />
           </el-form-item>
           <el-form-item v-if="!state.isEdit" :required="!state.isEdit" label="确认密码:" prop="rePassword">
-            <el-input v-model="state.adminForm.rePassword" type="password"/>
+            <el-input v-model="state.adminForm.rePassword" type="password" />
           </el-form-item>
           <el-form-item required label="电子邮箱:" prop="email">
-            <el-input v-model="state.adminForm.email"/>
+            <el-input v-model="state.adminForm.email" />
           </el-form-item>
           <el-form-item required label="角色:" prop="roleIds">
             <el-checkbox-group v-model="state.adminForm.roleIds" v-for="role in state.roles">
@@ -106,14 +111,11 @@
             </el-checkbox-group>
           </el-form-item>
           <el-form-item required label="是否启用:" prop="status">
-            <el-switch v-model="state.adminForm.status" active-color="#13ce66" inactive-color="#ff4949"
-                       :active-value="1" :inactive-value="0">
+            <el-switch v-model="state.adminForm.status" active-color="#13ce66" inactive-color="#ff4949" :active-value="1" :inactive-value="0">
             </el-switch>
           </el-form-item>
           <el-form-item>
-            <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading"
-                       @click="submitForm">提交
-            </el-button>
+            <el-button style="width: 100%;margin: 0 auto;" type="primary" :loading="state.submitLoading" @click="submitForm">提交 </el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -127,17 +129,8 @@ import {getRoleSelectData} from "@/api/role";
 import {onMounted, reactive, ref} from "vue";
 import type {FormInstance, FormRules} from "element-plus";
 import {ElMessageBox} from "element-plus";
-
-interface AdminForm {
-  id: number,
-  name: string,
-  mobile: string,
-  password: string,
-  rePassword: string,
-  email: string,
-  status: number,
-  roleIds: Array<number>,
-}
+import {Plus, Search} from "@element-plus/icons-vue";
+import {Admin} from "@/types/admin";
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -151,11 +144,11 @@ const state = reactive({
   submitLoading: false,
   isEdit: false,
   roles: [],
-  tableData: <AdminForm[]>([]),
+  tableData: [] as Admin.AdminDto[],
   searchData: {
     keyword: ""
   },
-  adminForm: <AdminForm>({
+  adminForm: {
     id: 0,
     name: "",
     mobile: "",
@@ -164,8 +157,8 @@ const state = reactive({
     email: "",
     status: 0,
     roleIds: []
-  }),
-  rules: <FormRules>{
+  } as Admin.AdminDto,
+  rules: {
     name: [
       {required: true, message: "请输入姓名", trigger: "blur"}
     ],
@@ -184,15 +177,21 @@ const state = reactive({
     roleIds: [
       {required: true, type: "array", message: "请选择角色", trigger: "change"}
     ]
-  }
+  } as FormRules
 });
 
 onMounted(() => {
   getData();
 });
 
-const handlePageChange = (page: number) => {
+const handleCurrentChange = (page: number) => {
   state.page = page;
+  getData();
+}
+
+const handleSizeChange = (val: number) => {
+  state.pageSize = val;
+  state.page = 1;
   getData();
 }
 
@@ -253,10 +252,6 @@ const getData = () => {
   }).finally(() => {
     state.tableLoading = false;
   });
-};
-
-const clear = () => {
-  state.searchData.keyword = "";
 };
 
 const resetForm = async () => {

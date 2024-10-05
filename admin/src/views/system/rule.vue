@@ -36,9 +36,7 @@
           <template #default="scope">
             <el-tag v-if="scope.row.type === 1" type="success">{{ scope.row.typeZh }}</el-tag>
             <el-tag v-if="scope.row.type === 2" type="warning">{{ scope.row.typeZh }}</el-tag>
-            <el-tag v-if="scope.row.type === 3" type="info">按钮</el-tag>
-            &nbsp
-            <el-tag v-if="scope.row.type === 3 || scope.row.type === 4" type="danger">接口</el-tag>
+            <el-tag v-if="scope.row.type === 4" type="danger">接口</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="icon" label="图标" align="center" width="100">

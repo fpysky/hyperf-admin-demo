@@ -122,23 +122,7 @@ class AdminController extends AbstractController
     }
 
     #[PatchMapping(path: 'admin/status')]
-    #[Patch(path: 'admin/status', summary: '修改管理员状态', tags: ['系统管理/管理员管理'])]
     #[Permission(name: '修改管理员状态', module: '系统管理/管理员管理')]
-    #[RequestBody(content: new JsonContent(
-        required: ['ids', 'status'],
-        properties: [
-            new Property(property: 'ids', description: '管理员id数组', type: 'array', items: new Items(type: 'integer')),
-            new Property(property: 'status', description: '状态：0.禁用 1.启用', type: 'integer', example: 1),
-        ]
-    ))]
-    #[Response(response: 200, content: new JsonContent(
-        required: ['code', 'msg', 'data'],
-        properties: [
-            new Property(property: 'code', description: '业务状态码', type: 'integer', example: 200000),
-            new Property(property: 'msg', description: '返回消息', type: 'string', example: '管理员启用成功'),
-            new Property(property: 'data', description: '返回对象', type: 'object'),
-        ]
-    ))]
     public function changeStatus(UpStatusRequest $request): ResponseInterface
     {
         $ids = $request->array('ids');

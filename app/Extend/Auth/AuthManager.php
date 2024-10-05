@@ -23,7 +23,7 @@ class AuthManager extends Base
      * @throws InvalidTokenException
      * @throws TokenExpiredException
      */
-    public function logoutByAdminId(int $adminId)
+    public function logoutByAdminId(int $adminId): void
     {
         $tokenKey = config('auth.guards.sso.redis_key');
         $tokenKey = str_replace('{uid}', (string) $adminId, $tokenKey);
@@ -44,7 +44,7 @@ class AuthManager extends Base
      * @throws InvalidTokenException
      * @throws TokenExpiredException
      */
-    public function batchLogoutByAdmin(array $adminIds)
+    public function batchLogoutByAdmin(array $adminIds): void
     {
         foreach ($adminIds as $adminId) {
             $this->logoutByAdminId($adminId);

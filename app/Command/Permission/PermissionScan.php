@@ -47,12 +47,11 @@ class PermissionScan extends HyperfCommand
                         $parentRuleName = $this->findLastModule($permission->module);
                         $parentId = Rule::getParentMenuRuleIdByName($parentRuleName);
                         $route = $this->getRequestPath($controller->prefix, $value);
-                        $type = $permission->hasButton ? Rule::TYPE_BUTTON : Rule::TYPE_API;
 
                         Rule::query()->updateOrCreate(['route' => $route], [
                             'parent_id' => $parentId,
                             'status' => Rule::STATUS_ENABLE,
-                            'type' => $type,
+                            'type' => Rule::TYPE_API,
                             'name' => $permission->name,
                             'route' => $route,
                         ]);

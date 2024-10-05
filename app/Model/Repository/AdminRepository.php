@@ -236,7 +236,7 @@ trait AdminRepository
     {
         $builder = Rule::query()
             ->where('status', self::STATUS_ENABLE)
-            ->where('type', Rule::TYPE_BUTTON)
+            ->where('type', Rule::TYPE_API)
             ->with(['parentRule' => function (BelongsTo $query) {
                 $query->with(['parentRule' => function (BelongsTo $query) {
                     $query->with(['parentRule' => function (BelongsTo $query) {

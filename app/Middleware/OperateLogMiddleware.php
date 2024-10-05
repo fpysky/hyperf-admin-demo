@@ -29,7 +29,7 @@ class OperateLogMiddleware implements MiddlewareInterface
         return $response;
     }
 
-    private function asyncLogOperation(ServerRequestInterface $request, int $statusCode)
+    private function asyncLogOperation(ServerRequestInterface $request, int $statusCode): void
     {
         try {
             $admin = admin();
@@ -49,8 +49,6 @@ class OperateLogMiddleware implements MiddlewareInterface
 
             // 匹配不到系统模块，不做记录
             if ($module = $this->matchModule($path)) {
-                $xRealIp = $request->getHeaderLine('x-real-ip');
-                $xForwardedFor = $request->getHeaderLine('x-forwarded-for');
                 $operateIp = $xRealIp ?? $xForwardedFor ?? '';
 
                 AdminOperationLog::query()->create([
